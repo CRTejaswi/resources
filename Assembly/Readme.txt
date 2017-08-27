@@ -5,6 +5,7 @@ Refer:
   GCC-x86 Assembler Syntax:
     http://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html
     https://www.codeproject.com/Articles/15971/Using-Inline-Assembly-in-C-C
+    https://www.codeproject.com/Articles/5318/Extended-Inline-Assembly-in-GCC
     http://cs.lmu.edu/~ray/notes/gasexamples/
   ARM Instruction Set:
     http://infocenter.arm.com/help/topic/com.arm.doc.qrc0001m/QRC0001_UAL.pdf

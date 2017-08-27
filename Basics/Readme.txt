@@ -7,7 +7,7 @@ Refer:
   Digital Design: An Embedded Systems Approach Using VHDL (Ashenden)
   The Designer's Guide to VHDL (Ashenden)
   The VHDL Cookbook (Ashenden)
-Scripts:;
+Scripts:
 	01 = 
 	02 = 
 	03 = 

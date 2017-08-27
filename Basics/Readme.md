@@ -1,6 +1,6 @@
-This section is dedicated to programs for a first course in VLSI.;
-Use of µwind & Xilinx ISE has been made.;
- "Reference" provides a list of practicals for such a course along with some VHDL codes.;
+This section is dedicated to programs for a first course in VLSI;
+Use of µwind & Xilinx ISE has been made;
+ "Reference" provides a list of practicals for such a course along with some VHDL codes;
 Refer:;
  [Tutorial-Link][1]:;
  Books:;

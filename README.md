@@ -1,2 +1,2 @@
-# VHDL
+# HDL
 Simple VHDL Programs

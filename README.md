@@ -1,2 +1,8 @@
+    Copyright (c) 2018-
+    Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: MIT
+
 # Resources
-Useful resources for rapid prototyping
+> Personally curated resources for quick reference.
+
+## Language(s)
+- Python3 <sup>[[link]](/Language(s)/Python3.md)</sup>

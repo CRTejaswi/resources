@@ -1843,10 +1843,10 @@ input_course = ttk.Combobox(widget1, width=30, textvariable=course, state='reado
 input_degree['values'] = ['BE/BTech', 'ME/MTech', 'BSc', 'MSc']
 input_department['values'] = ('EE', 'ECE', 'CSE', 'Other')
 input_course['values'] = ('C/C++: Data Structures & Algorithms',
-													'Python: Data Structures & Algorithms',
-													'Electic Circuits: Design & Analysis',
-													'Electronic Circuits: Design & Analysis',
-													'Circuit Simulation & Design')
+						'Python: Data Structures & Algorithms',
+						'Electic Circuits: Design & Analysis',
+						'Electronic Circuits: Design & Analysis',
+						'Circuit Simulation & Design')
 input_bio = scrolledtext.ScrolledText(widget1, width=BIO_WIDTH, height=BIO_HEIGHT, wrap=tk.WORD)
 
 input_fname.grid(row=0, column=1)
@@ -2458,8 +2458,6 @@ window.mainloop()`
 <p align="center">
 	<img src="resources/13.gif">
 </p>
-
-## Study: tk.Canvas
 
 ## Ch4: OOP
 
@@ -4521,17 +4519,17 @@ class Hand:
 
     def calculate_value(self):
         self.value = 0
-        has_ace = False
+        hasAce = False
         for card in self.cards:
             if card.value.isnumeric():
                 self.value += int(card.value)
             else:
                 if card.value == 'A':
-                    has_ace = True
+                    hasAce = True
                     self.value += 11
                 else:
                     self.value += 10
-        if has_ace and self.value > 21:
+        if hasAce and self.value > 21:
             self.value -= 10
         return self.value
 
@@ -4557,6 +4555,7 @@ class Game:
             for i in range(2):
                 self.player_hand.add_card(self.deck.deal())
                 self.dealer_hand.add_card(self.deck.deal())
+
             print('>> Your Hand: ')
             self.player_hand.display()
             print('>> Dealer\'s Hand: ')
@@ -4565,6 +4564,7 @@ class Game:
             game_over = False
 
             while not game_over:
+
                 player_hasBlackjack, dealer_hasBlackjack = self.check_ifBlackjack()
                 if player_hasBlackjack or dealer_hasBlackjack:
                     game_over = True
@@ -4574,6 +4574,7 @@ class Game:
                 choice = input('Please Choose (Hit/Stick): ').lower()
                 while choice not in ['h', 'hit', 's', 'stick']:
                     choice = input('Please Choose (Hit/Stick): ').lower()
+
                 if choice in ['h', 'hit']:
                     self.player_hand.add_card(self.deck.deal())
                     print('>> Your Hand: ')
@@ -4581,7 +4582,6 @@ class Game:
                     if self.player_isOver():
                         print('You have lost!')
                         game_over = True
-
                 else:
                     player_hand_value = self.player_hand.calculate_value()
                     dealer_hand_value = self.dealer_hand.calculate_value()
@@ -4595,9 +4595,9 @@ class Game:
                         print('You have lost!')
                     game_over = True
 
-            again = input('Play Again? (Yes/No)').lower()
+            again = input('Play Again? (Yes/No):').lower()
             while again not in ['y', 'yes', 'n', 'no']:
-                again = input('Play Again? (Yes/No)').lower()
+                again = input('Play Again? (Yes/No):').lower()
             if again in ['n', 'no']:
                 print('Thanks for playing!')
                 playing = False
@@ -4633,6 +4633,269 @@ if __name__ == '__main__':
 
 <p align="center">
   <img src="resources/PRJ02a.gif">
+</p>
+
+<details>
+<summary>v2.1</summary>
+
+> CHANGES: GUI Version (No Sound).
+
+> To resize images, use `magick mogrify -resize 120x165 *.png`
+
+``` py
+import os
+import tkinter as tk
+import random
+from PIL import Image, ImageTk
+
+# Global Definitions
+FONT = ('CMU Sans Serif', 32, 'bold')
+RESOURCES = os.path.abspath(os.path.join(os.path.dirname(__file__), 'resources/PRJ02/'))
+
+
+class Card:
+    def __init__(self, suit, value):
+        self.suit = suit
+        self.value = value
+        self.img = ImageTk.PhotoImage(file=RESOURCES + '\\' + self.suit + self.value + '.png')
+
+    def __repr__(self):
+        return '{} of {}'.format(self.value, self.suit)
+
+    def get_file(self):
+        return self.img
+
+    @classmethod
+    def get_backOfCard(cls):
+        cls.back = tk.PhotoImage(file=RESOURCES + '\\back.png')
+        return cls.back
+
+
+class Deck:
+    def __init__(self):
+        self.cards = [Card(suit, value)
+                      for suit in ['Spades', 'Clubs', 'Hearts', 'Diamonds']
+                      for value in ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+                      ]
+
+    def shuffle(self):
+        if len(self.cards) > 1:
+            random.shuffle(self.cards)
+
+    def deal(self):
+        if len(self.cards) > 1:
+            return self.cards.pop(0)
+
+
+class Hand:
+    def __init__(self, dealer=False):
+        self.dealer = dealer
+        self.cards = []
+        self.value = 0
+
+    def add_card(self, card):
+        self.cards.append(card)
+
+    def calculate_value(self):
+        self.value = 0
+        hasAce = False
+        for card in self.cards:
+            if card.value.isnumeric():
+                self.value += int(card.value)
+            else:
+                if card.value == 'A':
+                    hasAce = True
+                    self.value += 11
+                else:
+                    self.value += 10
+        if hasAce and self.value > 21:
+            self.value -= 10
+        return self.value
+
+
+class GameState:
+
+    def __init__(self):
+        self.deck = Deck()
+        self.deck.shuffle()
+        self.player_hand = Hand()
+        self.dealer_hand = Hand(dealer=True)
+
+        for i in range(2):
+            self.player_hand.add_card(self.deck.deal())
+            self.dealer_hand.add_card(self.deck.deal())
+
+        self.hasWinner = ''
+
+    def someone_hasBlackjack(self):
+        player, dealer = False, False
+
+        if self.player_hand.calculate_value() == 21:
+            player = True
+        if self.dealer_hand.calculate_value() == 21:
+            dealer = True
+
+        if player and dealer:
+            return 'dp'
+        elif player:
+            return 'p'
+        elif dealer:
+            return 'd'
+
+        return False
+
+    def hit(self):
+        self.player_hand.add_card(self.deck.deal())
+        if self.someone_hasBlackjack() == 'p':
+            self.hasWinner = 'p'
+        if self.player_isOver:
+            self.hasWinner = 'd'
+
+        return self.hasWinner
+
+    def get_tableState(self):
+        blackjack = False
+        winner = self.hasWinner
+        if not winner:
+            winner = self.someone_hasBlackjack()
+        if winner:
+            blackjack = True
+        tableState = {
+            'player_cards': self.player_hand.cards,
+            'dealer_cards': self.dealer_hand.cards,
+            'hasWinner': winner,
+            'blackjack': blackjack
+        }
+
+        return tableState
+
+    def get_finaltableState(self):
+
+        self.player_hand_value = self.player_hand.calculate_value()
+        self.dealer_hand_value = self.dealer_hand.calculate_value()
+
+        if self.player_hand_value == self.dealer_hand_value:
+            winner = 'dp'
+        elif self.player_hand_value >= self.dealer_hand_value:
+            winner = 'p'
+        else:
+            winner = 'd'
+        tableState = {
+            'player_cards': self.player_hand.cards,
+            'dealer_cards': self.dealer_hand.cards,
+            'hasWinner': winner,
+        }
+
+        return tableState
+
+    def get_playerScore(self):
+        return 'Score: ' + str(self.player_hand.calculate_value())
+
+    def player_isOver(self):
+        return self.player_hand.calculate_value() > 21
+
+
+class GameScreen(tk.Tk):
+    def __init__(self):
+        tk.Tk.__init__(self)
+        self.title('BlackJack')
+        self.geometry('1280x720')
+        self.resizable(False, False)
+
+        # Define: Instance Constants
+        self.CARD_ORIGINAL_POSITION = 100
+        self.CARD_WIDTH_OFFSET = 120
+        self.PLAYER_CARD_HEIGHT = 350
+        self.DEALER_CARD_HEIGHT = 150
+        self.PLAYER_SCORE_COORDINATES = (500, 500)
+        self.WINNER_SCORE_COORDINATES = (640, 300)
+
+        # Define: Game Attributes - GameState, GameScreen
+        self.game_state = GameState()
+        self.game_screen = tk.Canvas(self, bg='#FFFFFF', width=1280, height=600)
+        self.bottom_frame = tk.Frame(self, width=1280, height=120, bg='#C0C0C0')
+        self.bottom_frame.pack_propagate(0)
+
+        # Frame Widgets
+        self.btn_hit = tk.Button(self.bottom_frame, text='Hit', width=10, font=FONT, command=self.hit)
+        self.btn_stick = tk.Button(self.bottom_frame, text='Stick', width=10, font=FONT, command=self.stick)
+        self.btn_playAgain = tk.Button(self.bottom_frame, text='Play Again', width=10, font=FONT, command=self.playAgain)
+        self.btn_quit = tk.Button(self.bottom_frame, text='Quit', width=10, font=FONT, command=self.quit)
+
+        self.btn_hit.pack(side=tk.LEFT)
+        self.btn_stick.pack(side=tk.RIGHT)
+        self.bottom_frame.pack(side=tk.BOTTOM, fill=tk.X)
+        self.game_screen.pack(side=tk.LEFT, anchor=tk.N)
+        self.display_table()
+
+    def display_table(self, hide_dealer=True, tableState=None):
+        if not tableState:
+            tableState = self.game_state.get_tableState()
+
+        player_cardImages = [card.get_file() for card in tableState['player_cards']]
+        dealer_cardImages = [card.get_file() for card in tableState['dealer_cards']]
+
+        if hide_dealer and not tableState['blackjack']:
+            dealer_cardImages[0] = Card.get_backOfCard()
+
+        self.game_screen.delete('all')
+        self.tabletop_image = tk.PhotoImage(file=RESOURCES + '\\tabletop.png')
+        self.game_screen.create_image((640, 300), image=self.tabletop_image)
+
+        for card_number, card_image in enumerate(player_cardImages):
+            self.game_screen.create_image(self.CARD_ORIGINAL_POSITION + self.CARD_WIDTH_OFFSET * card_number,
+                                          self.PLAYER_CARD_HEIGHT, image=card_image)
+        for card_number, card_image in enumerate(dealer_cardImages):
+            self.game_screen.create_image(self.CARD_ORIGINAL_POSITION + self.CARD_WIDTH_OFFSET * card_number,
+                                          self.DEALER_CARD_HEIGHT, image=card_image)
+
+        # Display Score
+        self.game_screen.create_text(self.PLAYER_SCORE_COORDINATES, text=self.game_state.get_playerScore(), font=FONT)
+
+        if tableState['hasWinner']:
+            if tableState['hasWinner'] == 'p':
+                self.game_screen.create_text(self.WINNER_SCORE_COORDINATES, text='You Win!', font=FONT)
+            elif tableState['hasWinner'] == 'dp':
+                self.game_screen.create_text(self.WINNER_SCORE_COORDINATES, text='Tie!', font=FONT)
+            else:
+                self.game_screen.create_text(self.WINNER_SCORE_COORDINATES, text='Dealer Wins!', font=FONT)
+            self.show_playAgain_options()
+
+    def show_playAgain_options(self):
+        self.btn_hit.pack_forget()
+        self.btn_stick.pack_forget()
+        self.btn_playAgain.pack(side=tk.LEFT)
+        self.btn_quit.pack(side=tk.RIGHT)
+
+    def show_gameplay_buttons(self):
+        self.btn_hit.pack(side=tk.LEFT)
+        self.btn_stick.pack(side=tk.RIGHT)
+        self.btn_playAgain.pack_forget()
+        self.btn_quit.pack_forget()
+
+    def playAgain(self):
+        self.show_gameplay_buttons()
+        self.game_state = GameState()
+        self.display_table()
+
+    def hit(self):
+        self.game_state.hit()
+        self.display_table()
+
+    def stick(self):
+        tableState = self.game_state.get_finaltableState()
+        self.display_table(False, tableState)
+
+
+if __name__ == '__main__':
+    app = GameScreen()
+    app.mainloop()
+```
+
+</details>
+
+<p align="center">
+  <img src="resources/PRJ02b.gif">
 </p>
 
 <!-- <details>
@@ -4785,69 +5048,3 @@ app.mainloop()
 `2` & `3` create the `app` instance from a class (`GUI`) that itself inherits from a parent class (`Tk` or `Frame`). There is no need to declare a `root` attribute-object in both these cases since any class instance is in fact, the whole window. <br>
 One slight advantage inheriting from `Frame` has over `Tk` is when you want your application to support multiple identical windows. In that case, inheriting from `Frame` lets you create subsequent windows as children of instances of [`Toplevel`](http://effbot.org/tkinterbook/toplevel.htm). <br>
 So, avoid `1`. Use `2` or `3` instead. <br>
-
-#### Best Practices
-[`Structuring Tkinter GUI code`](https://stackoverflow.com/questions/17466561/best-way-to-structure-a-tkinter-application/17470842#17470842)
-
-
-``` py
-import tkinter as tk
-
-
-class GUI(tk.Frame):
-    def __init__(self, master=None):
-        tk.Frame.__init__(self, master)
-        self.grid(sticky=tk.N + tk.S + tk.E + tk.W)
-        self.create_widgets()
-
-    def quit(self):
-        self.master.quit()
-
-    def create_widgets(self):
-        top = self.winfo_toplevel()
-        top.rowconfigure(0, weight=1)
-        top.columnconfigure(0, weight=1)
-
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
-
-        self.btn_quit = tk.Button(self, text='Quit', command=self.quit)
-        self.btn_quit.grid(row=0, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
-
-
-app = GUI()
-app.master.title('Python GUI')
-app.mainloop()
-```
-
-``` py
-import tkinter as tk
-from PIL import Image, ImageTk
-
-
-class GUI(tk.Frame):
-    def __init__(self, master=None):
-        tk.Frame.__init__(self, master)
-        self.grid()
-        self.create_widgets()
-
-    def quit(self):
-        pass
-
-    def create_widgets(self):
-        top = self.winfo_toplevel()
-        top.rowconfigure(0, weight=1)
-        top.columnconfigure(0, weight=1)
-
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
-
-        img = ImageTk.PhotoImage(Image.open(r"C:\Users\Chaitanya Tejaswi\Desktop\Python3\tkinter\04.gif"))
-        print(type(img))
-        tk.Label(self, image=img).grid(row=0, column=0)  # , sticky=tk.N + tk.S + tk.E + tk.W)
-
-
-app = GUI()
-app.master.title('Python GUI')
-app.mainloop()
-```

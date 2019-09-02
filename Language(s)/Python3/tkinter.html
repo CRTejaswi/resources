@@ -2871,10 +2871,10 @@ Added message boxes (info, warning, error, yes-no-cancel) &amp; root-window logo
 <span class="n">input_degree</span><span class="p">[</span><span class="s">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;BE/BTech&#39;</span><span class="p">,</span> <span class="s">&#39;ME/MTech&#39;</span><span class="p">,</span> <span class="s">&#39;BSc&#39;</span><span class="p">,</span> <span class="s">&#39;MSc&#39;</span><span class="p">]</span>
 <span class="n">input_department</span><span class="p">[</span><span class="s">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;EE&#39;</span><span class="p">,</span> <span class="s">&#39;ECE&#39;</span><span class="p">,</span> <span class="s">&#39;CSE&#39;</span><span class="p">,</span> <span class="s">&#39;Other&#39;</span><span class="p">)</span>
 <span class="n">input_course</span><span class="p">[</span><span class="s">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;C/C++: Data Structures &amp; Algorithms&#39;</span><span class="p">,</span>
-                                                    <span class="s">&#39;Python: Data Structures &amp; Algorithms&#39;</span><span class="p">,</span>
-                                                    <span class="s">&#39;Electic Circuits: Design &amp; Analysis&#39;</span><span class="p">,</span>
-                                                    <span class="s">&#39;Electronic Circuits: Design &amp; Analysis&#39;</span><span class="p">,</span>
-                                                    <span class="s">&#39;Circuit Simulation &amp; Design&#39;</span><span class="p">)</span>
+                        <span class="s">&#39;Python: Data Structures &amp; Algorithms&#39;</span><span class="p">,</span>
+                        <span class="s">&#39;Electic Circuits: Design &amp; Analysis&#39;</span><span class="p">,</span>
+                        <span class="s">&#39;Electronic Circuits: Design &amp; Analysis&#39;</span><span class="p">,</span>
+                        <span class="s">&#39;Circuit Simulation &amp; Design&#39;</span><span class="p">)</span>
 <span class="n">input_bio</span> <span class="o">=</span> <span class="n">scrolledtext</span><span class="o">.</span><span class="n">ScrolledText</span><span class="p">(</span><span class="n">widget1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BIO_WIDTH</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">BIO_HEIGHT</span><span class="p">,</span> <span class="n">wrap</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">WORD</span><span class="p">)</span>
 
 <span class="n">input_fname</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -3482,7 +3482,6 @@ How to use 2+ spinboxes simultaneously with output only when the relevant box&rs
     <img src="///B://CRTejaswi/Programs/All/Resources/Language%28s%29/Python3/resources/13.gif">
 </p>
 
-<h2 id="study-tkcanvas">Study: tk.Canvas<a class="headerlink" href="#study-tkcanvas" title="Permanent link"></a></h2>
 <h2 id="ch4-oop">Ch4: OOP<a class="headerlink" href="#ch4-oop" title="Permanent link"></a></h2>
 <ul>
 <li>How to get data from a widget</li>
@@ -5486,17 +5485,17 @@ DEPENDENCIES: pytz, tzlocal.</p>
 
     <span class="k">def</span> <span class="nf">calculate_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">has_ace</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">hasAce</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cards</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">card</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">card</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">card</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&#39;A&#39;</span><span class="p">:</span>
-                    <span class="n">has_ace</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">hasAce</span> <span class="o">=</span> <span class="bp">True</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">11</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">10</span>
-        <span class="k">if</span> <span class="n">has_ace</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">21</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hasAce</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">21</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">-=</span> <span class="mi">10</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
 
@@ -5522,6 +5521,7 @@ DEPENDENCIES: pytz, tzlocal.</p>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">add_card</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deck</span><span class="o">.</span><span class="n">deal</span><span class="p">())</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span><span class="o">.</span><span class="n">add_card</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deck</span><span class="o">.</span><span class="n">deal</span><span class="p">())</span>
+
             <span class="k">print</span><span class="p">(</span><span class="s">&#39;&gt;&gt; Your Hand: &#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
             <span class="k">print</span><span class="p">(</span><span class="s">&#39;&gt;&gt; Dealer</span><span class="se">\&#39;</span><span class="s">s Hand: &#39;</span><span class="p">)</span>
@@ -5530,15 +5530,17 @@ DEPENDENCIES: pytz, tzlocal.</p>
             <span class="n">game_over</span> <span class="o">=</span> <span class="bp">False</span>
 
             <span class="k">while</span> <span class="ow">not</span> <span class="n">game_over</span><span class="p">:</span>
+
                 <span class="n">player_hasBlackjack</span><span class="p">,</span> <span class="n">dealer_hasBlackjack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_ifBlackjack</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">player_hasBlackjack</span> <span class="ow">or</span> <span class="n">dealer_hasBlackjack</span><span class="p">:</span>
                     <span class="n">game_over</span> <span class="o">=</span> <span class="bp">True</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">player_hasBlackjack</span><span class="p">,</span> <span class="n">dealer_hasBlackjack</span><span class="p">)</span>
                     <span class="k">continue</span>
 
-                <span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Please Chooose (Hit/Stick): &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Please Choose (Hit/Stick): &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                 <span class="k">while</span> <span class="n">choice</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;h&#39;</span><span class="p">,</span> <span class="s">&#39;hit&#39;</span><span class="p">,</span> <span class="s">&#39;s&#39;</span><span class="p">,</span> <span class="s">&#39;stick&#39;</span><span class="p">]:</span>
                     <span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Please Choose (Hit/Stick): &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
                 <span class="k">if</span> <span class="n">choice</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;h&#39;</span><span class="p">,</span> <span class="s">&#39;hit&#39;</span><span class="p">]:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">add_card</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deck</span><span class="o">.</span><span class="n">deal</span><span class="p">())</span>
                     <span class="k">print</span><span class="p">(</span><span class="s">&#39;&gt;&gt; Your Hand: &#39;</span><span class="p">)</span>
@@ -5546,7 +5548,6 @@ DEPENDENCIES: pytz, tzlocal.</p>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_isOver</span><span class="p">():</span>
                         <span class="k">print</span><span class="p">(</span><span class="s">&#39;You have lost!&#39;</span><span class="p">)</span>
                         <span class="n">game_over</span> <span class="o">=</span> <span class="bp">True</span>
-
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">player_hand_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">()</span>
                     <span class="n">dealer_hand_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">()</span>
@@ -5560,9 +5561,9 @@ DEPENDENCIES: pytz, tzlocal.</p>
                         <span class="k">print</span><span class="p">(</span><span class="s">&#39;You have lost!&#39;</span><span class="p">)</span>
                     <span class="n">game_over</span> <span class="o">=</span> <span class="bp">True</span>
 
-            <span class="n">again</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Play Again? (Yes/No)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">again</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Play Again? (Yes/No):&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">while</span> <span class="n">again</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="s">&#39;yes&#39;</span><span class="p">,</span> <span class="s">&#39;n&#39;</span><span class="p">,</span> <span class="s">&#39;no&#39;</span><span class="p">]:</span>
-                <span class="n">again</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Play Again? (Yes/No)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">again</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Play Again? (Yes/No):&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">again</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;n&#39;</span><span class="p">,</span> <span class="s">&#39;no&#39;</span><span class="p">]:</span>
                 <span class="k">print</span><span class="p">(</span><span class="s">&#39;Thanks for playing!&#39;</span><span class="p">)</span>
                 <span class="n">playing</span> <span class="o">=</span> <span class="bp">False</span>
@@ -5599,17 +5600,265 @@ DEPENDENCIES: pytz, tzlocal.</p>
   <img src="///B://CRTejaswi/Programs/All/Resources/Language%28s%29/Python3/resources/PRJ02a.gif">
 </p>
 
-<!-- <details>
-<summary>v8.1</summary>
+<p><details>
+<summary>v2.1</summary></p>
+<blockquote>
+<p>CHANGES: GUI Version (No Sound).</p>
+<p>To resize images, use <code>magick mogrify -resize 120x165 *.png</code></p>
+</blockquote>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageTk</span>
 
-> CHANGES: Added.
+<span class="c1"># Global Definitions</span>
+<span class="n">FONT</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;CMU Sans Serif&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">RESOURCES</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&#39;resources/PRJ02/&#39;</span><span class="p">))</span>
 
-wzxhzdk:60
-</details>
 
+<span class="k">class</span> <span class="nc">Card</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suit</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suit</span> <span class="o">=</span> <span class="n">suit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">ImageTk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">RESOURCES</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">suit</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="s">&#39;.png&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;{} of {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">suit</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_backOfCard</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">back</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">RESOURCES</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">back.png&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">back</span>
+
+
+<span class="k">class</span> <span class="nc">Deck</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cards</span> <span class="o">=</span> <span class="p">[</span><span class="n">Card</span><span class="p">(</span><span class="n">suit</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">suit</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;Spades&#39;</span><span class="p">,</span> <span class="s">&#39;Clubs&#39;</span><span class="p">,</span> <span class="s">&#39;Hearts&#39;</span><span class="p">,</span> <span class="s">&#39;Diamonds&#39;</span><span class="p">]</span>
+                      <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">,</span> <span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;10&#39;</span><span class="p">,</span> <span class="s">&#39;J&#39;</span><span class="p">,</span> <span class="s">&#39;Q&#39;</span><span class="p">,</span> <span class="s">&#39;K&#39;</span><span class="p">]</span>
+                      <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cards</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cards</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cards</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cards</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Hand</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dealer</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dealer</span> <span class="o">=</span> <span class="n">dealer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cards</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">add_card</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">card</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">card</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">calculate_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">hasAce</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cards</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">card</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">card</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">card</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&#39;A&#39;</span><span class="p">:</span>
+                    <span class="n">hasAce</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">11</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">10</span>
+        <span class="k">if</span> <span class="n">hasAce</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">21</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">-=</span> <span class="mi">10</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+
+<span class="k">class</span> <span class="nc">GameState</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deck</span> <span class="o">=</span> <span class="n">Deck</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deck</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span> <span class="o">=</span> <span class="n">Hand</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span> <span class="o">=</span> <span class="n">Hand</span><span class="p">(</span><span class="n">dealer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">add_card</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deck</span><span class="o">.</span><span class="n">deal</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span><span class="o">.</span><span class="n">add_card</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deck</span><span class="o">.</span><span class="n">deal</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hasWinner</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">someone_hasBlackjack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">player</span><span class="p">,</span> <span class="n">dealer</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">()</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+            <span class="n">player</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">()</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+            <span class="n">dealer</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">if</span> <span class="n">player</span> <span class="ow">and</span> <span class="n">dealer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;dp&#39;</span>
+        <span class="k">elif</span> <span class="n">player</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;p&#39;</span>
+        <span class="k">elif</span> <span class="n">dealer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;d&#39;</span>
+
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">hit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">add_card</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deck</span><span class="o">.</span><span class="n">deal</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">someone_hasBlackjack</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;p&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hasWinner</span> <span class="o">=</span> <span class="s">&#39;p&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_isOver</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hasWinner</span> <span class="o">=</span> <span class="s">&#39;d&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasWinner</span>
+
+    <span class="k">def</span> <span class="nf">get_tableState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">blackjack</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">winner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasWinner</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">winner</span><span class="p">:</span>
+            <span class="n">winner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">someone_hasBlackjack</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">winner</span><span class="p">:</span>
+            <span class="n">blackjack</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">tableState</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;player_cards&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">cards</span><span class="p">,</span>
+            <span class="s">&#39;dealer_cards&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span><span class="o">.</span><span class="n">cards</span><span class="p">,</span>
+            <span class="s">&#39;hasWinner&#39;</span><span class="p">:</span> <span class="n">winner</span><span class="p">,</span>
+            <span class="s">&#39;blackjack&#39;</span><span class="p">:</span> <span class="n">blackjack</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">tableState</span>
+
+    <span class="k">def</span> <span class="nf">get_finaltableState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_hand_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand_value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand_value</span><span class="p">:</span>
+            <span class="n">winner</span> <span class="o">=</span> <span class="s">&#39;dp&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand_value</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand_value</span><span class="p">:</span>
+            <span class="n">winner</span> <span class="o">=</span> <span class="s">&#39;p&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">winner</span> <span class="o">=</span> <span class="s">&#39;d&#39;</span>
+        <span class="n">tableState</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;player_cards&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">cards</span><span class="p">,</span>
+            <span class="s">&#39;dealer_cards&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dealer_hand</span><span class="o">.</span><span class="n">cards</span><span class="p">,</span>
+            <span class="s">&#39;hasWinner&#39;</span><span class="p">:</span> <span class="n">winner</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">tableState</span>
+
+    <span class="k">def</span> <span class="nf">get_playerScore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Score: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">player_isOver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_hand</span><span class="o">.</span><span class="n">calculate_value</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">21</span>
+
+
+<span class="k">class</span> <span class="nc">GameScreen</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;BlackJack&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s">&#39;1280x720&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resizable</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+        <span class="c1"># Define: Instance Constants</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CARD_ORIGINAL_POSITION</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CARD_WIDTH_OFFSET</span> <span class="o">=</span> <span class="mi">120</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PLAYER_CARD_HEIGHT</span> <span class="o">=</span> <span class="mi">350</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DEALER_CARD_HEIGHT</span> <span class="o">=</span> <span class="mi">150</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PLAYER_SCORE_COORDINATES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">WINNER_SCORE_COORDINATES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+
+        <span class="c1"># Define: Game Attributes - GameState, GameScreen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_state</span> <span class="o">=</span> <span class="n">GameState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">&#39;#FFFFFF&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1280</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1280</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">&#39;#C0C0C0&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_frame</span><span class="o">.</span><span class="n">pack_propagate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Frame Widgets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_hit</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;Hit&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stick</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;Stick&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stick</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_playAgain</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;Play Again&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">playAgain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_quit</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;Quit&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_hit</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stick</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hide_dealer</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">tableState</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tableState</span><span class="p">:</span>
+            <span class="n">tableState</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_state</span><span class="o">.</span><span class="n">get_tableState</span><span class="p">()</span>
+
+        <span class="n">player_cardImages</span> <span class="o">=</span> <span class="p">[</span><span class="n">card</span><span class="o">.</span><span class="n">get_file</span><span class="p">()</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">tableState</span><span class="p">[</span><span class="s">&#39;player_cards&#39;</span><span class="p">]]</span>
+        <span class="n">dealer_cardImages</span> <span class="o">=</span> <span class="p">[</span><span class="n">card</span><span class="o">.</span><span class="n">get_file</span><span class="p">()</span> <span class="k">for</span> <span class="n">card</span> <span class="ow">in</span> <span class="n">tableState</span><span class="p">[</span><span class="s">&#39;dealer_cards&#39;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="n">hide_dealer</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">tableState</span><span class="p">[</span><span class="s">&#39;blackjack&#39;</span><span class="p">]:</span>
+            <span class="n">dealer_cardImages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Card</span><span class="o">.</span><span class="n">get_backOfCard</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s">&#39;all&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabletop_image</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">RESOURCES</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">tabletop.png&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">create_image</span><span class="p">((</span><span class="mi">640</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tabletop_image</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">card_number</span><span class="p">,</span> <span class="n">card_image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">player_cardImages</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">create_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CARD_ORIGINAL_POSITION</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">CARD_WIDTH_OFFSET</span> <span class="o">*</span> <span class="n">card_number</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">PLAYER_CARD_HEIGHT</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">card_image</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">card_number</span><span class="p">,</span> <span class="n">card_image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dealer_cardImages</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">create_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CARD_ORIGINAL_POSITION</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">CARD_WIDTH_OFFSET</span> <span class="o">*</span> <span class="n">card_number</span><span class="p">,</span>
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">DEALER_CARD_HEIGHT</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">card_image</span><span class="p">)</span>
+
+        <span class="c1"># Display Score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PLAYER_SCORE_COORDINATES</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">game_state</span><span class="o">.</span><span class="n">get_playerScore</span><span class="p">(),</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">tableState</span><span class="p">[</span><span class="s">&#39;hasWinner&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">tableState</span><span class="p">[</span><span class="s">&#39;hasWinner&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;p&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WINNER_SCORE_COORDINATES</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;You Win!&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">tableState</span><span class="p">[</span><span class="s">&#39;hasWinner&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;dp&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WINNER_SCORE_COORDINATES</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;Tie!&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game_screen</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WINNER_SCORE_COORDINATES</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;Dealer Wins!&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">FONT</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_playAgain_options</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">show_playAgain_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_hit</span><span class="o">.</span><span class="n">pack_forget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stick</span><span class="o">.</span><span class="n">pack_forget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_playAgain</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_quit</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">show_gameplay_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_hit</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_stick</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_playAgain</span><span class="o">.</span><span class="n">pack_forget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_quit</span><span class="o">.</span><span class="n">pack_forget</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">playAgain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_gameplay_buttons</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_state</span> <span class="o">=</span> <span class="n">GameState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">hit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_state</span><span class="o">.</span><span class="n">hit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">stick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tableState</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_state</span><span class="o">.</span><span class="n">get_finaltableState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_table</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="n">tableState</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">GameScreen</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+
+<p></details></p>
 <p align="center">
-  <img src="resources/27.gif">
-</p> -->
+  <img src="///B://CRTejaswi/Programs/All/Resources/Language%28s%29/Python3/resources/PRJ02b.gif">
+</p>
 
 <!-- <details>
 <summary>v8.1</summary>
@@ -5629,6 +5878,18 @@ DEPENDENCIES: pytz, tzlocal.</p>
 > CHANGES: Added.
 
 wzxhzdk:62
+</details>
+
+<p align="center">
+  <img src="resources/27.gif">
+</p> -->
+
+<!-- <details>
+<summary>v8.1</summary>
+
+> CHANGES: Added.
+
+wzxhzdk:63
 </details>
 
 <p align="center">
@@ -5726,65 +5987,4 @@ DEPENDENCIES: pytz, tzlocal.</p>
 <p><code>1</code> is created in a conservative style, where the whole window is controlled through an attribute (<code>root</code>) of the particular instance (<code>app</code>). This could be more memory-intensive, as it adds another level of heirarchy to the code-structure. <br>
 <code>2</code> &amp; <code>3</code> create the <code>app</code> instance from a class (<code>GUI</code>) that itself inherits from a parent class (<code>Tk</code> or <code>Frame</code>). There is no need to declare a <code>root</code> attribute-object in both these cases since any class instance is in fact, the whole window. <br>
 One slight advantage inheriting from <code>Frame</code> has over <code>Tk</code> is when you want your application to support multiple identical windows. In that case, inheriting from <code>Frame</code> lets you create subsequent windows as children of instances of <a href="http://effbot.org/tkinterbook/toplevel.htm"><code>Toplevel</code></a>. <br>
-So, avoid <code>1</code>. Use <code>2</code> or <code>3</code> instead. <br></p>
-<h4 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link"></a></h4>
-<p><a href="https://stackoverflow.com/questions/17466561/best-way-to-structure-a-tkinter-application/17470842#17470842"><code>Structuring Tkinter GUI code</code></a></p>
-<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
-
-
-<span class="k">class</span> <span class="nc">GUI</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">N</span> <span class="o">+</span> <span class="n">tk</span><span class="o">.</span><span class="n">S</span> <span class="o">+</span> <span class="n">tk</span><span class="o">.</span><span class="n">E</span> <span class="o">+</span> <span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_widgets</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">master</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_toplevel</span><span class="p">()</span>
-        <span class="n">top</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">top</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">btn_quit</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;Quit&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">btn_quit</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">N</span> <span class="o">+</span> <span class="n">tk</span><span class="o">.</span><span class="n">S</span> <span class="o">+</span> <span class="n">tk</span><span class="o">.</span><span class="n">E</span> <span class="o">+</span> <span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
-
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">GUI</span><span class="p">()</span>
-<span class="n">app</span><span class="o">.</span><span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Python GUI&#39;</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
-</pre></div>
-
-<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageTk</span>
-
-
-<span class="k">class</span> <span class="nc">GUI</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_widgets</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_toplevel</span><span class="p">()</span>
-        <span class="n">top</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">top</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="n">img</span> <span class="o">=</span> <span class="n">ImageTk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">r&quot;C:\Users\Chaitanya Tejaswi\Desktop\Python3\tkinter\04.gif&quot;</span><span class="p">))</span>
-        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>
-        <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># , sticky=tk.N + tk.S + tk.E + tk.W)</span>
-
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">GUI</span><span class="p">()</span>
-<span class="n">app</span><span class="o">.</span><span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Python GUI&#39;</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
-</pre></div></article></body></html>
+So, avoid <code>1</code>. Use <code>2</code> or <code>3</code> instead. <br></p></article></body></html>

@@ -12,9 +12,10 @@
 ## Language(s)
 > Contains language specific notes/recipies.
 
-- [JavaScript](Language(s)/JS/README.md)
+- [PowerShell](Language(s)/PowerShell/README.md)
 - [Python3](Language(s)/Python3/README.md)
-
+- [Haskell](Language(s)/Haskell/README.md)
+- [JavaScript](Language(s)/JS/README.md)
 
 ## Unsorted
 > Contains miscellaneous unsorted notes/recipies.

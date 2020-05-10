@@ -19,6 +19,8 @@
 iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
 ```
 
+- Clear Command History <br> Press `Ctrl + F7`
+
 - Uninstall built-in apps
 ```
 Get-AppxPackage *3dbuilder* | Remove-AppxPackage
@@ -42,8 +44,8 @@ Get-AppxPackage *xboxapp* | Remove-AppxPackage
 
 - Create New File/Folder
 ```
-ni -path 'C:\Users\Chaitanya Tejaswi\Desktop' -ItemType 'directory' -name 'myTEST'
-ni -path 'C:\Users\Chaitanya Tejaswi\Desktop\myTEST' -ItemType 'file' -name 'myTEST.md'
+ni -path 'C:\Users\CRTejaswi\Desktop' -ItemType 'directory' -name 'myTEST'
+ni -path 'C:\Users\CRTejaswi\Desktop\myTEST' -ItemType 'file' -name 'myTEST.md'
 ```
 
 - Get storage directory of binary file.
@@ -51,7 +53,48 @@ ni -path 'C:\Users\Chaitanya Tejaswi\Desktop\myTEST' -ItemType 'file' -name 'myT
 gps firefox | ls
 ```
 
-### System Help
+- Common Aliases
+```
+man -> Get-Help    (to lookup command syntax)
+gcm -> Get-Command (to lookup command syntax)
+gm  -> Get-Member  (to learn more about an object)
+gal -> Get-Alias
+gcb -> Get-Clipboard
+gps -> Get-Process
+gsv -> Get-Service
+gin -> Get-ComputerInfo
+gtz -> Get-TimeZone
+
+cls -> Clear-Host ('clear shell')
+clc -> Clear-Content
+clv -> Clear-Variable
+cli -> Clear-Item
+clp -> Clear-ItemProperty
+
+pushd, popd -> Push-Location, Pop-Location
+copy, move  -> Copy-Item, Move-Item
+history     -> Get-History
+```
+
+- Create new aliases <br>
+Create `aliases.csv`
+```
+Name,Value
+gotodir,Get-ChildItem
+sel,Select-Object
+clip,Get-Clipboard
+```
+Import these aliases using:
+```
+import-csv aliases.csv | new-alias
+```
+
+    <center><b>TODO</b></center>
+
+    - [ ] Come up with useful aliases
+
+## System Help
+
 - Update help.
 ```
 update-help -Force
@@ -76,75 +119,13 @@ get-verb
 get-verb | measure
 ```
 
-### Pipelining
-
-- Import/Export
-```
-man export*
-man import*
-```
-```
-Export-Clixml                     Cmdlet
-Export-Csv                        Cmdlet
-Export-FormatData                 Cmdlet
-Export-PSSession                  Cmdlet
-Export-BinaryMiLog                Cmdlet
-Export-WindowsDriver              Cmdlet
-Export-WindowsCapabilitySource    Cmdlet
-Export-WindowsImage               Cmdlet
-Export-Counter                    Cmdlet
-Export-ODataEndpointProxy         Function
-Export-Certificate                Cmdlet
-Export-PfxCertificate             Cmdlet
-Export-ProvisioningPackage        Cmdlet
-Export-Trace                      Cmdlet
-Export-ScheduledTask              Function
-Export-StartLayoutEdgeAssets      Cmdlet
-Export-StartLayout                Cmdlet
-Export-TlsSessionTicketKey        Cmdlet
-
-ImportSystemModules               Function
-Import-PowerShellDataFile         Function
-Import-Module                     Cmdlet
-Import-Alias                      Cmdlet
-Import-Clixml                     Cmdlet
-Import-Csv                        Cmdlet
-Import-LocalizedData              Cmdlet
-Import-PSSession                  Cmdlet
-Import-PackageProvider            Cmdlet
-Import-BinaryMiLog                Cmdlet
-Import-IseSnippet                 Function
-Import-Counter                    Cmdlet
-Import-PfxCertificate             Cmdlet
-Import-Certificate                Cmdlet
-Import-StartLayout                Cmdlet
-Import-TpmOwnerAuth               Cmdlet
-```
-
-- Import/Export CSV, XML
-```
-gps | export-csv process.csv
-gps | export-clixml process.xml
-```
-
-- Convert to HTML
-  - [ ] Select/Sort & save necessary columns to `test.html`
-  - [ ] Using CSS, beautiful `test.html`
-```
-gps | convertto-html | out-file test.html
-ls  | convertto-html | out-file -append test.html
-```
-
-### Objects
-
-<center><b>TODO</b></center>
-
-- [ ] Study `ls` cmdlet.
+## Objects
 
 Unlike UNIX, PS outputs objects (instead of text). This makes it easy to sort them.
 This instruction gets all the members (properties/methods) of `get-process` cmdlet, sorted by name.
 ```
 get-process | get-member | sort Name
+gps | gm | sort Name
 ```
 ```
    TypeName: System.Diagnostics.Process
@@ -245,30 +226,236 @@ WorkingSet64               Property       long WorkingSet64 {get;}
 WS                         AliasProperty  WS = WorkingSet64
 ```
 
-Using `where`
-
-The code below lists all processes with ID >= 1000, sorted in ascending order.
+- Objects: Sorting & Selecting <br>
+Use `Sort-Object` (`sort`) & `Select-Object`(`select`).
 ```
-get-process | where {$_.Handles -ge 1000} | sort -Property Handles
-```
-```
-Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
--------  ------    -----      -----     ------     --  -- -----------
-   1011      42    39560      23564              4664   0 LenovoVantageService
-   1060      22    11932      24380              1044   0 svchost
-   1073       6     8740      12100             14168   0 Windows.WARP.JITService
-   1136      52    50488      41276              4136   0 Lenovo.Modern.ImController
-   1201      17     7516      11760              1208   0 svchost
-   1209      91   102380     165036      18.14   8500   1 SearchUI
-   1376      22     7248      13288               976   0 lsass
-   1453      93   179728     231288      42.13   3016   1 firefox
-   2075      81   384764     151604              4332   0 MsMpEng
-   3523       9     1868       3972              8632   1 rundll32
-   3538     137   119552     132228     153.25   7980   1 explorer
-   5508       0      188        136                 4   0 System
+# Sort processes based on ID & VM-usage (descending). Display only ID, Name, VM, PM.
+gps | select ID,Name,VM,PM | sort VM,ID -desc
+# Save above table as HTML.
+gps | select ID,Name,VM,PM | sort VM,ID -desc | convertto-html | out-file TEST.html
 ```
 
+- Objects: Selecting (`Sort-Object` v `Where-Object`) <br>
+`Sort-Object` lets you select/filter objects based on properties. <br>
+`Where-Object` lets you select/filter objects based on a criteria. <br>
 
+    ```
+    # List all processes with ID >= 1000, sorted in ascending order.
+    gps | where {$_.Handles -ge 1000} | sort -Property Handles
+    ```
+    ```
+    Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+    -------  ------    -----      -----     ------     --  -- -----------
+       1011      42    39560      23564              4664   0 LenovoVantageService
+       1060      22    11932      24380              1044   0 svchost
+       1073       6     8740      12100             14168   0 Windows.WARP.JITService
+       1136      52    50488      41276              4136   0 Lenovo.Modern.ImController
+       1201      17     7516      11760              1208   0 svchost
+       1209      91   102380     165036      18.14   8500   1 SearchUI
+       1376      22     7248      13288               976   0 lsass
+       1453      93   179728     231288      42.13   3016   1 firefox
+       2075      81   384764     151604              4332   0 MsMpEng
+       3523       9     1868       3972              8632   1 rundll32
+       3538     137   119552     132228     153.25   7980   1 explorer
+       5508       0      188        136                 4   0 System
+    ```
+
+<center><b>TODO</b></center>
+
+- [ ] Study `ls`,`sort`,`select`,`where` cmdlets.
+
+- [x] Get current date & time. Then, show only time.
+```
+get-date; get-date | select Hour,Minute,Second
+
+Saturday, May 9, 2020 11:49:03 AM
+
+Hour   : 11
+Minute : 49
+Second : 3
+
+```
+
+- [x] Display a list of installed hotfixes. Display installation date, installed by, and ID, sorted by installation date.
+```
+get-hotfix | select installedon,installedby,hotfixid | sort installedon
+
+InstalledOn           installedby         hotfixid
+-----------           -----------         --------
+3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4538674
+3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4541338
+3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4537759
+3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4537572
+3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4517245
+4/22/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4549951
+4/22/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4552152
+```
+
+- [x] Display a list of 10 latest Security Event-logs. Display index, time, source for each file, with the oldest entries appearing first (and same-time entries sorted by index).
+```
+get-eventlog -logname system -newest 10 | select index,timegenerated,source | sort timegenerated,index | out-gridview
+
+Index TimeGenerated        Source
+----- -------------        ------
+19167 5/9/2020 10:09:26 AM Microsoft-Windows-TPM-WMI
+19168 5/9/2020 10:09:26 AM Microsoft-Windows-Winlogon
+19169 5/9/2020 10:09:27 AM Microsoft-Windows-TPM-WMI
+19170 5/9/2020 10:11:22 AM DCOM
+19171 5/9/2020 10:11:22 AM DCOM
+19172 5/9/2020 10:11:22 AM DCOM
+19173 5/9/2020 10:11:25 AM Microsoft-Windows-FilterManager
+19174 5/9/2020 10:15:16 AM Service Control Manager
+19175 5/9/2020 10:17:21 AM Service Control Manager
+19176 5/9/2020 10:19:17 AM Microsoft-Windows-Kernel-General
+```
+
+## Pipelining
+
+- Import/Export
+```
+man export*
+man import*
+```
+```
+Export-Clixml                     Cmdlet
+Export-Csv                        Cmdlet
+Export-FormatData                 Cmdlet
+Export-PSSession                  Cmdlet
+Export-BinaryMiLog                Cmdlet
+Export-WindowsDriver              Cmdlet
+Export-WindowsCapabilitySource    Cmdlet
+Export-WindowsImage               Cmdlet
+Export-Counter                    Cmdlet
+Export-ODataEndpointProxy         Function
+Export-Certificate                Cmdlet
+Export-PfxCertificate             Cmdlet
+Export-ProvisioningPackage        Cmdlet
+Export-Trace                      Cmdlet
+Export-ScheduledTask              Function
+Export-StartLayoutEdgeAssets      Cmdlet
+Export-StartLayout                Cmdlet
+Export-TlsSessionTicketKey        Cmdlet
+
+ImportSystemModules               Function
+Import-PowerShellDataFile         Function
+Import-Module                     Cmdlet
+Import-Alias                      Cmdlet
+Import-Clixml                     Cmdlet
+Import-Csv                        Cmdlet
+Import-LocalizedData              Cmdlet
+Import-PSSession                  Cmdlet
+Import-PackageProvider            Cmdlet
+Import-BinaryMiLog                Cmdlet
+Import-IseSnippet                 Function
+Import-Counter                    Cmdlet
+Import-PfxCertificate             Cmdlet
+Import-Certificate                Cmdlet
+Import-StartLayout                Cmdlet
+Import-TpmOwnerAuth               Cmdlet
+```
+
+- Import/Export CSV, XML
+```
+gps | export-csv process.csv
+gps | export-clixml process.xml
+```
+
+- Convert to HTML
+```
+gps | convertto-html | out-file TEST.html
+ls  | convertto-html | out-file -append TEST.html
+```
+
+    <center><b>TODO</b></center>
+
+    - [ ] Select/Sort & save necessary columns to `TEST.html`
+    - [ ] Using CSS, beautiful `TEST.html`
+
+- Compare two structured files (XML) <br>
+```
+# List different processes running in two PCs (reference, difference).
+diff -reference (import-clixml reference.xml) -difference (gps) -property Name
+
+name         SideIndicator
+----         -------------
+calc            =>
+mspaint         =>
+notepad         <=
+```
+
+- Output <br>
+```
+out-file     -> O/P to file.
+out-gridview -> O/P to table in new GUI window. (*)
+out-printer  -> O/P to printer (SaveAs PDF).
+```
+Instead of piping `>` output to a file, use `out-file`. <br>
+`out-file` lets you specify: <br>
+```
+-append   -> append, not replace contents
+-encoding -> file encoding (ascii, unicode, utf8, oem, string)
+-width    -> set column width (default = 80 characters/line)
+```
+```
+# Append outputs instead of replacing.
+ls | out-file -append -width 100 TEST.txt
+```
+
+## Pipeline Parameter-Binding
+
+```
+PS> cmdA | cmdB
+```
+What goes through the `|`?
+
+- Display processes/services from a list of computers connected to your PC.
+```
+# computers.csv
+hostname,operatingsystem
+Feynman,windows
+...
+```
+```
+# Processes
+gps -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | out-gridview
+
+# Services
+gsv -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | select Name,Status | sort Name | out-gridview
+```
+
+## Formatting
+
+- Format-Table, Format-List, Format-Wide, Format-Custom
+
+- Customized Formatting
+
+- Display process names, IDs, responding (to Windows or not) in a table
+```
+gps | format-table Name,ID,Responding -autosize -wrap
+```
+- Display process names, IDs, virtual/physical memory usage (in MB) in a table
+```
+gps |
+    format-table Name,ID,
+    @{name='Virtual(MB)';expression={$_.vm/1MB};formatstring='F2'},
+    @{name='Physical(MB)';expression={$_.workingset/1MB};formatstring='F2'} -autosize
+```
+- Display available event-logs - their names and retention periods in a table
+```
+get-eventlog -list |
+    format-table @{name='Name';expression={$_.LogDisplayName}},
+                 @{name='Retention(days)';expression={$_.MininumRetentionDays}}
+```
+- Display service grouped-by their status (start/stop) <br>
+[[OUTPUT]](services.pdf)
+```
+gsv | sort status -desc | format-table -groupby status
+```
+- Display a list of all binaries (.exe) in `C:\Windows` with their name, versionInfo & fileSize <br>
+[[OUTPUT]](binaries.pdf)
+```
+ls C:\Windows\*.exe | format-list Name,VersionInfo,@{Name='Size';Expression={$_.length}}
+```
 
 
 

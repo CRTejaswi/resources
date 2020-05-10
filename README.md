@@ -4,11 +4,6 @@
 # Resources
 > Personally curated resources for quick reference.
 
-## Command Set
-> Contains various command-set listing.
-
-- [AT Commands](CommandSet/AT-Commands.pdf)
-
 ## Language(s)
 > Contains language specific notes/recipies.
 
@@ -16,6 +11,12 @@
 - [Python3](Language(s)/Python3/README.md)
 - [Haskell](Language(s)/Haskell/README.md)
 - [JavaScript](Language(s)/JS/README.md)
+
+## Command Set
+> Contains various command-set listing.
+
+- [AT Commands](CommandSet/AT-Commands.pdf)
+
 
 ## Unsorted
 > Contains miscellaneous unsorted notes/recipies.

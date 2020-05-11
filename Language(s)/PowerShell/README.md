@@ -89,9 +89,9 @@ Import these aliases using:
 import-csv aliases.csv | new-alias
 ```
 
-    <center><b>TODO</b></center>
+<center><b>TODO</b></center>
 
-    - [ ] Come up with useful aliases
+- [ ] Come up with useful aliases
 
 ## System Help
 
@@ -228,12 +228,13 @@ WS                         AliasProperty  WS = WorkingSet64
 
 - Objects: Sorting & Selecting <br>
 Use `Sort-Object` (`sort`) & `Select-Object`(`select`).
-```
-# Sort processes based on ID & VM-usage (descending). Display only ID, Name, VM, PM.
-gps | select ID,Name,VM,PM | sort VM,ID -desc
-# Save above table as HTML.
-gps | select ID,Name,VM,PM | sort VM,ID -desc | convertto-html | out-file TEST.html
-```
+
+    ```
+    # Sort processes based on ID & VM-usage (descending). Display only ID, Name, VM, PM.
+    gps | select ID,Name,VM,PM | sort VM,ID -desc
+    # Save above table as HTML.
+    gps | select ID,Name,VM,PM | sort VM,ID -desc | convertto-html | out-file TEST.html
+    ```
 
 - Objects: Selecting (`Sort-Object` v `Where-Object`) <br>
 `Sort-Object` lets you select/filter objects based on properties. <br>
@@ -366,10 +367,10 @@ gps | convertto-html | out-file TEST.html
 ls  | convertto-html | out-file -append TEST.html
 ```
 
-    <center><b>TODO</b></center>
+<center><b>TODO</b></center>
 
-    - [ ] Select/Sort & save necessary columns to `TEST.html`
-    - [ ] Using CSS, beautiful `TEST.html`
+- [ ] Select/Sort & save necessary columns to `TEST.html`
+- [ ] Using CSS, beautiful `TEST.html`
 
 - Compare two structured files (XML) <br>
 ```
@@ -409,19 +410,19 @@ PS> cmdA | cmdB
 What goes through the `|`?
 
 - Display processes/services from a list of computers connected to your PC.
-```
-# computers.csv
-hostname,operatingsystem
-Feynman,windows
-...
-```
-```
-# Processes
-gps -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | out-gridview
+    ```
+    # computers.csv
+    hostname,operatingsystem
+    Feynman,windows
+    ...
+    ```
+    ```
+    # Processes
+    gps -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | out-gridview
 
-# Services
-gsv -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | select Name,Status | sort Name | out-gridview
-```
+    # Services
+    gsv -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | select Name,Status | sort Name | out-gridview
+    ```
 
 ## Formatting
 
@@ -429,32 +430,80 @@ gsv -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname)
 
 - Customized Formatting
 
-- Display process names, IDs, responding (to Windows or not) in a table
-```
-gps | format-table Name,ID,Responding -autosize -wrap
-```
-- Display process names, IDs, virtual/physical memory usage (in MB) in a table
-```
-gps |
-    format-table Name,ID,
-    @{name='Virtual(MB)';expression={$_.vm/1MB};formatstring='F2'},
-    @{name='Physical(MB)';expression={$_.workingset/1MB};formatstring='F2'} -autosize
-```
-- Display available event-logs - their names and retention periods in a table
-```
-get-eventlog -list |
-    format-table @{name='Name';expression={$_.LogDisplayName}},
-                 @{name='Retention(days)';expression={$_.MininumRetentionDays}}
-```
-- Display service grouped-by their status (start/stop) <br>
+- [x] Display process names, IDs, responding (to Windows or not) in a table
+    ```
+    gps | format-table Name,ID,Responding -autosize -wrap
+    ```
+- [x] Display process names, IDs, virtual/physical memory usage (in MB) in a table
+    ```
+    gps |
+        format-table Name,ID,
+        @{name='Virtual(MB)';expression={$_.vm/1MB};formatstring='F2'},
+        @{name='Physical(MB)';expression={$_.workingset/1MB};formatstring='F2'} -autosize
+    ```
+- [x] Display available event-logs - their names and retention periods in a table
+    ```
+    get-eventlog -list |
+        format-table @{name='Name';expression={$_.LogDisplayName}},
+                     @{name='Retention(days)';expression={$_.MininumRetentionDays}}
+    ```
+- [x] Display service grouped-by their status (start/stop) <br>
 [[OUTPUT]](services.pdf)
-```
-gsv | sort status -desc | format-table -groupby status
-```
-- Display a list of all binaries (.exe) in `C:\Windows` with their name, versionInfo & fileSize <br>
+    ```
+    gsv | sort status -desc | format-table -groupby status
+    ```
+- [x] Display a list of all binaries (.exe) in `C:\Windows` with their name, versionInfo & fileSize <br>
 [[OUTPUT]](binaries.pdf)
+    ```
+    ls C:\Windows\*.exe | format-list Name,VersionInfo,@{Name='Size';Expression={$_.length}}
+    ```
+
+## Filtering & Comparisons
+
+__The Approach__ <br>
+
+- A. Specify what you need. <br>
+- B. Filter out what you need from what PS gives you. <br>
+
+eg. To get a specific service, you can specify it with `get-service`. <br>
 ```
-ls C:\Windows\*.exe | format-list Name,VersionInfo,@{Name='Size';Expression={$_.length}}
+gsv -name e*,*seo*
+```
+But if you want a list of ONLY running services, you have to filter. <br>
+```
+gsv -name e*,*seo* | where {$_.status -eq 'running'}
+```
+
+__The Operators__ <br>
+Refer `about_comparison_operators`. <br>
+
+<center>
+
+| Name | Description | Note |
+| :-- | :--: | :--: |
+| `-eq`,`-ceq` | equal to | `c` implies case-sensitive |
+| `-ne`,`-cne` | not equal to | . |
+| `-ge`,`-cge`,`-le`,`-cle` | greater/lesser than OR equal to | . |
+| `-gt`,`-cgt`,`-lt`,`-clt` | greater/lesser than | . |
+| `-and`,`-or`,`-not` | and, or, not | . |
+| `-like`,`-clike` | checks matching strings | `c` implies case-sensitive |
+| `-match`,`-cmatch` | matches RegEx | . |
+
+</center>
+
+- [x] Display all binaries (EXE) in `C:\Windows\System32` larger than 5MB.
+```
+ls C:\Windows\System32\*.exe | where {$_.length -gt 5MB}
+```
+
+- [x] Get all hotfixes that are security updates.
+```
+get-hotfix -Description 'Security Update'
+```
+
+- [x] Display a list of all running processes with the name `Conhost` or `Svchost`.
+```
+gps -name svchost,conhost | format-table -groupby name
 ```
 
 

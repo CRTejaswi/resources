@@ -2,14 +2,13 @@
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
 
-# [PowerShell](file:///B:/CRTejaswi/Documents/CONFIG.html#powershell-ps)
+# PowerShell
 > Personal notes.
 
 # Index
 
 - [ ] [General](#general)
 - [ ] [PowerShell/Python Interoperability](#powershell-python)
-- [ ] [PowerShell Linux Compatibility](#powershell-linux)
 - [ ] [Common Windows TODO](#windows-todo)
 
 # General
@@ -64,6 +63,9 @@ gps -> Get-Process
 gsv -> Get-Service
 gin -> Get-ComputerInfo
 gtz -> Get-TimeZone
+
+gwmi -> Get-WmiObject
+gjb  -> Get-Job
 
 cls -> Clear-Host ('clear shell')
 clc -> Clear-Content
@@ -466,13 +468,18 @@ __The Approach__ <br>
 - B. Filter out what you need from what PS gives you. <br>
 
 eg. To get a specific service, you can specify it with `get-service`. <br>
-```
-gsv -name e*,*seo*
-```
+    ```
+    gsv -name e*,*seo*
+    ```
 But if you want a list of ONLY running services, you have to filter. <br>
-```
-gsv -name e*,*seo* | where {$_.status -eq 'running'}
-```
+    ```
+    gsv -name e*,*seo* | where {$_.status -eq 'running'}
+    ```
+Don't rely on headers O/P by cmdlets like `get-service` to infer it's properties. <br>
+Always use `get-member` to lookup cmdlet property names.
+    ```
+    gsv | gm
+    ```
 
 __The Operators__ <br>
 Refer `about_comparison_operators`. <br>
@@ -491,25 +498,110 @@ Refer `about_comparison_operators`. <br>
 
 </center>
 
+- [x] Example (`-not`): Both these commands check if the process isn't responding.
+    ```
+    $_.responding -eq $False
+    -not $_.responding
+    ```
+
 - [x] Display all binaries (EXE) in `C:\Windows\System32` larger than 5MB.
-```
-ls C:\Windows\System32\*.exe | where {$_.length -gt 5MB}
-```
+    ```
+    ls C:\Windows\System32\*.exe | where {$_.length -gt 5MB}
+    ```
 
 - [x] Get all hotfixes that are security updates.
-```
-get-hotfix -Description 'Security Update'
-```
+    ```
+    get-hotfix -Description 'Security Update'
+    ```
 
 - [x] Display a list of all running processes with the name `Conhost` or `Svchost`.
-```
-gps -name svchost,conhost | format-table -groupby name
-```
+    ```
+    gps -name svchost,conhost | format-table -groupby name
+    ```
+
+## Remote Access
+- Windows Remote Management (WinRM)
+- Windows Management Instrumentation (WMI) [OLD] & the Common Information Model (CIM) [NEW] <br>
+    `Get-WmiObject`,`Invoke-WmiMethod`,`GetCimInstance`,`Invoke-CimMethod` <br>
+    WMI commands work over RPCs. CIM commands work over WS-MAN (WinRM). <br>
+    CIM instructions need WinRM to be enabled on every PC. So, prefer the old WMI instructions. <br>
+
+- [x] Display all HDD partitions with total/free memory.
+    ```
+    gwmi win32_logicaldisk |
+        format-table deviceid,
+        @{name='Total Memory (GB)';e={$_.size/1GB};formatstring='F2'},
+        @{name='Free Memory (GB)';e={$_.freespace/1GB};formatstring='F2'}
+    ```
+- [x] Display list of services sorted by mode (auto, manual)
+    ```
+    gwmi -class win32_service -Filter "state = 'running'" | sort startmode,name
+    ```
+
+## Multi-Tasking using Background Processes (aka `job`)
+PS calls _'background process'_, a `job`. <br>
+
+- Create a local background process (`job`) <br>
+    Use [1] for on-spot instructions. Use [2] if instructions are retrieved from a file.
+    ```
+    start-job -scriptblock {...}
+    start-job -filepath ...
+    ```
+    Although this can also work for remote execution, prefer WMI cmdlets.
+    ```
+    start-job -scriptblock {get-eventlog security -computerName server1,server2}
+    ```
+
+- Create a remote background process (`job`) <br>
+    By default, WMI cmdlets, even if they're running on multiple PCs, do so synchronously. <br>
+    This means, if PC1 has a long list of commands to execute, it will take forever to execute commands on PC2. <br>
+    To do this asynchronously using background process (`job`), attach the `-asJob` parameter to the cmdlet.
+    ```
+    gwmi Win32_OperatingSystem -computerName (cat allservers.txt) -asJob
+    ```
+
+- Managing background processes (`job`) <br>
+
+    ```
+    Get-Job     -> Retrieve status of all jobs.
+    Receive-Job -> Retrieve results of all jobs.
+    Remove-Job  -> Deletes job alongwith all cached memory.
+    Stop-Job    -> Terminates a blocked job.
+    Wait-Job    -> Forces Shell to wait until a job is finished executing.
+    ```
+    Retrieving results of a job removes it from memory. To avoid this deletion, use `-keep` parameter.
+    ```
+    receive-job -id 1 -keep
+    ```
+
+- Scheduling background processes (`job`) <br>
+    Start by creating a trigger using `New-JobTrigger`. <br>
+    Set additional options using `New-ScheduledTaskOption`. <br>
+    Register the job with the Task Scheduler using `Register-ScheduledJob`. <br>
+    The last step defines the job in 'Task Scheduler' by writing to an XML file. <br>
+    For me, this is located at `C:\Users\Chaitanya Tejaswi\AppData\Local\Microsoft\Windows\PowerShell\ScheduledJobs`. <br>
+
+- [x] Play an audio daily at 7:30PM
+    ```
+    register-scheduledjob -name myDailyJobs -scriptblock {vlc "B:\CRTejaswi\Music\Anna McLuckie - Little Man On The Moon.mp3"} -trigger (new-jobtrigger -daily -at '19:30')
+    ```
+    While this isn't neccesary for this particular example, use this template to run with elevated privileges.
+    ```
+    register-scheduledjob
+      -name myDailyJobs
+      -scriptblock {vlc "B:\CRTejaswi\Music\Anna McLuckie - Little Man On The Moon.mp3"} -trigger (new-jobtrigger -daily -at '19:30')
+      -scheduledjoboption (new-scheduledjoboption -waketorun -runelevated)
+    ```
+    Scheduled tasks are non-volatile, meaning they don't get erased when you close the Shell. This is because it is stored in XML files on disk (`C:\Users\Chaitanya Tejaswi\AppData\Local\Microsoft\Windows\PowerShell\ScheduledJobs`).
+
+## Working with Multiple Objects
 
 
 
-# PowerShell & Python
-# PowerShell & Linux
+## Parsing Text Files (RegEx) - 24
+
+
+# PowerShell Python
 # Windows Todo
 
 - Rename User.

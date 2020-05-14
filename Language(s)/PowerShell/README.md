@@ -14,82 +14,82 @@
 # General
 
 - Update (from PS)
-```
-iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
-```
+    ```
+    iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+    ```
 
 - Clear Command History <br> Press `Ctrl + F7`
 
 - Uninstall built-in apps
-```
-Get-AppxPackage *3dbuilder* | Remove-AppxPackage
-Get-AppxPackage *getstarted* | Remove-AppxPackage
-Get-AppxPackage *windowsalarms* | Remove-AppxPackage
-Get-AppxPackage *windowscalculator* | Remove-AppxPackage
-Get-AppxPackage *windowscommunicationapps* | Remove-AppxPackage
-Get-AppxPackage *windowsmaps* | Remove-AppxPackage
-Get-AppxPackage *windowsphone* | Remove-AppxPackage
-Get-AppxPackage *windowsstore* | Remove-AppxPackage
-Get-AppxPackage *zunemusic* | Remove-AppxPackage
-Get-AppxPackage *zunevideo* | Remove-AppxPackage
-Get-AppxPackage *bingfinance* | Remove-AppxPackage
-Get-AppxPackage *bingnews* | Remove-AppxPackage
-Get-AppxPackage *bingweather* | Remove-AppxPackage
-Get-AppxPackage *bingsports* | Remove-AppxPackage
-Get-AppxPackage *photos* | Remove-AppxPackage
-Get-AppxPackage *soundrecorder* | Remove-AppxPackage
-Get-AppxPackage *xboxapp* | Remove-AppxPackage
-```
+    ```
+    Get-AppxPackage *3dbuilder* | Remove-AppxPackage
+    Get-AppxPackage *getstarted* | Remove-AppxPackage
+    Get-AppxPackage *windowsalarms* | Remove-AppxPackage
+    Get-AppxPackage *windowscalculator* | Remove-AppxPackage
+    Get-AppxPackage *windowscommunicationapps* | Remove-AppxPackage
+    Get-AppxPackage *windowsmaps* | Remove-AppxPackage
+    Get-AppxPackage *windowsphone* | Remove-AppxPackage
+    Get-AppxPackage *windowsstore* | Remove-AppxPackage
+    Get-AppxPackage *zunemusic* | Remove-AppxPackage
+    Get-AppxPackage *zunevideo* | Remove-AppxPackage
+    Get-AppxPackage *bingfinance* | Remove-AppxPackage
+    Get-AppxPackage *bingnews* | Remove-AppxPackage
+    Get-AppxPackage *bingweather* | Remove-AppxPackage
+    Get-AppxPackage *bingsports* | Remove-AppxPackage
+    Get-AppxPackage *photos* | Remove-AppxPackage
+    Get-AppxPackage *soundrecorder* | Remove-AppxPackage
+    Get-AppxPackage *xboxapp* | Remove-AppxPackage
+    ```
 
 - Create New File/Folder
-```
-ni -path 'C:\Users\CRTejaswi\Desktop' -ItemType 'directory' -name 'myTEST'
-ni -path 'C:\Users\CRTejaswi\Desktop\myTEST' -ItemType 'file' -name 'myTEST.md'
-```
+    ```
+    ni -path 'C:\Users\CRTejaswi\Desktop' -ItemType 'directory' -name 'myTEST'
+    ni -path 'C:\Users\CRTejaswi\Desktop\myTEST' -ItemType 'file' -name 'myTEST.md'
+    ```
 
 - Get storage directory of binary file.
-```
-gps firefox | ls
-```
+    ```
+    gps firefox | ls
+    ```
 
 - Common Aliases
-```
-man -> Get-Help    (to lookup command syntax)
-gcm -> Get-Command (to lookup command syntax)
-gm  -> Get-Member  (to learn more about an object)
-gal -> Get-Alias
-gcb -> Get-Clipboard
-gps -> Get-Process
-gsv -> Get-Service
-gin -> Get-ComputerInfo
-gtz -> Get-TimeZone
+    ```
+    man -> Get-Help    (to lookup command syntax)
+    gcm -> Get-Command (to lookup command syntax)
+    gm  -> Get-Member  (to learn more about an object)
+    gal -> Get-Alias
+    gcb -> Get-Clipboard
+    gps -> Get-Process
+    gsv -> Get-Service
+    gin -> Get-ComputerInfo
+    gtz -> Get-TimeZone
 
-gwmi -> Get-WmiObject
-gjb  -> Get-Job
+    gwmi -> Get-WmiObject
+    gjb  -> Get-Job
 
-cls -> Clear-Host ('clear shell')
-clc -> Clear-Content
-clv -> Clear-Variable
-cli -> Clear-Item
-clp -> Clear-ItemProperty
+    cls -> Clear-Host ('clear shell')
+    clc -> Clear-Content
+    clv -> Clear-Variable
+    cli -> Clear-Item
+    clp -> Clear-ItemProperty
 
-pushd, popd -> Push-Location, Pop-Location
-copy, move  -> Copy-Item, Move-Item
-history     -> Get-History
-```
+    pushd, popd -> Push-Location, Pop-Location
+    copy, move  -> Copy-Item, Move-Item
+    history     -> Get-History
+    ```
 
 - Create new aliases <br>
-Create `aliases.csv`
-```
-Name,Value
-gotodir,Get-ChildItem
-sel,Select-Object
-clip,Get-Clipboard
-```
-Import these aliases using:
-```
-import-csv aliases.csv | new-alias
-```
+    Create `aliases.csv`
+    ```
+    Name,Value
+    gotodir,Get-ChildItem
+    sel,Select-Object
+    clip,Get-Clipboard
+    ```
+    Import these aliases using:
+    ```
+    import-csv aliases.csv | new-alias
+    ```
 
 <center><b>TODO</b></center>
 
@@ -98,139 +98,138 @@ import-csv aliases.csv | new-alias
 ## System Help
 
 - Update help.
-```
-update-help -Force
-```
+    ```
+    update-help -Force
+    ```
 - Get help.
-```
-man *service*
-man get-service
-man get-service -detailed
-man get-service -showwindow
-man get-service -examples
-man get-service -full
-man get-service -online
-man *eventlog*
-man about_*
-```
+    ```
+    man *service*
+    man get-service
+    man get-service -detailed
+    man get-service -showwindow
+    man get-service -examples
+    man get-service -full
+    man get-service -online
+    man *eventlog*
+    man about_*
+    ```
 - Nouns & Verbs <br>
-PS names cmdlets/functions in a `Verb-Noun` manner, to make their names predictable. (eg. `Get-Service`) <br>
-To lookup all PERMITTED verbs (98), use:
-```
-get-verb
-get-verb | measure
-```
+    PS names cmdlets/functions in a `Verb-Noun` manner, to make their names predictable. (eg. `Get-Service`) <br>
+    To lookup all PERMITTED verbs (98), use:
+    ```
+    get-verb
+    get-verb | measure
+    ```
 
 ## Objects
 
 Unlike UNIX, PS outputs objects (instead of text). This makes it easy to sort them.
 This instruction gets all the members (properties/methods) of `get-process` cmdlet, sorted by name.
-```
-get-process | get-member | sort Name
-gps | gm | sort Name
-```
-```
-   TypeName: System.Diagnostics.Process
+    ```
+    get-process | get-member | sort Name
+    gps | gm | sort Name
+    ```
+    ```
+       TypeName: System.Diagnostics.Process
 
-Name                       MemberType     Definition
-----                       ----------     ----------
-__NounName                 NoteProperty   string __NounName=Process
-BasePriority               Property       int BasePriority {get;}
-BeginErrorReadLine         Method         void BeginErrorReadLine()
-BeginOutputReadLine        Method         void BeginOutputReadLine()
-CancelErrorRead            Method         void CancelErrorRead()
-CancelOutputRead           Method         void CancelOutputRead()
-Close                      Method         void Close()
-CloseMainWindow            Method         bool CloseMainWindow()
-Company                    ScriptProperty System.Object Company {get=$this.Mainmodule.FileVersionInfo.CompanyName;}
-Container                  Property       System.ComponentModel.IContainer Container {get;}
-CPU                        ScriptProperty System.Object CPU {get=$this.TotalProcessorTime.TotalSeconds;}
-CreateObjRef               Method         System.Runtime.Remoting.ObjRef CreateObjRef(type requestedType)
-Description                ScriptProperty System.Object Description {get=$this.Mainmodule.FileVersionInfo.FileDescription;}
-Dispose                    Method         void Dispose(), void IDisposable.Dispose()
-Disposed                   Event          System.EventHandler Disposed(System.Object, System.EventArgs)
-EnableRaisingEvents        Property       bool EnableRaisingEvents {get;set;}
-Equals                     Method         bool Equals(System.Object obj)
-ErrorDataReceived          Event          System.Diagnostics.DataReceivedEventHandler ErrorDataReceived(System.Object, System.Diagnostics.DataReceivedEventArgs)
-ExitCode                   Property       int ExitCode {get;}
-Exited                     Event          System.EventHandler Exited(System.Object, System.EventArgs)
-ExitTime                   Property       datetime ExitTime {get;}
-FileVersion                ScriptProperty System.Object FileVersion {get=$this.Mainmodule.FileVersionInfo.FileVersion;}
-GetHashCode                Method         int GetHashCode()
-GetLifetimeService         Method         System.Object GetLifetimeService()
-GetType                    Method         type GetType()
-Handle                     Property       System.IntPtr Handle {get;}
-HandleCount                Property       int HandleCount {get;}
-Handles                    AliasProperty  Handles = Handlecount
-HasExited                  Property       bool HasExited {get;}
-Id                         Property       int Id {get;}
-InitializeLifetimeService  Method         System.Object InitializeLifetimeService()
-Kill                       Method         void Kill()
-MachineName                Property       string MachineName {get;}
-MainModule                 Property       System.Diagnostics.ProcessModule MainModule {get;}
-MainWindowHandle           Property       System.IntPtr MainWindowHandle {get;}
-MainWindowTitle            Property       string MainWindowTitle {get;}
-MaxWorkingSet              Property       System.IntPtr MaxWorkingSet {get;set;}
-MinWorkingSet              Property       System.IntPtr MinWorkingSet {get;set;}
-Modules                    Property       System.Diagnostics.ProcessModuleCollection Modules {get;}
-Name                       AliasProperty  Name = ProcessName
-NonpagedSystemMemorySize   Property       int NonpagedSystemMemorySize {get;}
-NonpagedSystemMemorySize64 Property       long NonpagedSystemMemorySize64 {get;}
-NPM                        AliasProperty  NPM = NonpagedSystemMemorySize64
-OutputDataReceived         Event          System.Diagnostics.DataReceivedEventHandler OutputDataReceived(System.Object, System.Diagnostics.DataReceivedEventArgs)
-PagedMemorySize            Property       int PagedMemorySize {get;}
-PagedMemorySize64          Property       long PagedMemorySize64 {get;}
-PagedSystemMemorySize      Property       int PagedSystemMemorySize {get;}
-PagedSystemMemorySize64    Property       long PagedSystemMemorySize64 {get;}
-Path                       ScriptProperty System.Object Path {get=$this.Mainmodule.FileName;}
-PeakPagedMemorySize        Property       int PeakPagedMemorySize {get;}
-PeakPagedMemorySize64      Property       long PeakPagedMemorySize64 {get;}
-PeakVirtualMemorySize      Property       int PeakVirtualMemorySize {get;}
-PeakVirtualMemorySize64    Property       long PeakVirtualMemorySize64 {get;}
-PeakWorkingSet             Property       int PeakWorkingSet {get;}
-PeakWorkingSet64           Property       long PeakWorkingSet64 {get;}
-PM                         AliasProperty  PM = PagedMemorySize64
-PriorityBoostEnabled       Property       bool PriorityBoostEnabled {get;set;}
-PriorityClass              Property       System.Diagnostics.ProcessPriorityClass PriorityClass {get;set;}
-PrivateMemorySize          Property       int PrivateMemorySize {get;}
-PrivateMemorySize64        Property       long PrivateMemorySize64 {get;}
-PrivilegedProcessorTime    Property       timespan PrivilegedProcessorTime {get;}
-ProcessName                Property       string ProcessName {get;}
-ProcessorAffinity          Property       System.IntPtr ProcessorAffinity {get;set;}
-Product                    ScriptProperty System.Object Product {get=$this.Mainmodule.FileVersionInfo.ProductName;}
-ProductVersion             ScriptProperty System.Object ProductVersion {get=$this.Mainmodule.FileVersionInfo.ProductVersion;}
-PSConfiguration            PropertySet    PSConfiguration {Name, Id, PriorityClass, FileVersion}
-PSResources                PropertySet    PSResources {Name, Id, Handlecount, WorkingSet, NonPagedMemorySize, PagedMemorySize, PrivateMemorySize, VirtualMemorySize, Threads.Count, TotalProcessorTime}
-Refresh                    Method         void Refresh()
-Responding                 Property       bool Responding {get;}
-SafeHandle                 Property       Microsoft.Win32.SafeHandles.SafeProcessHandle SafeHandle {get;}
-SessionId                  Property       int SessionId {get;}
-SI                         AliasProperty  SI = SessionId
-Site                       Property       System.ComponentModel.ISite Site {get;set;}
-StandardError              Property       System.IO.StreamReader StandardError {get;}
-StandardInput              Property       System.IO.StreamWriter StandardInput {get;}
-StandardOutput             Property       System.IO.StreamReader StandardOutput {get;}
-Start                      Method         bool Start()
-StartInfo                  Property       System.Diagnostics.ProcessStartInfo StartInfo {get;set;}
-StartTime                  Property       datetime StartTime {get;}
-SynchronizingObject        Property       System.ComponentModel.ISynchronizeInvoke SynchronizingObject {get;set;}
-Threads                    Property       System.Diagnostics.ProcessThreadCollection Threads {get;}
-ToString                   Method         string ToString()
-TotalProcessorTime         Property       timespan TotalProcessorTime {get;}
-UserProcessorTime          Property       timespan UserProcessorTime {get;}
-VirtualMemorySize          Property       int VirtualMemorySize {get;}
-VirtualMemorySize64        Property       long VirtualMemorySize64 {get;}
-VM                         AliasProperty  VM = VirtualMemorySize64
-WaitForExit                Method         bool WaitForExit(int milliseconds), void WaitForExit()
-WaitForInputIdle           Method         bool WaitForInputIdle(int milliseconds), bool WaitForInputIdle()
-WorkingSet                 Property       int WorkingSet {get;}
-WorkingSet64               Property       long WorkingSet64 {get;}
-WS                         AliasProperty  WS = WorkingSet64
-```
+    Name                       MemberType     Definition
+    ----                       ----------     ----------
+    __NounName                 NoteProperty   string __NounName=Process
+    BasePriority               Property       int BasePriority {get;}
+    BeginErrorReadLine         Method         void BeginErrorReadLine()
+    BeginOutputReadLine        Method         void BeginOutputReadLine()
+    CancelErrorRead            Method         void CancelErrorRead()
+    CancelOutputRead           Method         void CancelOutputRead()
+    Close                      Method         void Close()
+    CloseMainWindow            Method         bool CloseMainWindow()
+    Company                    ScriptProperty System.Object Company {get=$this.Mainmodule.FileVersionInfo.CompanyName;}
+    Container                  Property       System.ComponentModel.IContainer Container {get;}
+    CPU                        ScriptProperty System.Object CPU {get=$this.TotalProcessorTime.TotalSeconds;}
+    CreateObjRef               Method         System.Runtime.Remoting.ObjRef CreateObjRef(type requestedType)
+    Description                ScriptProperty System.Object Description {get=$this.Mainmodule.FileVersionInfo.FileDescription;}
+    Dispose                    Method         void Dispose(), void IDisposable.Dispose()
+    Disposed                   Event          System.EventHandler Disposed(System.Object, System.EventArgs)
+    EnableRaisingEvents        Property       bool EnableRaisingEvents {get;set;}
+    Equals                     Method         bool Equals(System.Object obj)
+    ErrorDataReceived          Event          System.Diagnostics.DataReceivedEventHandler ErrorDataReceived(System.Object, System.Diagnostics.DataReceivedEventArgs)
+    ExitCode                   Property       int ExitCode {get;}
+    Exited                     Event          System.EventHandler Exited(System.Object, System.EventArgs)
+    ExitTime                   Property       datetime ExitTime {get;}
+    FileVersion                ScriptProperty System.Object FileVersion {get=$this.Mainmodule.FileVersionInfo.FileVersion;}
+    GetHashCode                Method         int GetHashCode()
+    GetLifetimeService         Method         System.Object GetLifetimeService()
+    GetType                    Method         type GetType()
+    Handle                     Property       System.IntPtr Handle {get;}
+    HandleCount                Property       int HandleCount {get;}
+    Handles                    AliasProperty  Handles = Handlecount
+    HasExited                  Property       bool HasExited {get;}
+    Id                         Property       int Id {get;}
+    InitializeLifetimeService  Method         System.Object InitializeLifetimeService()
+    Kill                       Method         void Kill()
+    MachineName                Property       string MachineName {get;}
+    MainModule                 Property       System.Diagnostics.ProcessModule MainModule {get;}
+    MainWindowHandle           Property       System.IntPtr MainWindowHandle {get;}
+    MainWindowTitle            Property       string MainWindowTitle {get;}
+    MaxWorkingSet              Property       System.IntPtr MaxWorkingSet {get;set;}
+    MinWorkingSet              Property       System.IntPtr MinWorkingSet {get;set;}
+    Modules                    Property       System.Diagnostics.ProcessModuleCollection Modules {get;}
+    Name                       AliasProperty  Name = ProcessName
+    NonpagedSystemMemorySize   Property       int NonpagedSystemMemorySize {get;}
+    NonpagedSystemMemorySize64 Property       long NonpagedSystemMemorySize64 {get;}
+    NPM                        AliasProperty  NPM = NonpagedSystemMemorySize64
+    OutputDataReceived         Event          System.Diagnostics.DataReceivedEventHandler OutputDataReceived(System.Object, System.Diagnostics.DataReceivedEventArgs)
+    PagedMemorySize            Property       int PagedMemorySize {get;}
+    PagedMemorySize64          Property       long PagedMemorySize64 {get;}
+    PagedSystemMemorySize      Property       int PagedSystemMemorySize {get;}
+    PagedSystemMemorySize64    Property       long PagedSystemMemorySize64 {get;}
+    Path                       ScriptProperty System.Object Path {get=$this.Mainmodule.FileName;}
+    PeakPagedMemorySize        Property       int PeakPagedMemorySize {get;}
+    PeakPagedMemorySize64      Property       long PeakPagedMemorySize64 {get;}
+    PeakVirtualMemorySize      Property       int PeakVirtualMemorySize {get;}
+    PeakVirtualMemorySize64    Property       long PeakVirtualMemorySize64 {get;}
+    PeakWorkingSet             Property       int PeakWorkingSet {get;}
+    PeakWorkingSet64           Property       long PeakWorkingSet64 {get;}
+    PM                         AliasProperty  PM = PagedMemorySize64
+    PriorityBoostEnabled       Property       bool PriorityBoostEnabled {get;set;}
+    PriorityClass              Property       System.Diagnostics.ProcessPriorityClass PriorityClass {get;set;}
+    PrivateMemorySize          Property       int PrivateMemorySize {get;}
+    PrivateMemorySize64        Property       long PrivateMemorySize64 {get;}
+    PrivilegedProcessorTime    Property       timespan PrivilegedProcessorTime {get;}
+    ProcessName                Property       string ProcessName {get;}
+    ProcessorAffinity          Property       System.IntPtr ProcessorAffinity {get;set;}
+    Product                    ScriptProperty System.Object Product {get=$this.Mainmodule.FileVersionInfo.ProductName;}
+    ProductVersion             ScriptProperty System.Object ProductVersion {get=$this.Mainmodule.FileVersionInfo.ProductVersion;}
+    PSConfiguration            PropertySet    PSConfiguration {Name, Id, PriorityClass, FileVersion}
+    PSResources                PropertySet    PSResources {Name, Id, Handlecount, WorkingSet, NonPagedMemorySize, PagedMemorySize, PrivateMemorySize, VirtualMemorySize, Threads.Count, TotalProcessorTime}
+    Refresh                    Method         void Refresh()
+    Responding                 Property       bool Responding {get;}
+    SafeHandle                 Property       Microsoft.Win32.SafeHandles.SafeProcessHandle SafeHandle {get;}
+    SessionId                  Property       int SessionId {get;}
+    SI                         AliasProperty  SI = SessionId
+    Site                       Property       System.ComponentModel.ISite Site {get;set;}
+    StandardError              Property       System.IO.StreamReader StandardError {get;}
+    StandardInput              Property       System.IO.StreamWriter StandardInput {get;}
+    StandardOutput             Property       System.IO.StreamReader StandardOutput {get;}
+    Start                      Method         bool Start()
+    StartInfo                  Property       System.Diagnostics.ProcessStartInfo StartInfo {get;set;}
+    StartTime                  Property       datetime StartTime {get;}
+    SynchronizingObject        Property       System.ComponentModel.ISynchronizeInvoke SynchronizingObject {get;set;}
+    Threads                    Property       System.Diagnostics.ProcessThreadCollection Threads {get;}
+    ToString                   Method         string ToString()
+    TotalProcessorTime         Property       timespan TotalProcessorTime {get;}
+    UserProcessorTime          Property       timespan UserProcessorTime {get;}
+    VirtualMemorySize          Property       int VirtualMemorySize {get;}
+    VirtualMemorySize64        Property       long VirtualMemorySize64 {get;}
+    VM                         AliasProperty  VM = VirtualMemorySize64
+    WaitForExit                Method         bool WaitForExit(int milliseconds), void WaitForExit()
+    WaitForInputIdle           Method         bool WaitForInputIdle(int milliseconds), bool WaitForInputIdle()
+    WorkingSet                 Property       int WorkingSet {get;}
+    WorkingSet64               Property       long WorkingSet64 {get;}
+    WS                         AliasProperty  WS = WorkingSet64
+    ```
 
 - Objects: Sorting & Selecting <br>
-Use `Sort-Object` (`sort`) & `Select-Object`(`select`).
-
+    Use `Sort-Object` (`sort`) & `Select-Object`(`select`).
     ```
     # Sort processes based on ID & VM-usage (descending). Display only ID, Name, VM, PM.
     gps | select ID,Name,VM,PM | sort VM,ID -desc
@@ -239,9 +238,8 @@ Use `Sort-Object` (`sort`) & `Select-Object`(`select`).
     ```
 
 - Objects: Selecting (`Sort-Object` v `Where-Object`) <br>
-`Sort-Object` lets you select/filter objects based on properties. <br>
-`Where-Object` lets you select/filter objects based on a criteria. <br>
-
+    `Sort-Object` lets you select/filter objects based on properties. <br>
+    `Where-Object` lets you select/filter objects based on a criteria. <br>
     ```
     # List all processes with ID >= 1000, sorted in ascending order.
     gps | where {$_.Handles -ge 1000} | sort -Property Handles
@@ -280,94 +278,94 @@ Second : 3
 ```
 
 - [x] Display a list of installed hotfixes. Display installation date, installed by, and ID, sorted by installation date.
-```
-get-hotfix | select installedon,installedby,hotfixid | sort installedon
+    ```
+    get-hotfix | select installedon,installedby,hotfixid | sort installedon
 
-InstalledOn           installedby         hotfixid
------------           -----------         --------
-3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4538674
-3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4541338
-3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4537759
-3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4537572
-3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4517245
-4/22/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4549951
-4/22/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4552152
-```
+    InstalledOn           installedby         hotfixid
+    -----------           -----------         --------
+    3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4538674
+    3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4541338
+    3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4537759
+    3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4537572
+    3/13/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4517245
+    4/22/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4549951
+    4/22/2020 12:00:00 AM NT AUTHORITY\SYSTEM KB4552152
+    ```
 
 - [x] Display a list of 10 latest Security Event-logs. Display index, time, source for each file, with the oldest entries appearing first (and same-time entries sorted by index).
-```
-get-eventlog -logname system -newest 10 | select index,timegenerated,source | sort timegenerated,index | out-gridview
+    ```
+    get-eventlog -logname system -newest 10 | select index,timegenerated,source | sort timegenerated,index | out-gridview
 
-Index TimeGenerated        Source
------ -------------        ------
-19167 5/9/2020 10:09:26 AM Microsoft-Windows-TPM-WMI
-19168 5/9/2020 10:09:26 AM Microsoft-Windows-Winlogon
-19169 5/9/2020 10:09:27 AM Microsoft-Windows-TPM-WMI
-19170 5/9/2020 10:11:22 AM DCOM
-19171 5/9/2020 10:11:22 AM DCOM
-19172 5/9/2020 10:11:22 AM DCOM
-19173 5/9/2020 10:11:25 AM Microsoft-Windows-FilterManager
-19174 5/9/2020 10:15:16 AM Service Control Manager
-19175 5/9/2020 10:17:21 AM Service Control Manager
-19176 5/9/2020 10:19:17 AM Microsoft-Windows-Kernel-General
-```
+    Index TimeGenerated        Source
+    ----- -------------        ------
+    19167 5/9/2020 10:09:26 AM Microsoft-Windows-TPM-WMI
+    19168 5/9/2020 10:09:26 AM Microsoft-Windows-Winlogon
+    19169 5/9/2020 10:09:27 AM Microsoft-Windows-TPM-WMI
+    19170 5/9/2020 10:11:22 AM DCOM
+    19171 5/9/2020 10:11:22 AM DCOM
+    19172 5/9/2020 10:11:22 AM DCOM
+    19173 5/9/2020 10:11:25 AM Microsoft-Windows-FilterManager
+    19174 5/9/2020 10:15:16 AM Service Control Manager
+    19175 5/9/2020 10:17:21 AM Service Control Manager
+    19176 5/9/2020 10:19:17 AM Microsoft-Windows-Kernel-General
+    ```
 
 ## Pipelining
 
 - Import/Export
-```
-man export*
-man import*
-```
-```
-Export-Clixml                     Cmdlet
-Export-Csv                        Cmdlet
-Export-FormatData                 Cmdlet
-Export-PSSession                  Cmdlet
-Export-BinaryMiLog                Cmdlet
-Export-WindowsDriver              Cmdlet
-Export-WindowsCapabilitySource    Cmdlet
-Export-WindowsImage               Cmdlet
-Export-Counter                    Cmdlet
-Export-ODataEndpointProxy         Function
-Export-Certificate                Cmdlet
-Export-PfxCertificate             Cmdlet
-Export-ProvisioningPackage        Cmdlet
-Export-Trace                      Cmdlet
-Export-ScheduledTask              Function
-Export-StartLayoutEdgeAssets      Cmdlet
-Export-StartLayout                Cmdlet
-Export-TlsSessionTicketKey        Cmdlet
+    ```
+    man export*
+    man import*
+    ```
+    ```
+    Export-Clixml                     Cmdlet
+    Export-Csv                        Cmdlet
+    Export-FormatData                 Cmdlet
+    Export-PSSession                  Cmdlet
+    Export-BinaryMiLog                Cmdlet
+    Export-WindowsDriver              Cmdlet
+    Export-WindowsCapabilitySource    Cmdlet
+    Export-WindowsImage               Cmdlet
+    Export-Counter                    Cmdlet
+    Export-ODataEndpointProxy         Function
+    Export-Certificate                Cmdlet
+    Export-PfxCertificate             Cmdlet
+    Export-ProvisioningPackage        Cmdlet
+    Export-Trace                      Cmdlet
+    Export-ScheduledTask              Function
+    Export-StartLayoutEdgeAssets      Cmdlet
+    Export-StartLayout                Cmdlet
+    Export-TlsSessionTicketKey        Cmdlet
 
-ImportSystemModules               Function
-Import-PowerShellDataFile         Function
-Import-Module                     Cmdlet
-Import-Alias                      Cmdlet
-Import-Clixml                     Cmdlet
-Import-Csv                        Cmdlet
-Import-LocalizedData              Cmdlet
-Import-PSSession                  Cmdlet
-Import-PackageProvider            Cmdlet
-Import-BinaryMiLog                Cmdlet
-Import-IseSnippet                 Function
-Import-Counter                    Cmdlet
-Import-PfxCertificate             Cmdlet
-Import-Certificate                Cmdlet
-Import-StartLayout                Cmdlet
-Import-TpmOwnerAuth               Cmdlet
-```
+    ImportSystemModules               Function
+    Import-PowerShellDataFile         Function
+    Import-Module                     Cmdlet
+    Import-Alias                      Cmdlet
+    Import-Clixml                     Cmdlet
+    Import-Csv                        Cmdlet
+    Import-LocalizedData              Cmdlet
+    Import-PSSession                  Cmdlet
+    Import-PackageProvider            Cmdlet
+    Import-BinaryMiLog                Cmdlet
+    Import-IseSnippet                 Function
+    Import-Counter                    Cmdlet
+    Import-PfxCertificate             Cmdlet
+    Import-Certificate                Cmdlet
+    Import-StartLayout                Cmdlet
+    Import-TpmOwnerAuth               Cmdlet
+    ```
 
 - Import/Export CSV, XML
-```
-gps | export-csv process.csv
-gps | export-clixml process.xml
-```
+    ```
+    gps | export-csv process.csv
+    gps | export-clixml process.xml
+    ```
 
 - Convert to HTML
-```
-gps | convertto-html | out-file TEST.html
-ls  | convertto-html | out-file -append TEST.html
-```
+    ```
+    gps | convertto-html | out-file TEST.html
+    ls  | convertto-html | out-file -append TEST.html
+    ```
 
 <center><b>TODO</b></center>
 
@@ -375,34 +373,34 @@ ls  | convertto-html | out-file -append TEST.html
 - [ ] Using CSS, beautiful `TEST.html`
 
 - Compare two structured files (XML) <br>
-```
-# List different processes running in two PCs (reference, difference).
-diff -reference (import-clixml reference.xml) -difference (gps) -property Name
+    ```
+    # List different processes running in two PCs (reference, difference).
+    diff -reference (import-clixml reference.xml) -difference (gps) -property Name
 
-name         SideIndicator
-----         -------------
-calc            =>
-mspaint         =>
-notepad         <=
-```
+    name         SideIndicator
+    ----         -------------
+    calc            =>
+    mspaint         =>
+    notepad         <=
+    ```
 
 - Output <br>
-```
-out-file     -> O/P to file.
-out-gridview -> O/P to table in new GUI window. (*)
-out-printer  -> O/P to printer (SaveAs PDF).
-```
-Instead of piping `>` output to a file, use `out-file`. <br>
-`out-file` lets you specify: <br>
-```
--append   -> append, not replace contents
--encoding -> file encoding (ascii, unicode, utf8, oem, string)
--width    -> set column width (default = 80 characters/line)
-```
-```
-# Append outputs instead of replacing.
-ls | out-file -append -width 100 TEST.txt
-```
+    ```
+    out-file     -> O/P to file.
+    out-gridview -> O/P to table in new GUI window. (*)
+    out-printer  -> O/P to printer (SaveAs PDF).
+    ```
+    Instead of piping `>` output to a file, use `out-file`. <br>
+    `out-file` lets you specify: <br>
+    ```
+    -append   -> append, not replace contents
+    -encoding -> file encoding (ascii, unicode, utf8, oem, string)
+    -width    -> set column width (default = 80 characters/line)
+    ```
+    ```
+    # Append outputs instead of replacing.
+    ls | out-file -append -width 100 TEST.txt
+    ```
 
 ## Pipeline Parameter-Binding
 
@@ -467,16 +465,16 @@ __The Approach__ <br>
 - A. Specify what you need. <br>
 - B. Filter out what you need from what PS gives you. <br>
 
-eg. To get a specific service, you can specify it with `get-service`. <br>
+    eg. To get a specific service, you can specify it with `get-service`. <br>
     ```
     gsv -name e*,*seo*
     ```
-But if you want a list of ONLY running services, you have to filter. <br>
+    But if you want a list of ONLY running services, you have to filter. <br>
     ```
     gsv -name e*,*seo* | where {$_.status -eq 'running'}
     ```
-Don't rely on headers O/P by cmdlets like `get-service` to infer it's properties. <br>
-Always use `get-member` to lookup cmdlet property names.
+    Don't rely on headers O/P by cmdlets like `get-service` to infer it's properties. <br>
+    Always use `get-member` to lookup cmdlet property names. <br>
     ```
     gsv | gm
     ```
@@ -538,7 +536,7 @@ Refer `about_comparison_operators`. <br>
     gwmi -class win32_service -Filter "state = 'running'" | sort startmode,name
     ```
 
-## Multi-Tasking using Background Processes (aka `job`)
+## Background Processes (aka `job`)
 PS calls _'background process'_, a `job`. <br>
 
 - Create a local background process (`job`) <br>
@@ -594,11 +592,108 @@ PS calls _'background process'_, a `job`. <br>
     ```
     Scheduled tasks are non-volatile, meaning they don't get erased when you close the Shell. This is because it is stored in XML files on disk (`C:\Users\Chaitanya Tejaswi\AppData\Local\Microsoft\Windows\PowerShell\ScheduledJobs`).
 
-## Working with Multiple Objects
+## Batch Cmdlets/Processing
+
+## Variables
+
+- Single & Double Quotes (`'`,`"`) <br>
+    Anything within a single-quote is a literal string. <br>
+    Anything within a double-quote is a parsed string. <br>
+    ```
+    PS> $var='LOCALHOST'
+    PS> $var1='Try $var'
+    PS> $var2="Try $var"
+    PS> $var; $var1; $var2;
+    LOCALHOST
+    Try $var
+    Try LOCALHOST
+    ```
+    Using double-quotes, you can also assign cmdlet & the object with it's property/method that it generates.
+    ```
+    PS> $services=get-service
+    PS> $var="First Service Is $($services[0].name)"
+    First Service Is ABLookupSvc
+    ```
+- Escape Sequences <br>
+    Just as C-syntax uses `back-slash` (__\\__) to escape sequences, PS-syntax used `back-tick`(__\`__) <br>
+
+- Accessing Object Property/Method <br>
+    PS3+ allows using Object.Property/Object.Method syntax.
+    ```
+    PS> $services=Get-Service
+    PS> $services.name; $services.gettype()
+    ```
+    Here, `Name` & `GetType()` are property/method defined on objects returned by `Get-Service`.
+    Check using `gsv | gm`.
+
+- Declaring Variable Types
+    Use `[type]$var` notation.
+    ```
+    PS> [int]$var = Read-Host "Enter A Number"
+    Enter A Number: 100
+    PS> $var | gm
+        TypeName: System.Int32
+    ...
+    ```
+
+<center>
+
+| Type | Description |
+| :-- | :--: |
+| `[int]`,`[single]`,`[double]` | integer, single/double precision floating values |
+| `[char]`,`[string]` | character, string of characters |
+| `[xml]` | XML document |
+| `[adsi]` | ActiveDirectory Service Interface (ADSI) query |
+
+</center>
+
+## Regular Expressions
+
+Pattern matching is done using `-match`&`-cmatch` operators, and `select-string` cmdlet. <br>
 
 
+<center>
 
-## Parsing Text Files (RegEx) - 24
+| Expression | Meaning |
+|   :---:   |  :---:  |
+| `.` | Any character (except newline) |
+| `\d`, `\D` | Digit (0-9), !Digit |
+| `\w`, `\W`| Word (a-z, A-Z, 0-9, _), !Word|
+| `\s`, `\S` | Whitespace (space, tab, newline), !Whitespace |
+| `\b`, `\B` | WordBoundary, !WordBoundary |
+| `^`, `$` | Beginning/End of String |
+| `[]`,`[^]`,`()`,`{}` | CharacterSet, !CharacterSet, WordGroup, #Values |
+
+__Quantifiers__
+
+| Expression | Meaning |
+|   :---:   |  :---:  |
+| `0` | >=0 |
+| `+` | >=1 |
+| `?` | 0 or 1 |
+| `{n}` | Exact value (=n) |
+| `{start, stop}` | Range of values (min, max) |
+
+</center>
+
+- [x] Get all files that have a 2-digit value in their name. <br>
+    ```
+    ls | where {$_.name -match "\d{2}"}
+    ```
+- [x] Display process id, name & company of all processes that are from MicroSoft. <br>
+    ```
+    gps | where {$_.company -match "^Microsoft"} | select name,id,company
+    ```
+- [x] Retrieve all DNS entries where Data property is an IPv4 address. <br>
+    ```
+    Get-DnsClientCache | where {$_.data -match "^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"}
+    ```
+- [x] Retrieve IIS logfile records that contain 40x errors. <br>
+    ```
+    ls *.log -recurse |
+        select-string -pattern "\s40[0-9]\s" |
+        format-table Filename,LineNumber,Line -wrap
+```
 
 
 # PowerShell Python
@@ -631,3 +726,6 @@ Restart.
 Right-Click Quick Access >> Options >> Open File Explorer to: "This PC" >> Uncheck Privacy Options.
 ```
 - Disable OneDrive.
+
+# Recipies
+

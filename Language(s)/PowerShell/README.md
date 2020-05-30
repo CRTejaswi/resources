@@ -7,9 +7,10 @@
 
 # Index
 
-- [ ] [General](#general)
-- [ ] [PowerShell/Python Interoperability](#powershell-python)
-- [ ] [Common Windows TODO](#windows-todo)
+- [General](#general)
+- [PowerShell/Python Interoperability](#powershell-python)
+- [Common Windows TODO](#windows-todo)
+- [Recipies](#recipies)
 
 # General
 
@@ -58,7 +59,8 @@
     gcm -> Get-Command (to lookup command syntax)
     gm  -> Get-Member  (to learn more about an object)
     gal -> Get-Alias
-    gcb -> Get-Clipboard
+    gcb -> Get-Clipboard (Copy from clipboard)
+    scb -> Set-Clipboard (Copy to clipboard)
     gps -> Get-Process
     gsv -> Get-Service
     gin -> Get-ComputerInfo
@@ -693,7 +695,7 @@ __Quantifiers__
     ls *.log -recurse |
         select-string -pattern "\s40[0-9]\s" |
         format-table Filename,LineNumber,Line -wrap
-```
+    ```
 
 
 # PowerShell Python
@@ -729,3 +731,62 @@ Right-Click Quick Access >> Options >> Open File Explorer to: "This PC" >> Unche
 
 # Recipies
 
+## Clipboard Operations (`gcb`/`scb`)
+
+- [x] Print/Create PDF from copied text
+    ```
+    gcb | out-printer
+    ```
+
+- [x] Copy a filepath(s) to clipboard (So it becomes easy to paste in GUI)
+    ```
+    ls *.pdf | % {$_.fullname} | scb
+    ```
+
+- [x] Convert text (from docx) to epub/html/pdf
+    ```
+    start input.docx
+    gcb | pandoc $_ --metadata title='Title' +RTS -Ksize -RTS -o output.epub
+    gcb | pandoc $_ --metadata title='Title' -o output.html
+    gcb | pandoc $_ --metadata title='Title' --pdf-engine=xelatex -o output.pdf
+    ```
+
+- [x] Copy code(s)/text & save as code-file/text-file <br>
+    `ascii` is ideal. `utf8` gives `UTF-8 with BOM`, so, you'll have to re-encode in editor.
+    ```
+    gcb | out-file -Encoding ascii output.py
+    gcb | out-file -Encoding utf8 output.py
+    ```
+    Instead of creating a new file each time, simply append to the original:
+    ```
+    gcb | out-file -Append -Encoding ascii output.md
+    ```
+    This is ideal for simultaneous Copy & Paste (if you are too lazy to use `Ctrl+C`,`Ctrl+V` repeatedly).
+
+- [x] Open links in Firefox
+    ```
+    # Copied
+    firefox (gcb)
+    # From text-file
+    firefox (cat .\input.txt)
+    ```
+    A better way is to create a PS User-Profile
+    ```
+    notepad $profile
+    -> Add variables/methods... and save.
+    -> Run them from Shell
+    ```
+    To `$profile`, append path of file containing links `$mylinks=B:\CRTejaswi\Documents\Links.txt`. <br>
+    Open links using:
+    ```
+    firefox (cat $mylinks)
+    ```
+    Use `subl $mylinks` to update links you want to visit now. <br>
+    Read more about PS User-Profiles using: `man about_profiles -ShowWindow`
+
+
+- [x] [Eject USB drive](https://serverfault.com/a/580298)
+    ```
+    $driveEject = New-Object -comObject Shell.Application
+    $driveEject.Namespace(17).ParseName("D:").InvokeVerb("Eject")
+    ```

@@ -5,25 +5,33 @@
 # PowerShell
 > Personal notes.
 
+# Resources
+
+- [Jeff Hicks](https://jdhitsolutions.com/blog/)
+- [powershell.org](https://powershell.org/articles/)
+- [MS DevBlog](https://devblogs.microsoft.com/scripting/)
+- [GitHub](https://github.com/PowerShell/PowerShell)
+- [Awesome PS](https://github.com/janikvonrotz/awesome-powershell)
+
 # Index
 
 - [General](#general)
 - [System Help](#system-help)
 - [Exception Handling](#exception-handling)
+- [Variables](#variables)
 - [Objects](#objects)
 - [Pipelining](#pipelining)
 - [Formatting](#formatting)
 - [Filtering & Comparisons](#filtering-comparisons)
-- [Remote Access](#remote-access)
-- [Background Processes (`Job`s)](#background-processes-aka-job)
-- [Variables](#variables)
+- [Background Processes (`Job`)](#background-processes-aka-job)
 - [Regular Expressions](#regular-expressions)
 - [Scripting](#scripting)
-- [Formatted Data (CSV, XML, JSON)](#formatted-data-csv-xml-json)
+- [Remote Access](#remote-access)
+- [Formatted Data (CSV, JSON, XML)](#formatted-data-csv-json-xml)
 - [Databases](#databases-sqlite)
 - [Recipies](#recipies)
-- [ ] [PowerShell/Python Interoperability](#powershell-python)
-- [Common Windows TODO](#windows-todo)
+- [ ] [PowerShell/Python](#powershell-python)
+- [ ] [Common Windows TODO](#windows-todo)
 
 ## General
 
@@ -140,6 +148,60 @@
     get-verb
     get-verb | measure
     ```
+
+## Variables
+
+- Single & Double Quotes (`'`,`"`) <br>
+    Anything within a single-quote is a literal string. <br>
+    Anything within a double-quote is a parsed string. <br>
+    ```
+    PS> $var='LOCALHOST'
+    PS> $var1='Try $var'
+    PS> $var2="Try $var"
+    PS> $var; $var1; $var2;
+    LOCALHOST
+    Try $var
+    Try LOCALHOST
+    ```
+    Using double-quotes, you can also assign cmdlet & the object with it's property/method that it generates.
+    ```
+    PS> $services=get-service
+    PS> $var="First Service Is $($services[0].name)"
+    First Service Is ABLookupSvc
+    ```
+- Escape Sequences <br>
+    Just as C-syntax uses `back-slash` (__\\__) to escape sequences, PS-syntax used `back-tick`(__\`__) <br>
+
+- Accessing Object Property/Method <br>
+    PS3+ allows using Object.Property/Object.Method syntax.
+    ```
+    PS> $services=Get-Service
+    PS> $services.name; $services.gettype()
+    ```
+    Here, `Name` & `GetType()` are property/method defined on objects returned by `Get-Service`.
+    Check using `gsv | gm`.
+
+- Declaring Variable Types
+    Use `[type]$var` notation.
+    ```
+    PS> [int]$var = Read-Host "Enter A Number"
+    Enter A Number: 100
+    PS> $var | gm
+        TypeName: System.Int32
+    ...
+    ```
+
+<center>
+
+| Type | Description |
+| :-- | :--: |
+| `[int]`,`[single]`,`[double]` | integer, single/double precision floating values |
+| `[char]`,`[string]` | character, string of characters |
+| `[xml]` | XML document |
+| `[adsi]` | ActiveDirectory Service Interface (ADSI) query |
+
+</center>
+
 
 ## Objects
 
@@ -422,12 +484,10 @@ Second : 3
     ls | out-file -append -width 100 TEST.txt
     ```
 
-## Pipeline Parameter-Binding
+__Pipeline Parameter-Binding__ <br>
 
-```
-PS> cmdA | cmdB
-```
-What goes through the `|`?
+__Given:__ `cmdA | cmdB`; What exactly goes through the `|`? <br>
+__Ans:__ _Objects_ <br>
 
 - Display processes/services from a list of computers connected to your PC.
     ```
@@ -476,6 +536,29 @@ What goes through the `|`?
 [[OUTPUT]](binaries.pdf)
     ```
     ls C:\Windows\*.exe | format-list Name,VersionInfo,@{Name='Size';Expression={$_.length}}
+    ```
+
+__NOTE__ <br>
+
+- Prefer outputting Objects over formatted-tables.
+    ```
+    [NO]
+    gwmi win32_logicaldisk |
+        format-table deviceid,
+        @{name='Total Memory (GB)';e={$_.size/1GB};formatstring='F2'},
+        @{name='Free Memory (GB)';e={$_.freespace/1GB};formatstring='F2'}
+    ```
+    ```
+    [YES]
+    gwmi win32_logicaldisk |
+        select deviceid,
+        @{name='Total Memory (GB)';e={$_.size/1GB -as [int]}},
+        @{name='Free Memory (GB)';e={$_.freespace/1GB -as [int]}}
+    ```
+    Here we've used `-as [int]` to round off, as  `Select-Object` doesn't offer `formatstring` option. <br>
+    Outputting objects allows us to do this (something which formatted tables don't):
+    ```
+    .\test.ps1 | export-csv test.csv
     ```
 
 ## Filtering & Comparisons
@@ -537,25 +620,6 @@ Refer `about_comparison_operators`. <br>
     gps -name svchost,conhost | format-table -groupby name
     ```
 
-## Remote Access
-- Windows Remote Management (WinRM)
-- Windows Management Instrumentation (WMI) [OLD] & the Common Information Model (CIM) [NEW] <br>
-    `Get-WmiObject`,`Invoke-WmiMethod`,`GetCimInstance`,`Invoke-CimMethod` <br>
-    WMI commands work over RPCs. CIM commands work over WS-MAN (WinRM). <br>
-    CIM instructions need WinRM to be enabled on every PC. So, prefer the old WMI instructions. <br>
-
-- [x] Display all HDD partitions with total/free memory.
-    ```
-    gwmi win32_logicaldisk |
-        format-table deviceid,
-        @{name='Total Memory (GB)';e={$_.size/1GB};formatstring='F2'},
-        @{name='Free Memory (GB)';e={$_.freespace/1GB};formatstring='F2'}
-    ```
-- [x] Display list of services sorted by mode (auto, manual)
-    ```
-    gwmi -class win32_service -Filter "state = 'running'" | sort startmode,name
-    ```
-
 ## Background Processes (aka `job`)
 PS calls _'background process'_, a `job`. <br>
 
@@ -613,59 +677,6 @@ PS calls _'background process'_, a `job`. <br>
     Scheduled tasks are non-volatile, meaning they don't get erased when you close the Shell. This is because it is stored in XML files on disk (`C:\Users\Chaitanya Tejaswi\AppData\Local\Microsoft\Windows\PowerShell\ScheduledJobs`).
 
 ## Batch Cmdlets/Processing
-
-## Variables
-
-- Single & Double Quotes (`'`,`"`) <br>
-    Anything within a single-quote is a literal string. <br>
-    Anything within a double-quote is a parsed string. <br>
-    ```
-    PS> $var='LOCALHOST'
-    PS> $var1='Try $var'
-    PS> $var2="Try $var"
-    PS> $var; $var1; $var2;
-    LOCALHOST
-    Try $var
-    Try LOCALHOST
-    ```
-    Using double-quotes, you can also assign cmdlet & the object with it's property/method that it generates.
-    ```
-    PS> $services=get-service
-    PS> $var="First Service Is $($services[0].name)"
-    First Service Is ABLookupSvc
-    ```
-- Escape Sequences <br>
-    Just as C-syntax uses `back-slash` (__\\__) to escape sequences, PS-syntax used `back-tick`(__\`__) <br>
-
-- Accessing Object Property/Method <br>
-    PS3+ allows using Object.Property/Object.Method syntax.
-    ```
-    PS> $services=Get-Service
-    PS> $services.name; $services.gettype()
-    ```
-    Here, `Name` & `GetType()` are property/method defined on objects returned by `Get-Service`.
-    Check using `gsv | gm`.
-
-- Declaring Variable Types
-    Use `[type]$var` notation.
-    ```
-    PS> [int]$var = Read-Host "Enter A Number"
-    Enter A Number: 100
-    PS> $var | gm
-        TypeName: System.Int32
-    ...
-    ```
-
-<center>
-
-| Type | Description |
-| :-- | :--: |
-| `[int]`,`[single]`,`[double]` | integer, single/double precision floating values |
-| `[char]`,`[string]` | character, string of characters |
-| `[xml]` | XML document |
-| `[adsi]` | ActiveDirectory Service Interface (ADSI) query |
-
-</center>
 
 ## Regular Expressions
 
@@ -769,37 +780,107 @@ __Specifying Parameters__ <br>
     Read more about validation tricks, [here](https://jdhitsolutions.com/blog/tag/validation/).
 
 - Using `Write-Verbose` to print progress information <br>
-    Using `Write-Verbose` (instead of `Write-Host`) in our scripts allow us to optionally determine the progress of our code. <br>
-    Verbose output is visible only when the script is run with `-verbose` switch. But, you cannot set its foreground/background colors (as you could with `Write-Host`), since PS has predefined color-codes for Verbose/Debug/Warning. <br>
+    Using `Write-Verbose` (instead of `Write-Host`) in our scripts allows us to optionally determine the progress of our code. <br>
+    Verbose output is visible only when the script is run with `-verbose` switch. But, you cannot set its foreground/background colors (as you can with `Write-Host`), since PS has predefined color-codes for Verbose/Debug/Warning. <br>
     ```
     Write-Verbose "Using $myVar Values"
     ```
 
-__Note__ <br>
+__Default Parameters__ <br>
+Refer `$PSDefaultParameterValues`. <br>
+You can set default values for parameters such as `-Path`, `-Credential`, ... by adding these values into a built-in variable, `$PSDefaultParameterValues`. <br>
+Note that the scope of `$PSDefaultParameterValues` is limited to the shell when specified in PS, and to the script when specified in a `.ps1` file. This trick can be handy to specify defaults for a script in the script itself and not affect the shell's defaults. <br>
 
-- Prefer outputting Objects over formatted-tables.
+- [x] Specify default-credentials for every cmdlet that has a `-Credential` parameter.
     ```
-    [NO]
+    $credential = Get-Credential -UserName Administrator -Message "Enter Admin's Password"
+    $PSDefaultParameterValues.add('*:Credential', $credential)
+    ```
+
+- [x] Ask for credentials everytime an `invoke-command` cmdlet is executed.
+    ```
+    $PSDefaultParameterValues.add('Invoke-Command:Credential', {Get-Credential -UserName Administrator -Message "Enter Admin's Password"})
+    ```
+    Since invoke-command runs on local/remote PCs, this works as a basic security measure.
+
+
+__Operators__ <br>
+Refer `about_operators`. <br>
+
+<center>
+
+| Name | Description | Example|
+| :-- | :-- | :-- |
+| `-as` | type casts an object | `1000/3 -as [int]` => `333` |
+| `-is` | type checks an object | `12.45 -is [int]` => `False` |
+| `-replace` | replace substring within a string | `'Hello World' -replace 'e',3` => `H3llo World` |
+| `-join` | convert array to delimited-string | `1,2,3,4,5 -join '|'` => `1|2|3|4|5` |
+| `-split` | convert delimited-string to array | `"1 2 3 4 5" -split " "` => `1, 2, 3, 4, 5` |
+| `-like` | wildcarded substring matching | `'this' -like '*his*'` => `True` |
+| `-contains` | checks if an object exists in a collection | `'abc','bcd','cde' -contains 'bcd'` => `True`|
+| `-in` | checks if an object exists in a collection | `'bcd' -in 'abc','bcd','cde'` => `True`|
+
+</center>
+
+__Manipulating Strings & Dates__ <br>
+
+- Pipe any string to `get-member` to list all associated properties/methods.
+    ```
+    'Test' | gm
+    ```
+- Pipe `get-date` to list all associated properties/methods.
+    ```
+    get-date | gm
+    ```
+    When working with `WMI` objects, the dates may not be straight-forward.
+    ```
+    gwmi win32_operatingsystem | select lastbootuptime
+
+    lastbootuptime
+    --------------
+    20200602222520.500000+330
+    ```
+    For this, use `ConvertFromDateTime()` & `ConvertToDateTime()` methods. (Check using `gwmi win32_operatingsystem | gm`)
+    ```
+    $os = gwmi win32_operatingsystem
+    $os.ConvertToDateTime($os.LastBootUpTime)
+
+    Tuesday, June 2, 2020 10:25:20 PM
+    ```
+
+__Script Blocks (`{}`)__ <br>
+Refer `about_script_blocks`. <br>
+Anything within `{}` is a __script block__.
+<center>
+    <img src="resources/01.png" title="Script Blocks: Use Cases">
+</center>
+
+https://www.youtube.com/watch?v=u6tdj1IFbpw
+https://www.sconstantinou.com/powershell-script-blocks/
+https://www.youtube.com/watch?v=WP_Olf8GH_g
+https://www.youtube.com/watch?v=uoH6mnzwSZc
+
+## Remote Access
+- Windows Remote Management (WinRM)
+- Windows Management Instrumentation (WMI) [OLD] & the Common Information Model (CIM) [NEW] <br>
+    `Get-WmiObject`,`Invoke-WmiMethod`,`GetCimInstance`,`Invoke-CimMethod` <br>
+    WMI commands work over RPCs. CIM commands work over WS-MAN (WinRM). <br>
+    CIM instructions need WinRM to be enabled on every PC. So, prefer the old WMI instructions. <br>
+
+- [x] Display all HDD partitions with total/free memory.
+    ```
     gwmi win32_logicaldisk |
         format-table deviceid,
         @{name='Total Memory (GB)';e={$_.size/1GB};formatstring='F2'},
         @{name='Free Memory (GB)';e={$_.freespace/1GB};formatstring='F2'}
     ```
+- [x] Display list of services sorted by mode (auto, manual)
     ```
-    [YES]
-    gwmi win32_logicaldisk |
-        select deviceid,
-        @{name='Total Memory (GB)';e={$_.size/1GB -as [int]}},
-        @{name='Free Memory (GB)';e={$_.freespace/1GB -as [int]}}
-    ```
-    Here we've used `-as [int]` to round off as  `Select-Object` doesn't offer `formatstring` option. Also, outputting objects allows us to do this (something which formatted tables don't):
-    ```
-    .\test.ps1 | export-csv test.csv
+    gwmi -class win32_service -Filter "state = 'running'" | sort startmode,name
     ```
 
 
-
-## Formatted Data (CSV, XML, JSON)
+## Formatted Data (CSV, JSON, XML)
 
 https://www.youtube.com/watch?v=Ukuj_DxueIc&app=desktop
 https://github.com/jdhitsolutions/psdatafiles/tree/master/demos
@@ -950,11 +1031,12 @@ Right-Click Quick Access >> Options >> Open File Explorer to: "This PC" >> Unche
 
 PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
 
-- __NOTE:__ Before doing anything useful, make sure to install & configure Internet Explorer. (Although you can make do without this by using `-UseBasicParsing` switch; this is an absolutely fuckall workaround. This is because using it doesn't give you access to the webpage's DOM, which means, you cannot parse it, or get anything useful out of it. It's like standing with a gun - a water gun. So, just install the damn thing!) <br>
+__NOTE:__ <br>
+Before doing anything useful, make sure to install & configure Internet Explorer. (Although you can make do without this by using `-UseBasicParsing` switch; this is an absolutely fuckall workaround. This is because using it doesn't give you access to the webpage's DOM, which means, you cannot parse it, or get anything useful out of it. It's like standing with a gun - a water gun. So, just install the damn thing!) <br>
 
-    - Install from [here](https://support.microsoft.com/en-in/help/17621/internet-explorer-downloads).
-    - To configure, `Win+I` >> Apps & Features >> Optional Features >> Add a feature >> Internet Explorer 11. Then, `Win+R` >> Control >> Turn Windows Features ON/OFF >> [x] Internet Explorer. Restart PC. <br>
-    - Open up Internet Explorer, set to `Recommended Settings`. Done! <br>
+- Install from [here](https://support.microsoft.com/en-in/help/17621/internet-explorer-downloads).
+- To configure: `Win+I` >> Apps & Features >> Optional Features >> Add a feature >> Internet Explorer 11. Then, `Win+R` >> Control >> Turn Windows Features ON/OFF >> [x] Internet Explorer. Restart PC. <br>
+- Open up Internet Explorer, set to `Recommended Settings`. Done! <br>
 
 - [x] Get contents of a URL <br>
     This generates a local copy of my [CV](https://crtejaswi.github.io/CV).
@@ -965,10 +1047,10 @@ PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
 - [x] Get all links from a webpage <br>
     This gets all links from my [CV](https://crtejaswi.github.io/CV).
     ```
-    $links = (curl crtejaswi.github.io/CV -UseBasicParsing).links.href
+    $links = (curl crtejaswi.github.io/CV).links.href
     ```
 
-- [x] Get weather temperatures <br>
+- [x] Get weather (temperatures) <br>
     Retrieving data for Delhi (28.7041° N, 77.1025° E).
     ```
     $myurl = 'https://weather.com/en-IN/weather/today/l/28.7041,77.1025?temp=c'
@@ -978,3 +1060,15 @@ PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
     Rohini Sector 2, Delhi Weather
     35°/26°
     ```
+
+__REST APIs__ <br>
+
+
+
+## To-Do
+
+<center>
+    <img src="resources/02.png" title="To-Do">
+</center>
+
+Also, finish review exercises & put code in relevant sections.

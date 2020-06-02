@@ -8,12 +8,24 @@
 # Index
 
 - [General](#general)
-    - [Formatted Data (CSV, XML, JSON)](#formatted-data-csv-xml-json)
-- [PowerShell/Python Interoperability](#powershell-python)
-- [Common Windows TODO](#windows-todo)
+- [System Help](#system-help)
+- [Exception Handling](#exception-handling)
+- [Objects](#objects)
+- [Pipelining](#pipelining)
+- [Formatting](#formatting)
+- [Filtering & Comparisons](#filtering-comparisons)
+- [Remote Access](#remote-access)
+- [Background Processes (`Job`s)](#background-processes-aka-job)
+- [Variables](#variables)
+- [Regular Expressions](#regular-expressions)
+- [Scripting](#scripting)
+- [Formatted Data (CSV, XML, JSON)](#formatted-data-csv-xml-json)
+- [Databases](#databases-sqlite)
 - [Recipies](#recipies)
+- [ ] [PowerShell/Python Interoperability](#powershell-python)
+- [Common Windows TODO](#windows-todo)
 
-# General
+## General
 
 - Update (from PS)
     ```
@@ -703,6 +715,90 @@ __Quantifiers__
         format-table Filename,LineNumber,Line -wrap
     ```
 
+## Scripting
+
+__Specifying Parameters__ <br>
+    By specifying `CmdletBinding` (at the top of script), we can add several features to our parameters.
+
+- Enabling the features <br>
+    All of these features listed below need `CmdletBinding` to be enabled.
+    ```
+    <#
+    # Comments
+    #>
+    [CmdletBinding()]
+    ```
+
+- Mandatory parameters <br>
+    Here, we make `$myVar` a mandatory parameter. (The `HelpMessage` is optional).
+    ```
+    param (
+        [Parameter (Mandatory=$True, HelpMessage='A variable-name is mandatory')]
+        [string]$myVar,
+
+        [int]$Var1,
+        [int]$Var2,
+    )
+    ```
+
+- Parameter aliases <br>
+    Here, we give an alias (`name`) to `$myVar`.
+    ```
+    param (
+        [Parameter (Mandatory=$True)]
+        [Alias ('name')]
+        [string]$myVar,
+
+        [int]$Var1,
+        [int]$Var2,
+    )
+    ```
+
+- Validating parameter input <br>
+    Here, we specify a set of valid inputs for `$Var1` & `$Var2`.
+    ```
+    param (
+        [string]$myVar,
+
+        [ValidateSet(0,1)]
+        [int]$Var1,
+        [ValidateSet(0,1)]
+        [int]$Var2,
+    )
+    ```
+    Read more about validation tricks, [here](https://jdhitsolutions.com/blog/tag/validation/).
+
+- Using `Write-Verbose` to print progress information <br>
+    Using `Write-Verbose` (instead of `Write-Host`) in our scripts allow us to optionally determine the progress of our code. <br>
+    Verbose output is visible only when the script is run with `-verbose` switch. But, you cannot set its foreground/background colors (as you could with `Write-Host`), since PS has predefined color-codes for Verbose/Debug/Warning. <br>
+    ```
+    Write-Verbose "Using $myVar Values"
+    ```
+
+__Note__ <br>
+
+- Prefer outputting Objects over formatted-tables.
+    ```
+    [NO]
+    gwmi win32_logicaldisk |
+        format-table deviceid,
+        @{name='Total Memory (GB)';e={$_.size/1GB};formatstring='F2'},
+        @{name='Free Memory (GB)';e={$_.freespace/1GB};formatstring='F2'}
+    ```
+    ```
+    [YES]
+    gwmi win32_logicaldisk |
+        select deviceid,
+        @{name='Total Memory (GB)';e={$_.size/1GB -as [int]}},
+        @{name='Free Memory (GB)';e={$_.freespace/1GB -as [int]}}
+    ```
+    Here we've used `-as [int]` to round off as  `Select-Object` doesn't offer `formatstring` option. Also, outputting objects allows us to do this (something which formatted tables don't):
+    ```
+    .\test.ps1 | export-csv test.csv
+    ```
+
+
+
 ## Formatted Data (CSV, XML, JSON)
 
 https://www.youtube.com/watch?v=Ukuj_DxueIc&app=desktop
@@ -713,9 +809,8 @@ http://ramblingcookiemonster.github.io/SQLite-and-PowerShell/
 https://www.darkartistry.com/2019/08/create-insert-and-query-sqlite-with-powershell/
 
 
+# PowerShell & Python
 
-
-# PowerShell Python
 # Windows Todo
 
 - Rename User.
@@ -855,7 +950,7 @@ Right-Click Quick Access >> Options >> Open File Explorer to: "This PC" >> Unche
 
 PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
 
-- __NOTE:__ Before doing anything useful, make sure to install & configure Internet Explorer. (Although you can make do without this by using `-UseBasicParsing` switch, this is an absolutely fuckall workaround. This is because using it doesn't give you access to the webpage's DOM, which means, you cannot parse it, or get anything useful out of it. It's like standing with a gun - a water gun. So, just install the damn thing!) <br>
+- __NOTE:__ Before doing anything useful, make sure to install & configure Internet Explorer. (Although you can make do without this by using `-UseBasicParsing` switch; this is an absolutely fuckall workaround. This is because using it doesn't give you access to the webpage's DOM, which means, you cannot parse it, or get anything useful out of it. It's like standing with a gun - a water gun. So, just install the damn thing!) <br>
 
     - Install from [here](https://support.microsoft.com/en-in/help/17621/internet-explorer-downloads).
     - To configure, `Win+I` >> Apps & Features >> Optional Features >> Add a feature >> Internet Explorer 11. Then, `Win+R` >> Control >> Turn Windows Features ON/OFF >> [x] Internet Explorer. Restart PC. <br>
@@ -876,10 +971,10 @@ PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
 - [x] Get weather temperatures <br>
     Retrieving data for Delhi (28.7041° N, 77.1025° E).
     ```
-    $myurl = 'https://weather.com/en-IN/weather/today/l/28.7041,77.1025?par=google&temp=c'
+    $myurl = 'https://weather.com/en-IN/weather/today/l/28.7041,77.1025?temp=c'
     $response = curl -Uri $myurl
-    ($response.allelements | where class -eq 'deg-hilo-nowcard').innerText
+    ($response.allelements | where { $_.class -Match "\w+--location--\w+" -or $_.class -Match "\w+--tempHiLoValue--\w+" }).innerText
 
-    35°
-    26°
+    Rohini Sector 2, Delhi Weather
+    35°/26°
     ```

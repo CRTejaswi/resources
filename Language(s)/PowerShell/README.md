@@ -8,6 +8,7 @@
 # Index
 
 - [General](#general)
+    - [Formatted Data (CSV, XML, JSON)](#formatted-data-csv-xml-json)
 - [PowerShell/Python Interoperability](#powershell-python)
 - [Common Windows TODO](#windows-todo)
 - [Recipies](#recipies)
@@ -59,9 +60,14 @@
     gcm -> Get-Command (to lookup command syntax)
     gm  -> Get-Member  (to learn more about an object)
     gal -> Get-Alias
+
     gcb -> Get-Clipboard (Copy from clipboard)
     scb -> Set-Clipboard (Copy to clipboard)
     gps -> Get-Process
+
+    ft  -> Format-Table
+    fl  -> Format-List
+
     gsv -> Get-Service
     gin -> Get-ComputerInfo
     gtz -> Get-TimeZone
@@ -697,6 +703,17 @@ __Quantifiers__
         format-table Filename,LineNumber,Line -wrap
     ```
 
+## Formatted Data (CSV, XML, JSON)
+
+https://www.youtube.com/watch?v=Ukuj_DxueIc&app=desktop
+https://github.com/jdhitsolutions/psdatafiles/tree/master/demos
+
+## Databases (SQLite)
+http://ramblingcookiemonster.github.io/SQLite-and-PowerShell/
+https://www.darkartistry.com/2019/08/create-insert-and-query-sqlite-with-powershell/
+
+
+
 
 # PowerShell Python
 # Windows Todo
@@ -789,4 +806,80 @@ Right-Click Quick Access >> Options >> Open File Explorer to: "This PC" >> Unche
     ```
     $driveEject = New-Object -comObject Shell.Application
     $driveEject.Namespace(17).ParseName("D:").InvokeVerb("Eject")
+    ```
+
+- [ ] Write templated strings to a file <br>
+    Here, template is `file n.mp4`; n=1-27
+    ```
+    file 1.mp4
+    file 2.mp4
+    file 3.mp4
+    file 4.mp4
+    file 5.mp4
+    file 6.mp4
+    file 7.mp4
+    file 8.mp4
+    file 9.mp4
+    file 10.mp4
+    file 11.mp4
+    file 12.mp4
+    file 13.mp4
+    file 14.mp4
+    file 15.mp4
+    file 16.mp4
+    file 17.mp4
+    file 18.mp4
+    file 19.mp4
+    file 20.mp4
+    file 21.mp4
+    file 22.mp4
+    file 23.mp4
+    file 24.mp4
+    file 25.mp4
+    file 26.mp4
+    file 27.mp4
+    ```
+
+- [ ] Print strings following a matching sub-string <br>
+    From CONFIG, I want to query the cmd to merge files using FFmpeg. <br>
+    Logic:
+      -> print 10 lines after a 'merge' (inclusive) is encountered.
+
+    This cmd gets `ffmpeg` lines out of CONFIG.
+    ```
+    cat $myconfig | ? {$_ -match 'ffmpeg'}
+    ```
+    https://devtipscurator.wordpress.com/2016/11/25/how-to-filter-contents-in-a-text-file-using-powershell/
+
+## HTTP Requests
+
+PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
+
+- __NOTE:__ Before doing anything useful, make sure to install & configure Internet Explorer. (Although you can make do without this by using `-UseBasicParsing` switch, this is an absolutely fuckall workaround. This is because using it doesn't give you access to the webpage's DOM, which means, you cannot parse it, or get anything useful out of it. It's like standing with a gun - a water gun. So, just install the damn thing!) <br>
+
+    - Install from [here](https://support.microsoft.com/en-in/help/17621/internet-explorer-downloads).
+    - To configure, `Win+I` >> Apps & Features >> Optional Features >> Add a feature >> Internet Explorer 11. Then, `Win+R` >> Control >> Turn Windows Features ON/OFF >> [x] Internet Explorer. Restart PC. <br>
+    - Open up Internet Explorer, set to `Recommended Settings`. Done! <br>
+
+- [x] Get contents of a URL <br>
+    This generates a local copy of my [CV](https://crtejaswi.github.io/CV).
+    ```
+    $response = Invoke-WebRequest -Uri crtejaswi.github.io/CV
+    $response.Content | out-file -encoding utf8 test.html
+    ```
+- [x] Get all links from a webpage <br>
+    This gets all links from my [CV](https://crtejaswi.github.io/CV).
+    ```
+    $links = (curl crtejaswi.github.io/CV -UseBasicParsing).links.href
+    ```
+
+- [x] Get weather temperatures <br>
+    Retrieving data for Delhi (28.7041° N, 77.1025° E).
+    ```
+    $myurl = 'https://weather.com/en-IN/weather/today/l/28.7041,77.1025?par=google&temp=c'
+    $response = curl -Uri $myurl
+    ($response.allelements | where class -eq 'deg-hilo-nowcard').innerText
+
+    35°
+    26°
     ```

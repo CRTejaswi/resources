@@ -7,6 +7,7 @@
 
 # Resources
 
+- TechSnips [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A)
 - [Jeff Hicks](https://jdhitsolutions.com/blog/)
 - [powershell.org](https://powershell.org/articles/)
 - [MS DevBlog](https://devblogs.microsoft.com/scripting/)
@@ -19,19 +20,19 @@
 - [System Help](#system-help)
 - [Exception Handling](#exception-handling)
 - [Variables](#variables)
+- [Control Flow](#control-flow)
 - [Objects](#objects)
 - [Pipelining](#pipelining)
 - [Formatting](#formatting)
 - [Filtering & Comparisons](#filtering-comparisons)
 - [Background Processes (`Job`)](#background-processes-aka-job)
 - [Regular Expressions](#regular-expressions)
-- [Scripting](#scripting)
 - [Remote Access](#remote-access)
 - [Formatted Data (CSV, JSON, XML)](#formatted-data-csv-json-xml)
-- [Databases](#databases-sqlite)
+- [Databases (SQLite, SQL Server)](#databases)
+- [Scripting](#scripting)
 - [Recipies](#recipies)
 - [ ] [PowerShell/Python](#powershell-python)
-- [ ] [Common Windows TODO](#windows-todo)
 
 ## General
 
@@ -41,6 +42,9 @@
     ```
 
 - Clear Command History <br> Press `Ctrl + F7`
+
+- Disable Quick Access, Recent Items & File-Explorer History.
+    Quick Access (Right-Click) >> Options >> Open File Explorer to: "This PC" >> Uncheck Privacy Options.
 
 - Uninstall built-in apps
     ```
@@ -202,6 +206,134 @@
 
 </center>
 
+## Control Flow
+
+__if-else__ <br>
+Conditional execution. <br>
+Execution is based on certain well-defined conditions. <br>
+
+- Syntax
+    ```
+    if (<condition>){
+        ...
+    } elseif (<condition>){
+        ...
+    } else {
+        ...
+    }
+    ```
+
+- [x] Do something if today is Monday, post 12PM.
+    ```
+    $now = get-date
+    if ($now.dayofweek -eq 'Monday' -and $now.hour -gt 12){
+        ...
+    }
+    ```
+
+__switch__ <br>
+Conditional-Value execution. <br>
+Execution is based on certain properties/values of `<object>`. <br>
+
+- Syntax
+    ```
+    switch (<object>){
+        <case>  {...}
+        <case>  {...}
+        default {...}
+    }
+    ```
+
+- [x] Check if a string contains '1' or 'a'
+    ```
+    $x = '123abc'
+    switch -wildcard ($x){
+        "*1*" {"Contains 1"}
+        "*a*" {"Contains a"}
+        default {"No matches found"}
+    }
+    ```
+
+__for__ <br>
+Iterative Conditional execution. <br>
+
+- Syntax
+    ```
+    for (<start>; <condition>; <action>){
+        ...
+    }
+    ```
+
+- [x] Print the number of characters in a string iteratively (\*actually prints indices)
+    ```
+    $x = '123abc'
+    for ($i=0; $i -lt $x.Length; $i++){
+        Write-Host $i -foreground black -background yellow
+    }
+    ```
+
+__forEach__ <br>
+Iterative execution, for each item in items. <br>
+
+- Syntax
+    ```
+    forEach ($item in $items){
+        ...
+    }
+    ```
+
+- [x] Print the squares of 1-10
+    ```
+    $numbers = 1..10
+    forEach ($number in $numbers){
+        Write-Host ($number*$number)
+    }
+    ```
+
+__do-while__ <br>
+Execute until condition fails. <br>
+
+- Syntax <br>
+    [1]: Execute only when condition starts to hold $True. (May not be executed at all.)
+    ```
+    while (<condition>){
+        ...
+    }
+    ```
+    [2]: Execute atleast once.
+    ```
+    do {...
+    } while (<condition>)
+    ```
+
+- [x] ...
+    ```
+    ...
+    ```
+
+__break__ <br>
+Abort execution abruptly. <br>
+
+- In a `switch`,`for`,`forEach`,or `do-while` construct, `break` exits the construct only.
+- In an `if-else` construct, `break` doesn't just exit the construct, but also the parent construct that contains the `if-else`.
+
+__NOTE__ <br>
+Avoid these mistakes:
+
+- [x] Conditionally breaking from codeblock.
+    ```
+    [NO]
+    while ($True){
+        $choice = Read-Host 'Enter A Number'
+        if ($choice -eq 0) { break }
+    }
+    ```
+    ```
+    [YES]
+    do {
+        $choice = Read-Host 'Enter A Number'
+    } while ($choice -ne 0)
+    ```
 
 ## Objects
 
@@ -726,7 +858,43 @@ __Quantifiers__
         format-table Filename,LineNumber,Line -wrap
     ```
 
+## Remote Access
+- Windows Remote Management (WinRM)
+- Windows Management Instrumentation (WMI) [OLD] & the Common Information Model (CIM) [NEW] <br>
+    `Get-WmiObject`,`Invoke-WmiMethod`,`GetCimInstance`,`Invoke-CimMethod` <br>
+    WMI commands work over RPCs. CIM commands work over WS-MAN (WinRM). <br>
+    CIM instructions need WinRM to be enabled on every PC. So, prefer the old WMI instructions. <br>
+
+- [x] Display all HDD partitions with total/free memory.
+    ```
+    gwmi win32_logicaldisk |
+        format-table deviceid,
+        @{name='Total Memory (GB)';e={$_.size/1GB};formatstring='F2'},
+        @{name='Free Memory (GB)';e={$_.freespace/1GB};formatstring='F2'}
+    ```
+- [x] Display list of services sorted by mode (auto, manual)
+    ```
+    gwmi -class win32_service -Filter "state = 'running'" | sort startmode,name
+    ```
+
+
+## Formatted Data (CSV, JSON, XML)
+
+https://www.youtube.com/watch?v=Ukuj_DxueIc&app=desktop
+https://github.com/jdhitsolutions/psdatafiles/tree/master/demos
+
+## Databases
+
+### SQLite
+http://ramblingcookiemonster.github.io/SQLite-and-PowerShell/
+https://www.darkartistry.com/2019/08/create-insert-and-query-sqlite-with-powershell/
+https://www.tutorialspoint.com/sqlite/index.htm
+
 ## Scripting
+
+Review [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons).
+
+### Basics
 
 __Specifying Parameters__ <br>
     By specifying `CmdletBinding` (at the top of script), we can add several features to our parameters.
@@ -860,67 +1028,6 @@ https://www.sconstantinou.com/powershell-script-blocks/
 https://www.youtube.com/watch?v=WP_Olf8GH_g
 https://www.youtube.com/watch?v=uoH6mnzwSZc
 
-## Remote Access
-- Windows Remote Management (WinRM)
-- Windows Management Instrumentation (WMI) [OLD] & the Common Information Model (CIM) [NEW] <br>
-    `Get-WmiObject`,`Invoke-WmiMethod`,`GetCimInstance`,`Invoke-CimMethod` <br>
-    WMI commands work over RPCs. CIM commands work over WS-MAN (WinRM). <br>
-    CIM instructions need WinRM to be enabled on every PC. So, prefer the old WMI instructions. <br>
-
-- [x] Display all HDD partitions with total/free memory.
-    ```
-    gwmi win32_logicaldisk |
-        format-table deviceid,
-        @{name='Total Memory (GB)';e={$_.size/1GB};formatstring='F2'},
-        @{name='Free Memory (GB)';e={$_.freespace/1GB};formatstring='F2'}
-    ```
-- [x] Display list of services sorted by mode (auto, manual)
-    ```
-    gwmi -class win32_service -Filter "state = 'running'" | sort startmode,name
-    ```
-
-
-## Formatted Data (CSV, JSON, XML)
-
-https://www.youtube.com/watch?v=Ukuj_DxueIc&app=desktop
-https://github.com/jdhitsolutions/psdatafiles/tree/master/demos
-
-## Databases (SQLite)
-http://ramblingcookiemonster.github.io/SQLite-and-PowerShell/
-https://www.darkartistry.com/2019/08/create-insert-and-query-sqlite-with-powershell/
-
-
-# PowerShell & Python
-
-# Windows Todo
-
-- Rename User.
-```
-Win+R >> netplwiz >> Change User details.
-    OR
-Win+X, A >>
-    net localgroup Users "account-name" /add
-    net localgroup Users "account-name" /delete
-    net localgroup Administrators "account-name" /add
-    net localgroup Administrators "account-name" /delete
-```
-
-- Disable Automatic Updates
-```
-1. Disable Windows Update Service.
-Win+R >> services.msc >> Windows Update (wuauserv) >> Disable, Stop, Fail Count=365 days.
-2. Meter your internet connection.
-3. Add Registry Key for Windows Update.
-Win+R >> regedit >> HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows >> New Key (WindowsUpdate) >> New Key (AU) >> New -> DWORD (32-bit) (AUOptions) >> Set Value=2.
-Value=2 indicates "Notify for download/install".
-Restart.
-```
-
-- Disable Quick Access & Recent Items && Disable File Explorer History.
-```
-Right-Click Quick Access >> Options >> Open File Explorer to: "This PC" >> Uncheck Privacy Options.
-```
-- Disable OneDrive.
 
 # Recipies
 
@@ -1063,7 +1170,7 @@ Before doing anything useful, make sure to install & configure Internet Explorer
 
 __REST APIs__ <br>
 
-
+https://www.youtube.com/watch?v=Uk0IHzR57hQ
 
 ## To-Do
 
@@ -1072,3 +1179,6 @@ __REST APIs__ <br>
 </center>
 
 Also, finish review exercises & put code in relevant sections.
+
+
+# PowerShell & Python

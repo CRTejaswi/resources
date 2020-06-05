@@ -9,6 +9,7 @@
 
 - TechSnips [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A)
 - [Jeff Hicks](https://jdhitsolutions.com/blog/)
+- Warren Frame [[PS recipies]](https://github.com/RamblingCookieMonster/PowerShell) [[PSSQLite]](https://github.com/RamblingCookieMonster/PSSQLite)
 - [powershell.org](https://powershell.org/articles/)
 - [MS DevBlog](https://devblogs.microsoft.com/scripting/)
 - [GitHub](https://github.com/PowerShell/PowerShell)

@@ -7,10 +7,10 @@
 ## Language(s)
 > Contains language specific notes/recipies.
 
-- [PowerShell](Language(s)/PowerShell/README.md)
-- [Python3](Language(s)/Python3/README.md)
-- [Haskell](Language(s)/Haskell/README.md)
-- [JavaScript](Language(s)/JS/README.md)
+- [PowerShell](Languages/PowerShell/README.md)
+- [Python3](Languages/Python3/README.md)
+- [Haskell](Languages/Haskell/README.md)
+- [JavaScript](Languages/JS/README.md)
 
 ## Command Set
 > Contains various command-set listing.

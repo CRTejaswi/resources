@@ -3,7 +3,7 @@
 
 
 # Haskell
-> Notes for Haskell language.
+> Personal Notes.
 
 - Courses
     - [x] [Haskell (NPTEL)](https://nptel.ac.in/courses/106/106/106106137/)

@@ -1,1 +1,5 @@
 *.html
+Languages/Haskell/*.html
+Languages/JS/*.html
+Languages/PowerShell/*.html
+Languages/Python3/*.html

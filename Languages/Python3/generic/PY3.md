@@ -2,7 +2,7 @@
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
 
-# Generic - Code Snippets
+# Python3
 > Generic Python3 code snippets.
 
 ### To Do
@@ -174,6 +174,8 @@ https://daniel.roygreenfeld.com/adding-metadata-to-pdfs.html <br>
 - [ ] Python: Implement RegEx in code.
 
 
+<center>
+
 | Expression | Meaning |
 |   :---:   |  :---:  |
 | `.` | Any character (except newline) |
@@ -182,17 +184,19 @@ https://daniel.roygreenfeld.com/adding-metadata-to-pdfs.html <br>
 | `\s`, `\S` | Whitespace (space, tab, newline), !Whitespace |
 | `\b`, `\B` | WordBoundary, !WordBoundary |
 | `^`, `$` | Beginning/End of String |
-| `[]`,`()`,`{}` | CharacterSet, WordGroup, #Values |
+| `[]`,`[^]`,`()`,`{}` | CharacterSet, !CharacterSet, WordGroup, #Values |
 
-- Quantifier
+__Quantifiers__
 
-    | Expression | Meaning |
-    |   :---:   |  :---:  |
-    | `0` | >=0 |
-    | `+` | >=1 |
-    | `?` | 0 or 1 |
-    | `{n}` | Exact value (=n) |
-    | `{start, stop}` | Range of values (min, max) |
+| Expression | Meaning |
+|   :---:   |  :---:  |
+| `0` | >=0 |
+| `+` | >=1 |
+| `?` | 0 or 1 |
+| `{n}` | Exact value (=n) |
+| `{start, stop}` | Range of values (min, max) |
+
+</center>
 
 ### Examples
 - Phone Numbers <br>

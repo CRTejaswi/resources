@@ -32,6 +32,7 @@
 - [Databases (SQLite, SQL Server)](#databases)
 - [Scripting](#scripting)
 - [Recipies](#recipies)
+- [Tools](#tools)
 - [ ] [PowerShell/Python](#powershell-python)
 
 ## General
@@ -302,7 +303,8 @@ Execute until condition fails. <br>
     ```
     [2]: Execute atleast once.
     ```
-    do {...
+    do {
+        ...
     } while (<condition>)
     ```
 
@@ -1029,6 +1031,8 @@ https://www.youtube.com/watch?v=WP_Olf8GH_g
 https://www.youtube.com/watch?v=uoH6mnzwSZc
 
 
+
+
 # Recipies
 
 ## Clipboard Operations (`gcb`/`scb`)
@@ -1134,6 +1138,23 @@ https://www.youtube.com/watch?v=uoH6mnzwSZc
     ```
     https://devtipscurator.wordpress.com/2016/11/25/how-to-filter-contents-in-a-text-file-using-powershell/
 
+## Temporary Files
+
+__Create/Delete A Temporary File__ <br>
+```
+$tmp = New-TemporaryFile
+...
+del $tmp.FullName -Force
+```
+
+- [x] Append source-code & outputs of code-files <br>
+    Assuming you have a temporary file `$tmp`, and source file names `test`;
+    ```
+    py .\test.py | out-file $tmp.fullname; cat .\test.py,$tmp.fullname | out-file -encoding ascii Py3.md -append
+
+    .\test.exe | out-file $tmp.fullname; cat .\test.c,$tmp.fullname | out-file -encoding ascii C.md -append
+    ```
+
 ## HTTP Requests
 
 PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
@@ -1180,5 +1201,105 @@ https://www.youtube.com/watch?v=Uk0IHzR57hQ
 
 Also, finish review exercises & put code in relevant sections.
 
+
+## Tools
+
+- [x] Write a utility that gets technical specifications of remote PCs. <br>
+Each entry is logged into a database. If this fails, log error info in a file.
+
+```powershell
+<#
+.SYNOPSIS
+Gets system-specifications of remote computers on a CIM server.
+.EXAMPLE
+PS> Get-MachineInfo -ComputerName localhost
+ComputerName Version    ServicePackMajorVersion
+------------ -------    -----------------------
+localhost    10.0.18363                       0
+#>
+
+function Get-MachineInfo {
+    param (
+        [string[]]$ComputerName,
+        [string]$LogFailuresToPath,
+        [string]$Protocol = 'wsman',
+        [switch]$ProtocolFallback
+    )
+
+    forEach ($name in $computername){
+        if ($protocol -eq 'DCom'){
+            $option = New-CimSessionOption -Protocol DCom
+        } else {
+            $option = New-CimSessionOption -Protocol WSMan
+        }
+
+        $session = New-CimSession -ComputerName $name -SessionOption $option
+        $os = Get-CimInstance -ClassName Win32_OperatingSystem -CimSession $session
+        $session | Remove-CimSession
+        $os | Select-Object -Property @{n='ComputerName'; e={$name}},Version,ServicePackMajorVersion
+    }
+}
+```
+```
+PS> import-module -name 'C:\Users\Chaitanya Tejaswi\Documents\WindowsPowerShell\Modules\myTest' -force -verbose
+
+VERBOSE: Loading module from path 'C:\Users\Chaitanya Tejaswi\Documents\WindowsPowerShell\Modules\myTest\myTest.psm1'.
+VERBOSE: Exporting function 'Get-MachineInfo'.
+VERBOSE: Importing function 'Get-MachineInfo'.```
+
+PS> Get-MachineInfo -ComputerName localhost
+
+ComputerName Version    ServicePackMajorVersion
+------------ -------    -----------------------
+localhost    10.0.18363                       0
+```
+
+- [x] Write a utility that changes logon passwords of services of remote PCs. <br>
+If this fails, log error info in a file. Passwords may be supplied as plain string.
+
+```powershell
+<#
+.SYNOPSIS
+Sets logon passwords of services of remote computers on a CIM server.
+.EXAMPLE
+PS> Set-ServiceLogon -ComputerName localhost
+                     -ServiceName BITS
+                     -NewPassword 'P@ssw0rd'
+
+PS> Set-ServiceLogon -ComputerName S1,S2
+                     -ServiceName BITS
+                     -NewPassword 'P@ssw0rd'
+                     -NewUser 'COMPANY\User'
+#>
+
+function Set-ServiceLogon {
+    param (
+        [string[]]$ComputerName,
+        [string]$ServiceName,
+        [string]$NewUser,
+        [string]$NewPassword,
+        [string]$ErrorLogFilePath
+    )
+
+    forEach ($name in $computername){
+        $option = New-CimSessionOption -Protocol WSMan
+        $session = New-CimSession -ComputerName $name -SessionOption $option
+
+        if ($PSBoundParameters.ContainsKey('NewUser')){
+            $args = @{'StartName'=$NewUser; 'StartPassword'=$NewPassword}
+        } else {
+            $args = @{'StartPassword'=$NewPassword}
+        }
+
+        Invoke-CimMethod -ComputerName $name -MethodName Change `
+                         -Query "SELECT * FROM  Win32_Service WHERE name='$ServiceName'" `
+                         -Arguments $args |
+                            Select-Object -Property @{n='ComputerName'; e={$name}} `
+                                                    @{n='Result'; e={$_.ReturnValue}}
+
+        $session | Remove-CimSession
+    }
+}
+```
 
 # PowerShell & Python

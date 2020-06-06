@@ -338,6 +338,18 @@ Avoid these mistakes:
     } while ($choice -ne 0)
     ```
 
+## Data Structures
+
+__Array__ <br>
+
+- Create an empty array
+    ```
+    $page = @()                                                                                    $page.getType()
+    IsPublic IsSerial Name                                     BaseType
+    -------- -------- ----                                     --------
+    True     True     Object[]                                 System.Array
+    ```
+
 ## Objects
 
 Unlike UNIX, PS outputs objects (instead of text). This makes it easy to sort them.
@@ -1046,6 +1058,7 @@ https://www.youtube.com/watch?v=uoH6mnzwSZc
 - [x] Copy a filepath(s) to clipboard (So it becomes easy to paste in GUI)
     ```
     ls *.pdf | % {$_.fullname} | scb
+    (ls file.pdf).fullname | scb
     ```
 
 - [x] Convert text (from docx) to epub/html/pdf
@@ -1096,46 +1109,23 @@ https://www.youtube.com/watch?v=uoH6mnzwSZc
     $driveEject.Namespace(17).ParseName("D:").InvokeVerb("Eject")
     ```
 
-- [ ] Write templated strings to a file <br>
-    Here, template is `file n.mp4`; n=1-27
+- [x] Write templated strings to a file <br>
+    This writes `file i.mp4; (i = 1-20)` to `MERGE.txt`, and then, attempts to merge these video files.
     ```
-    file 1.mp4
-    file 2.mp4
-    file 3.mp4
-    file 4.mp4
-    file 5.mp4
-    file 6.mp4
-    file 7.mp4
-    file 8.mp4
-    file 9.mp4
-    file 10.mp4
-    file 11.mp4
-    file 12.mp4
-    file 13.mp4
-    file 14.mp4
-    file 15.mp4
-    file 16.mp4
-    file 17.mp4
-    file 18.mp4
-    file 19.mp4
-    file 20.mp4
-    file 21.mp4
-    file 22.mp4
-    file 23.mp4
-    file 24.mp4
-    file 25.mp4
-    file 26.mp4
-    file 27.mp4
+    $page = @(); $n=1; while ($n -ne 20) {$page += "file $n.mp4"; $n++}
+    $page | out-file -encoding ascii MERGE.txt
+    ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
     ```
+    We create an empty array `$page`, append entries to it, and pipe it to `MERGE.txt`.
 
 - [ ] Print strings following a matching sub-string <br>
     From CONFIG, I want to query the cmd to merge files using FFmpeg. <br>
     Logic:
       -> print 10 lines after a 'merge' (inclusive) is encountered.
 
-    This cmd gets `ffmpeg` lines out of CONFIG.
+    These cmd gets `ffmpeg` lines out of CONFIG.
     ```
-    cat $myconfig | ? {$_ -match 'ffmpeg'}
+    (cat $myconfig) -match 'ffmpeg'
     ```
     https://devtipscurator.wordpress.com/2016/11/25/how-to-filter-contents-in-a-text-file-using-powershell/
 
@@ -1159,6 +1149,17 @@ del $tmp.FullName -Force
 ## HTTP Requests
 
 PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
+
+- https://www.youtube.com/watch?v=QrC3ErlxpII
+- https://www.youtube.com/watch?v=yCaS8UTmd88
+- https://www.youtube.com/watch?v=va0WI9EyR2g
+- https://www.youtube.com/watch?v=7liyba6YEG0
+- https://www.youtube.com/watch?v=VmHDiXQTs1s
+- https://www.youtube.com/watch?v=7A_RtRKhMcs
+- https://www.youtube.com/watch?v=0DWM3xZbI2Y
+- https://www.youtube.com/watch?v=9Patluspez4
+
+
 
 __NOTE:__ <br>
 Before doing anything useful, make sure to install & configure Internet Explorer. (Although you can make do without this by using `-UseBasicParsing` switch; this is an absolutely fuckall workaround. This is because using it doesn't give you access to the webpage's DOM, which means, you cannot parse it, or get anything useful out of it. It's like standing with a gun - a water gun. So, just install the damn thing!) <br>
@@ -1190,9 +1191,77 @@ Before doing anything useful, make sure to install & configure Internet Explorer
     35°/26°
     ```
 
+- [x] Get all my Youtube playlists.
+
+    ```powershell
+    $response = curl -Uri 'https://www.youtube.com/channel/UC5NM5NZrw1hV6hgxnaPQPNw/playlists'
+    $links = $response.links
+    $links.href -match '^/playlist'
+    ```
+    ```
+    /playlist?list=PL3pGy4HtqwD10u_vC6AksMg_RrIPMzvIA
+    /playlist?list=PL3pGy4HtqwD3gyn8LDKSjCVDCbeyhbMTt
+    /playlist?list=PL3pGy4HtqwD0jv9pdq32VSGOydhTFzkml
+    /playlist?list=PL3pGy4HtqwD3d54qKcLV_A7uH2Je-koLK
+    /playlist?list=PL3pGy4HtqwD1w8xWdUoKYIOLHIvEwwcvB
+    /playlist?list=PL3pGy4HtqwD0IZ-yyyfSrCU9TE2Qen7Q2
+    /playlist?list=PL3pGy4HtqwD2kHyctc3TeDWtiwpqGITmv
+    /playlist?list=PL3pGy4HtqwD32Oq0IImcUuScP9B9hDyHp
+    /playlist?list=PL3pGy4HtqwD2-b56x-poK5wTchfD_6Lpt
+    /playlist?list=PL3pGy4HtqwD2F9ro3pL4dtuMoF51Pejyv
+    /playlist?list=PL3pGy4HtqwD2ojZ3u3vtdBr-QlfAcGkEh
+    /playlist?list=PL3pGy4HtqwD2_GQBn4D2NIykyVi_29jJS
+    /playlist?list=PL3pGy4HtqwD1iEJUR_d2jbXut1KHmFzIW
+    /playlist?list=PL3pGy4HtqwD351bfcGHqMcnrfd5TUPV4g
+    /playlist?list=PL3pGy4HtqwD17L7qvXVeO3Fx_ifdWCATV
+    /playlist?list=PL3pGy4HtqwD3XazA5eC1bnWUSF0iDhea6
+    /playlist?list=PL3pGy4HtqwD10YbUQxlS_N1ZZHmENb2EQ
+    /playlist?list=PL3pGy4HtqwD14pn1tUlN8iFi5uNr-UiAM
+    /playlist?list=PL3pGy4HtqwD1X9CXdgXMTVGjb7rYd-qr6
+    /playlist?list=PL3pGy4HtqwD0Xje7TZzx3iJejEvdvsmCp
+    /playlist?list=PL3pGy4HtqwD3DGVFClCfm2XXDbh5cesBT
+    /playlist?list=PL3pGy4HtqwD2lNBa8EGUXhJzbRWlNrXmY
+    /playlist?list=PL3pGy4HtqwD2oRvrfGO8bvFTq9luMEfho
+    /playlist?list=PL3pGy4HtqwD3nTV68hPXgIZYl0sbHAt8g
+    /playlist?list=PL3pGy4HtqwD01AK5uF2c8w0GdPh65DXOY
+    /playlist?list=PL3pGy4HtqwD319dRpIiX87W9lsvOH4FVN
+    /playlist?list=PL3pGy4HtqwD0CWdFuygdF-gk0ORk5EFZg
+    /playlist?list=PL3pGy4HtqwD1UPbRk3FSOw8jZA_ZvASHD
+    /playlist?list=PL3pGy4HtqwD2O2mQm-cuJpPYuzlS6Ustf
+    /playlist?list=PL3pGy4HtqwD1zDGOFgEWve23TlOUnhfn4
+    ```
+    Assuming absolute links; this opens all of them in a browser:
+    ```powershell
+    $links.href -match '^/playlist' | out-file -encoding ascii $tmp.fullname
+    firefox (cat $tmp.fullname)
+    ```
+    This won't work, since all links are relative. This works:
+    ```powershell
+    $page = @()
+    $page += ($links.href -match '^/playlist')
+    $page = $page.replace('/playlist','www.youtube.com/playlist')
+    $page | out-file -encoding ascii $tmp.fullname
+    firefox (cat $tmp.fullname)
+    ```
+
+- [ ] Append to my Youtube playlist. <br>
+    Given a [playlist](https://www.youtube.com/playlist?list=PL_c7L8RcICKpLCrTT_ZlyBlooup2aHBjT); append it to my own [playlist](https://www.youtube.com/playlist?list=PL3pGy4HtqwD10u_vC6AksMg_RrIPMzvIA), so I can easily watch it on my phone/pc/tv. <br>
+    Since, we'll send a POST request, we need to use YouTube's API. <br>
+    To manually insert videos from a playlist, we add `&disable_polymer=true` to the original link, then `Add All`. Is this any useful for querying the API? <br>
+
+
 __REST APIs__ <br>
 
-https://www.youtube.com/watch?v=Uk0IHzR57hQ
+- https://www.youtube.com/watch?v=Uk0IHzR57hQ
+- https://www.youtube.com/watch?v=7mEmQgGowMY
+- https://www.youtube.com/watch?v=9piyM38it_8
+- https://www.youtube.com/watch?v=RgwrHpE0IK4
+- https://www.youtube.com/watch?v=t66ZgGeykug
+- https://www.youtube.com/watch?v=mYcGV5BwMt4
+- https://www.youtube.com/watch?v=oUl-Mmwvgec
+- https://www.youtube.com/watch?v=_WjT2mrKXuE
+- https://www.youtube.com/watch?v=yfwTAnfMhzw
+- https://www.youtube.com/watch?v=AAPxI4QXPw8
 
 ## To-Do
 

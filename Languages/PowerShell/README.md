@@ -22,6 +22,7 @@
 - [Exception Handling](#exception-handling)
 - [Variables](#variables)
 - [Control Flow](#control-flow)
+- [Data Structures](#data-structures)
 - [Objects](#objects)
 - [Pipelining](#pipelining)
 - [Formatting](#formatting)
@@ -343,11 +344,146 @@ Avoid these mistakes:
 __Array__ <br>
 
 - Create an empty array
-    ```
-    $page = @()                                                                                    $page.getType()
+    ```powershell
+    $myArray = @(); $myArray.getType()
+
     IsPublic IsSerial Name                                     BaseType
     -------- -------- ----                                     --------
     True     True     Object[]                                 System.Array
+    ```
+
+- Initialize an array <br>
+    An array can contain values of different datatypes:
+    ```powershell
+    # Array (flexible type)
+    $myArray = 1,'Two',"$PSHome"
+    ```
+    We can define fixed-type arrays as well:
+    ```powershell
+    # Array (fixed type)
+    [int[]] $myArray = 1,2,3
+    ```
+
+    - [x] __Example:__ Get process data
+    ```
+    $myArray = gps firefox,powershell,sublime_text
+    $myArray.length # 11
+    ```
+
+- Array of Arrays <br>
+    We can initialize an array of arrays (__Jagged Array__):
+    ```powershell
+    # Array (array-of-arrays)
+    $myArray = @(
+        (1,2,3),
+        (4,5),
+        (6,7,8,9))
+    $myArray[1][1] # 5
+    ```
+    We can initialize a matrix (__Non-Jagged Array__):
+    ```powershell
+    # Array (fixed-size matrix)
+    $myArray = New-Object "int32[,]" 3,3
+    $myArray[1,1] = 5
+    $myArray[1,1] # 5
+    ```
+    The two differ in that the former doesn't have fixed dimensions (depends on input arrays), but the latter does (3x3).
+
+- Access elements of an Array <br>
+    To access an element:
+    ```powershell
+    $myArray = 1,'Two',"$PSHome"
+    $myArray[1] # Two
+    ```
+    To access a range of elements (__Array Slicing__):
+    ```powershell
+    $myArray = 1,'Two',"$PSHome"
+    $myArray[1..2 +0 +1]
+
+    Two C:\Windows\System32\WindowsPowerShell\v1.0 1 Two
+    ```
+    This accesses 2nd & 3rd values, then 0th & 1th value. <br>
+    To iterate through an array, use `forEach`:
+    ```powershell
+    $myArray = 1..10; $sum = 0
+    $myArray | forEach {$sum += $_}
+    $sum # 56
+    ```
+
+- Sort an array <br>
+    Use `Sort-Object`(aka `sort`).
+
+- Add/Remove elements to/from an array <br>
+    To add, simply use `+=`.
+    ```powershell
+    $myArray = 1..10
+    $myArray += 11,12,13
+    $myArray # 1 2 3 4 5 6 7 8 9 10 11 12 13
+    ```
+    To remove, use conditional-operator or regex (`-ne`,`-notlike`,`-notmatch`) to describe the elements (to remove), and store the result back.
+    ```powershell
+    $myArray = 1..13
+    $myArray = $myArray -notmatch '1.'
+    $myArray # 1 2 3 4 5 6 7 8 9
+    ```
+
+- Working with dynamic arrays <br>
+    Use .NET's [`System.Collections.ArrayList`](https://docs.microsoft.com/en-us/dotnet/api/system.collections.arraylist) class to work with dynamic arrays. <br>
+    This is useful when you are frequently manipulating an array with large amounts of data.
+    ```powershell
+    $myArray = New-Object System.Collections.ArrayList
+    ```
+    Also read [`System.Collections`](https://docs.microsoft.com/en-us/dotnet/api/system.collections) for available .NET data-structures.
+
+__Associative Array (Hash Table)__ <br>
+
+- Create an empty hashtable
+    ```powershell
+    $myHash = @{}; $myHash.getType()
+
+    IsPublic IsSerial Name                                     BaseType
+    -------- -------- ----                                     --------
+    True     True     Hashtable                                System.Object
+    ```
+
+- Initialize a hashtable <br>
+    We can initialize a hashtable using `key=value` pairs:
+    ```powershell
+    $myHash = @{'Name'='Chaitanya'; 'Directory'="$PSHome"}
+    $myHash
+    Name                           Value
+    ----                           -----
+    Name                           Chaitanya
+    Directory                      C:\Windows\System32\WindowsPowerShell\v1.0
+    ```
+    We can initialize a hashtable using `key` incrementally:
+    ```powershell
+    $myHash = @{}; $myHash['Name']='Chaitanya'; $myHash.Directory="$PSHome"
+    $myHash
+    Name                           Value
+    ----                           -----
+    Name                           Chaitanya
+    Directory                      C:\Windows\System32\WindowsPowerShell\v1.0
+    ```
+
+- Sort a hashtable <br>
+    Use `.GetEnumerator()` method to access each element. Sort this by `name`/`value` to sort by `key`/`value`.
+    ```powershell
+    $myHash = @{}; $myHash['Name']='Chaitanya'; $myHash.Veto='Alpha'
+    $myHash.GetEnumerator() | sort name
+
+    Name                           Value
+    ----                           -----
+    Name                           Chaitanya
+    Veto                           Alpha
+
+
+    $myHash.GetEnumerator() | sort value
+
+    Name                           Value
+    ----                           -----
+    Veto                           Alpha
+    Name                           Chaitanya
     ```
 
 ## Objects
@@ -1191,7 +1327,7 @@ Before doing anything useful, make sure to install & configure Internet Explorer
     35°/26°
     ```
 
-- [x] Get all my Youtube playlists.
+- [x] Get all of my Youtube playlists.
 
     ```powershell
     $response = curl -Uri 'https://www.youtube.com/channel/UC5NM5NZrw1hV6hgxnaPQPNw/playlists'

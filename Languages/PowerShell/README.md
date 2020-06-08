@@ -10,6 +10,7 @@
 - TechSnips [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A)
 - [Jeff Hicks](https://jdhitsolutions.com/blog/)
 - Warren Frame [[PS recipies]](https://github.com/RamblingCookieMonster/PowerShell) [[PSSQLite]](https://github.com/RamblingCookieMonster/PSSQLite)
+- [Prateek Singh](https://github.com/PrateekKumarSingh/PowerShell-Interview)
 - [powershell.org](https://powershell.org/articles/)
 - [MS DevBlog](https://devblogs.microsoft.com/scripting/)
 - [GitHub](https://github.com/PowerShell/PowerShell)
@@ -46,7 +47,9 @@
 
 - Clear Command History <br> Press `Ctrl + F7`
 
-- Disable Quick Access, Recent Items & File-Explorer History.
+- Clear RecycleBin <br> `Clear-RecycleBin`
+
+- Disable Quick Access, Recent Items & File-Explorer History. <br>
     Quick Access (Right-Click) >> Options >> Open File Explorer to: "This PC" >> Uncheck Privacy Options.
 
 - Uninstall built-in apps
@@ -341,6 +344,8 @@ Avoid these mistakes:
 
 ## Data Structures
 
+- https://www.red-gate.com/simple-talk/sysadmin/powershell/powershell-one-liners-collections-hashtables-arrays-and-strings/
+
 __Array__ <br>
 
 - Create an empty array
@@ -365,7 +370,7 @@ __Array__ <br>
     ```
 
     - [x] __Example:__ Get process data
-    ```
+    ```powershell
     $myArray = gps firefox,powershell,sublime_text
     $myArray.length # 11
     ```
@@ -433,7 +438,6 @@ __Array__ <br>
     ```powershell
     $myArray = New-Object System.Collections.ArrayList
     ```
-    Also read [`System.Collections`](https://docs.microsoft.com/en-us/dotnet/api/system.collections) for available .NET data-structures.
 
 __Associative Array (Hash Table)__ <br>
 
@@ -451,6 +455,7 @@ __Associative Array (Hash Table)__ <br>
     ```powershell
     $myHash = @{'Name'='Chaitanya'; 'Directory'="$PSHome"}
     $myHash
+
     Name                           Value
     ----                           -----
     Name                           Chaitanya
@@ -460,6 +465,7 @@ __Associative Array (Hash Table)__ <br>
     ```powershell
     $myHash = @{}; $myHash['Name']='Chaitanya'; $myHash.Directory="$PSHome"
     $myHash
+
     Name                           Value
     ----                           -----
     Name                           Chaitanya
@@ -486,15 +492,194 @@ __Associative Array (Hash Table)__ <br>
     Name                           Chaitanya
     ```
 
+__NOTE__: Following are some strongly-typed 'Generic' .NET data structures. These can be useful when you want to constrain the variables to fixed datatypes. <br>
+See [`System.Collections.Generic`](https://docs.microsoft.com/en-us/dotnet/standard/generics/collections) for documentation.<br>
+
+__List__ <br>
+
+- Create an empty list
+    ```powershell
+    $myList = New-Object System.Collections.Generic.List[String]
+    $myList = [System.Collections.Generic.List[String]]::new()
+    ```
+    This syntax is better for use:
+    ```powershell
+    $myList = [System.Collections.Generic.List[String]]("Apple","Ball","Cat")
+    $myList = [System.Collections.Generic.List[String]](cat $myLinks)
+    ```
+
+- Add elements to a list
+    ```powershell
+    $myList.add("Ball")
+    $myList.addRange([String[]]("Cat","Dog","Ear"))
+    $myList # Ball Cat Dog Ear
+    $myList.insert(0,"Apple")
+    $myList.insertRange(5,[String[]]("Fish","Girl","Ice"))
+    $myList # Apple Ball Cat Dog Ear Fish Girl Ice
+    ```
+
+- Remove elements from a list (remove/removeAt/removeRange/removeAll)
+    Here param($x) defines a [lambda function](https://vexx32.github.io/2018/10/26/Anonymous-Functions/)
+    ```powershell
+    $myList.remove("Ice") # True <- value
+    $myList # Apple Ball Cat Dog Ear Fish Girl
+    $myList.removeAt(6) # <- index
+    $myList # Apple Ball Cat Dog Ear Fish
+    $myList.removeRange(3,2) # True <- index,count
+    $myList # Apple Ball Cat Fish
+    $myList.removeAll({param($x) $x -match "^f."}) # 1 <- count
+    $myList # Apple Ball Cat
+    ```
+
+- Select elements from a list
+    ```powershell
+    $myList[1] # Bat
+    $myList.indexOf('Bat') # 1
+    ```
+
+- Modify elements in a list
+    ```powershell
+    $myList[1] = 'Bat'
+    $myList # Apple Bat Cat
+    ```
+
+- Search/Sort a list
+    ```powershell
+    $myList.findAll({param($x) $x -match "^a."}) # 1 <- count
+    # $myList.sort() ??
+    # $myList.binarySearch() ??
+    $myList = [System.Collections.Generic.List[Int]](1..1000000)
+    $myList.binarySearch(1024); $myList.indexOf(1024); # 1023 1023
+    ```
+
+__Dictionary__ <br>
+
+- Create an empty dictionary
+    ```powershell
+    $myDict = New-Object System.Collections.Generic.Dictionary"[String,String]"
+    $myDict = [System.Collections.Generic.Dictionary[String,String]]::new()
+    ```
+    This syntax is better for use:
+    ```powershell
+    # $myDict = [System.Collections.Generic.Dictionary[String,String]](("Name","Adam")("Group","Alpha")("Grade","A"))
+    ```
+
+- Add elements to a dictionary
+    ```powershell
+    $myDict.add("Name","Chaitanya"); $myDict.Directory = "$PSHome"; $myDict.Age = 23;
+    $myDict
+
+    Key       Value
+    ---       -----
+    Name      Chaitanya
+    Directory C:\Windows\System32\WindowsPowerShell\v1.0
+    Age       23
+    ```
+
+- Remove elements from a dictionary
+    ```powershell
+    $myDict.remove('Age')
+    $myDict
+
+    Key       Value
+    ---       -----
+    Name      Chaitanya
+    Directory C:\Windows\System32\WindowsPowerShell\v1.0
+    ```
+
+- Select elements from a dictionary
+    ```powershell
+    $myDict['Name']; $myDict.Name; # Chaitanya Chaitanya
+    ```
+
+- Modify elements in a dictionary
+    ```powershell
+    $myDict['Name']='Tejaswi'; $myDict.Name; # Tejaswi
+    $myDict.Name='Chaitanya'; $myDict.Name;  # Chaitanya
+    ```
+
+- Check for key/value in a dictionary
+    ```powershell
+    $myDict.ContainsKey('Name'); $myDict.ContainsValue('Chaitanya'); # True True
+    ```
+
+    - [x] Add a key/value pair to an existing dictionary
+    ```powershell
+    if (-not $myDict.containsKey('Age')){
+        $myDict.add('Age',23)
+    }
+    $myDict.Age # 23
+    ```
+
+- Enumerate a dictionary
+    ```powershell
+    $myDict.Keys; $myDict.values;
+    # Name Directory Age
+    # Chaitanya C:\Windows\System32\WindowsPowerShell\v1.0 23
+    ```
+
+
+__Stack__ <br>
+
+- Create an empty stack
+    ```powershell
+    $myStack = New-Object System.Collections.Generic.Stack[String]
+    $myStack = [System.Collections.Generic.Stack[String]]::new()
+    ```
+    This syntax is better for use:
+    ```powershell
+    $myStack = [System.Collections.Generic.Stack[String]]("Apple","Ball","Cat")
+    $myStack = [System.Collections.Generic.Stack[String]](cat $myLinks)
+    ```
+
+- Add/Remove elements to/from a stack
+    ```powershell
+    $myStack.push("Apple"); $myStack.push("Ball"); $myStack.push("Cat");
+    $myStack.pop() # Cat
+    ```
+
+- Enumerate a stack
+    We can peek at top-of-stack using `.peek()`. To index a stack, convert it to array using `.toArray()`
+    ```powershell
+    $myStack = [System.Collections.Generic.Stack[String]]('Apple','Ball','Cat')
+    $myStack.peek() # Cat
+    $myArray = $myStack.toArray() # Cat Ball Apple
+    ```
+
+__Queue__ <br>
+
+- Create an empty queue
+    ```powershell
+    $myQueue = New-Object System.Collections.Generic.Queue[String]
+    $myQueue = [System.Collections.Generic.Queue[String]]::new()
+    ```
+    This syntax is better for use:
+    ```powershell
+    $myQueue = [System.Collections.Generic.Queue[String]]("Apple","Ball","Cat")
+    $myQueue = [System.Collections.Generic.Queue[String]](cat $myLinks)
+    ```
+
+- Add/Remove elements to/from a queue
+    ```powershell
+    $myQueue.enqueue("Apple"); $myQueue.enqueue("Ball"); $myQueue.enqueue("Cat");
+    $myQueue.dequeue() # Apple
+    ```
+
+- Enumerate a queue
+    We can peek at top-of-queue using `.peek()`. To index a queue, convert it to array using `.toArray()`
+    ```powershell
+    $myQueue = [System.Collections.Generic.Queue[String]]('Apple','Ball','Cat')
+    $myQueue.peek() # Apple
+    $myArray = $myQueue.toArray() # Apple Ball Cat
+    ```
+
 ## Objects
 
-Unlike UNIX, PS outputs objects (instead of text). This makes it easy to sort them.
-This instruction gets all the members (properties/methods) of `get-process` cmdlet, sorted by name.
-    ```
+Unlike UNIX, PS outputs objects (instead of text). This makes it easy to sort them. <br>
+This instruction gets all the members (properties/methods) of `get-process` cmdlet, sorted by name. <br>
+    ```powershell
     get-process | get-member | sort Name
-    gps | gm | sort Name
-    ```
-    ```
+
        TypeName: System.Diagnostics.Process
 
     Name                       MemberType     Definition
@@ -1286,16 +1471,14 @@ del $tmp.FullName -Force
 
 PS gives `Invoke-WebRequest` (aka `curl`) to work with webpages. <br>
 
+- [WebScraping (Prateek Singh)](https://github.com/PrateekKumarSingh/PowershellScrapy)
 - https://www.youtube.com/watch?v=QrC3ErlxpII
 - https://www.youtube.com/watch?v=yCaS8UTmd88
 - https://www.youtube.com/watch?v=va0WI9EyR2g
 - https://www.youtube.com/watch?v=7liyba6YEG0
-- https://www.youtube.com/watch?v=VmHDiXQTs1s
 - https://www.youtube.com/watch?v=7A_RtRKhMcs
 - https://www.youtube.com/watch?v=0DWM3xZbI2Y
 - https://www.youtube.com/watch?v=9Patluspez4
-
-
 
 __NOTE:__ <br>
 Before doing anything useful, make sure to install & configure Internet Explorer. (Although you can make do without this by using `-UseBasicParsing` switch; this is an absolutely fuckall workaround. This is because using it doesn't give you access to the webpage's DOM, which means, you cannot parse it, or get anything useful out of it. It's like standing with a gun - a water gun. So, just install the damn thing!) <br>

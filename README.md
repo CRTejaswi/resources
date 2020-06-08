@@ -1,3 +1,4 @@
+<<<<<<< HEAD
     Copyright (c) 2018-
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
@@ -22,3 +23,9 @@
 > Contains miscellaneous unsorted notes/recipies.
 
 - [Beazley](Unsorted/Beazley.md)
+
+=======
+
+# C-Cpp
+Simple C/C++ Programs
+>>>>>>> CCpp/master

@@ -12,13 +12,13 @@
 - [CCpp](Languages/CCpp/README.md)
 - [Haskell](Languages/Haskell/README.md)
 - [JavaScript](Languages/JS/README.md)
-- [HDL](Languages/HDL/README.md)
+- [HDL](Languages/HDL/README.md) <sup>[BROKEN]</sup>
     - [VHDL](Languages/HDL/VHDL/README.md)
     - [Verilog](Languages/HDL/Verilog/README.md)
     - [SPICE](Languages/HDL/SPICE/README.md)
     - [µWind](Languages/HDL/µWind/README.md)
 
-## Command Set
+## Command Set <sup>[BROKEN]</sup>
 > Contains various command-set listing.
 
 - [AT Commands](CommandSet/AT-Commands.pdf)

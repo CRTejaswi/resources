@@ -508,7 +508,18 @@ __List__ <br>
     $myList = [System.Collections.Generic.List[String]](cat $myLinks)
     ```
 
-- Add elements to a list
+- Add/Remove elements to/from a list <br>
+    PS offers 4 add & remove methods each. <br>
+    ```
+    add/addRange         -> append one/many entries at the end of list.
+    insert/insertRange   -> insert one/many entries at specific index.
+
+    remove               -> remove one entry (by value)
+    removeAt/removeRange -> remove one/many entries (by index) from a specific index.
+    removeAll            -> remove entries based on a criteria.
+    ```
+    We can use __ScriptBlock (`{}`)__ within `removeAll()` to define criteria. <br>
+    This example makes use of `param($x)` to define a [lambda function](https://vexx32.github.io/2018/10/26/Anonymous-Functions/)
     ```powershell
     $myList.add("Ball")
     $myList.addRange([String[]]("Cat","Dog","Ear"))
@@ -516,11 +527,7 @@ __List__ <br>
     $myList.insert(0,"Apple")
     $myList.insertRange(5,[String[]]("Fish","Girl","Ice"))
     $myList # Apple Ball Cat Dog Ear Fish Girl Ice
-    ```
 
-- Remove elements from a list (remove/removeAt/removeRange/removeAll)
-    Here param($x) defines a [lambda function](https://vexx32.github.io/2018/10/26/Anonymous-Functions/)
-    ```powershell
     $myList.remove("Ice") # True <- value
     $myList # Apple Ball Cat Dog Ear Fish Girl
     $myList.removeAt(6) # <- index
@@ -543,7 +550,9 @@ __List__ <br>
     $myList # Apple Bat Cat
     ```
 
-- Search/Sort a list
+- Search/Sort a list <br>
+    Alike `removeAll()`, we can use __ScriptBlock (`{}`)__ within `findAll()` to define criteria. <br>
+    `binarySearch()` implements __Binary Search__ to iteratively shrink dataset. This is prefered over `indexOf()` working with extremely large number of values.
     ```powershell
     $myList.findAll({param($x) $x -match "^a."}) # 1 <- count
     # $myList.sort() ??
@@ -559,12 +568,12 @@ __Dictionary__ <br>
     $myDict = New-Object System.Collections.Generic.Dictionary"[String,String]"
     $myDict = [System.Collections.Generic.Dictionary[String,String]]::new()
     ```
-    This syntax is better for use:
+    This syntax is better for use: <sup>[BROKEN]</sup>
     ```powershell
     # $myDict = [System.Collections.Generic.Dictionary[String,String]](("Name","Adam")("Group","Alpha")("Grade","A"))
     ```
 
-- Add elements to a dictionary
+- Add/Remove elements to/from a dictionary
     ```powershell
     $myDict.add("Name","Chaitanya"); $myDict.Directory = "$PSHome"; $myDict.Age = 23;
     $myDict
@@ -574,10 +583,7 @@ __Dictionary__ <br>
     Name      Chaitanya
     Directory C:\Windows\System32\WindowsPowerShell\v1.0
     Age       23
-    ```
 
-- Remove elements from a dictionary
-    ```powershell
     $myDict.remove('Age')
     $myDict
 

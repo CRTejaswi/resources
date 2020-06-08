@@ -17,7 +17,7 @@
 - [Unsorted](#Unsorted)
 
 ## Data Structures & Algorithms
-Review: [DSA](dsa/DSA.md)
+Review: [DSA](dsa/dsa.md)
 
 ## CLI/GUI
 

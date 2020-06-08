@@ -1,4 +1,3 @@
-<<<<<<< HEAD
     Copyright (c) 2018-
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
@@ -10,6 +9,7 @@
 
 - [PowerShell](Languages/PowerShell/README.md)
 - [Python3](Languages/Python3/README.md)
+- [CCpp](Languages/CCpp/README.md)
 - [Haskell](Languages/Haskell/README.md)
 - [JavaScript](Languages/JS/README.md)
 
@@ -23,9 +23,3 @@
 > Contains miscellaneous unsorted notes/recipies.
 
 - [Beazley](Unsorted/Beazley.md)
-
-=======
-
-# C-Cpp
-Simple C/C++ Programs
->>>>>>> CCpp/master

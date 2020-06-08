@@ -1,5 +1,13 @@
 *.html
+Languages/CCpp/*.html
+Languages/CCpp/test.c
+Languages/CCpp/test.cpp
+Languages/CCpp/test.asm
 Languages/Haskell/*.html
+Languages/Haskell/test.hs
 Languages/JS/*.html
+Languages/JS/test.js
 Languages/PowerShell/*.html
+Languages/PowerShell/test.ps1
 Languages/Python3/*.html
+Languages/Python3/test.py

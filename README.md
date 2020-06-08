@@ -12,6 +12,9 @@
 - [CCpp](Languages/CCpp/README.md)
 - [Haskell](Languages/Haskell/README.md)
 - [JavaScript](Languages/JS/README.md)
+- [HDL](Languages/HDL/README.md)
+    - [VHDL](Languages/HDL/VHDL/README.md)
+    - [Verilog](Languages/HDL/Verilog/README.md)
 
 ## Command Set
 > Contains various command-set listing.

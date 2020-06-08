@@ -15,6 +15,8 @@
 - [HDL](Languages/HDL/README.md)
     - [VHDL](Languages/HDL/VHDL/README.md)
     - [Verilog](Languages/HDL/Verilog/README.md)
+    - [SPICE](Languages/HDL/SPICE/README.md)
+    - [µWind](Languages/HDL/µWind/README.md)
 
 ## Command Set
 > Contains various command-set listing.

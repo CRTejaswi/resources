@@ -793,6 +793,66 @@ This instruction gets all the members (properties/methods) of `get-process` cmdl
     gps | select ID,Name,VM,PM | sort VM,ID -desc | convertto-html | out-file TEST.html
     ```
 
+__Group-Object__ <br>
+We can group objects based on like values/properties. <br>
+
+```powershell
+$Object | Measure-Object <switch>
+```
+
+- [x] Group email addresses by provider <br>
+    ```
+    $emails = @('abc@gmail.com', 'xyz@gmail.com', 'abc@yahoo.com', 'abc@yahoo.com')
+    $emails | group { ($_ -split '@')[1] }
+    ```
+    Here, `-split` splits result into two parts, accessible using [0] & [1]. <br>
+
+__Measure-Object__ <br>
+We can perfom certain arithmetic operations on objects. <br>
+
+```powershell
+$Object | Measure-Object <switch>
+```
+
+<center>
+
+| Type | Switch | Meaning |
+| :--: | :--: | :-- |
+| Numeric | `-Max`, `-Min`, `-Average` | max/min & average of the values |
+| String | `-Char`, `-Word`, `-Line` | #chars, #words, #lines in string |
+
+</center>
+
+__Compare-Object__ <br>
+We can compare entries within two objects. <br>
+
+```powershell
+Compare-Object -reference  $A -difference $B -includeEqual -excludeDifferent
+Compare-Object -reference 1,2,3,4 -difference 1,2 -includeEqual
+
+InputObject SideIndicator
+----------- -------------
+          1 ==
+          2 ==
+          3 <=
+          4 <=
+```
+
+- [x] Compare two folders; return files with same name & size.
+    ```powershell
+    $ref = ls ('C:\Windows\System32' -file); $diff = (ls 'C:\Windows\SysWOW64' -file);
+    compare = -ref $ref -diff $diff -property Name,Length -includeEqual -excludeDifferent
+
+    Name                              Length SideIndicator
+    ----                              ------ -------------
+    @AppHelpToast.png                    232 ==
+    @AudioToastIcon.png                  308 ==
+    @EnrollmentToastIcon.png             330 ==
+    @VpnToastIcon.png                    404 ==
+    ...
+    ```
+
+
 - Objects: Selecting (`Sort-Object` v `Where-Object`) <br>
     `Sort-Object` lets you select/filter objects based on properties. <br>
     `Where-Object` lets you select/filter objects based on a criteria. <br>
@@ -1234,7 +1294,8 @@ https://www.tutorialspoint.com/sqlite/index.htm
 
 ## Scripting
 
-Review [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons).
+See: [myScripts](scripts.md)
+Review: [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons).
 
 ### Basics
 
@@ -1374,6 +1435,8 @@ https://www.youtube.com/watch?v=uoH6mnzwSZc
 
 
 # Recipies
+
+See: [myScripts](scripts.md)
 
 ## Clipboard Operations (`gcb`/`scb`)
 
@@ -1522,38 +1585,10 @@ Before doing anything useful, make sure to install & configure Internet Explorer
     $response = curl -Uri 'https://www.youtube.com/channel/UC5NM5NZrw1hV6hgxnaPQPNw/playlists'
     $links = $response.links
     $links.href -match '^/playlist'
-    ```
-    ```
+
     /playlist?list=PL3pGy4HtqwD10u_vC6AksMg_RrIPMzvIA
     /playlist?list=PL3pGy4HtqwD3gyn8LDKSjCVDCbeyhbMTt
-    /playlist?list=PL3pGy4HtqwD0jv9pdq32VSGOydhTFzkml
-    /playlist?list=PL3pGy4HtqwD3d54qKcLV_A7uH2Je-koLK
-    /playlist?list=PL3pGy4HtqwD1w8xWdUoKYIOLHIvEwwcvB
-    /playlist?list=PL3pGy4HtqwD0IZ-yyyfSrCU9TE2Qen7Q2
-    /playlist?list=PL3pGy4HtqwD2kHyctc3TeDWtiwpqGITmv
-    /playlist?list=PL3pGy4HtqwD32Oq0IImcUuScP9B9hDyHp
-    /playlist?list=PL3pGy4HtqwD2-b56x-poK5wTchfD_6Lpt
-    /playlist?list=PL3pGy4HtqwD2F9ro3pL4dtuMoF51Pejyv
-    /playlist?list=PL3pGy4HtqwD2ojZ3u3vtdBr-QlfAcGkEh
-    /playlist?list=PL3pGy4HtqwD2_GQBn4D2NIykyVi_29jJS
-    /playlist?list=PL3pGy4HtqwD1iEJUR_d2jbXut1KHmFzIW
-    /playlist?list=PL3pGy4HtqwD351bfcGHqMcnrfd5TUPV4g
-    /playlist?list=PL3pGy4HtqwD17L7qvXVeO3Fx_ifdWCATV
-    /playlist?list=PL3pGy4HtqwD3XazA5eC1bnWUSF0iDhea6
-    /playlist?list=PL3pGy4HtqwD10YbUQxlS_N1ZZHmENb2EQ
-    /playlist?list=PL3pGy4HtqwD14pn1tUlN8iFi5uNr-UiAM
-    /playlist?list=PL3pGy4HtqwD1X9CXdgXMTVGjb7rYd-qr6
-    /playlist?list=PL3pGy4HtqwD0Xje7TZzx3iJejEvdvsmCp
-    /playlist?list=PL3pGy4HtqwD3DGVFClCfm2XXDbh5cesBT
-    /playlist?list=PL3pGy4HtqwD2lNBa8EGUXhJzbRWlNrXmY
-    /playlist?list=PL3pGy4HtqwD2oRvrfGO8bvFTq9luMEfho
-    /playlist?list=PL3pGy4HtqwD3nTV68hPXgIZYl0sbHAt8g
-    /playlist?list=PL3pGy4HtqwD01AK5uF2c8w0GdPh65DXOY
-    /playlist?list=PL3pGy4HtqwD319dRpIiX87W9lsvOH4FVN
-    /playlist?list=PL3pGy4HtqwD0CWdFuygdF-gk0ORk5EFZg
-    /playlist?list=PL3pGy4HtqwD1UPbRk3FSOw8jZA_ZvASHD
-    /playlist?list=PL3pGy4HtqwD2O2mQm-cuJpPYuzlS6Ustf
-    /playlist?list=PL3pGy4HtqwD1zDGOFgEWve23TlOUnhfn4
+    ...
     ```
     Assuming absolute links; this opens all of them in a browser:
     ```powershell

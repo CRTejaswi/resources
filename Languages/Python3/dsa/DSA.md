@@ -14,8 +14,9 @@
 
 ## Trivial
 
-- Calculate Greatest Common Divisor (GCD, or HCF) of two numbers. <br>
-    Functions 1-5 all solve the same problem, but differ in efficiency. Note the difference in computation-time of first & last implementations. <br>
+- __Greatest Common Divisor (GCD, or HCF) of two numbers.__ <br>
+    Functions 1-5 all solve the same problem, but differ in efficiency. <br>
+    Note the difference in computation-time of first & last implementations. <br>
     This builds a strong case for studying algorithms. <br>
 
     ```python

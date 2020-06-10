@@ -22,6 +22,7 @@
 - [System Help](#system-help)
 - [Exception Handling](#exception-handling)
 - [Variables](#variables)
+- [Operators](operators)
 - [Control Flow](#control-flow)
 - [Data Structures](#data-structures)
 - [Objects](#objects)
@@ -31,8 +32,11 @@
 - [Background Processes (`Job`)](#background-processes-aka-job)
 - [Regular Expressions](#regular-expressions)
 - [Remote Access](#remote-access)
-- [Formatted Data (CSV, JSON, XML)](#formatted-data-csv-json-xml)
+- [Providers](#providers)
+- [Registry](#registry)
+- [Structured Data (CSV, JSON, XML)](#formatted-data-csv-json-xml)
 - [Databases (SQLite, SQL Server)](#databases)
+- [Modules](#modules)
 - [Scripting](#scripting)
 - [Recipies](#recipies)
 - [Tools](#tools)
@@ -1279,11 +1283,78 @@ __Quantifiers__
     gwmi -class win32_service -Filter "state = 'running'" | sort startmode,name
     ```
 
+## Providers
 
-## Formatted Data (CSV, JSON, XML)
+Refer: [Providers](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_providers) <br>
+Also See: [Registry](#registry)
+
+A provider represents a __data storage__ as a __filesystem__. <br>
+Windows FileSystem has this heirarchy:
+```
+File -> Folder -> Drive
+```
+File/Folder are collectively called __Item__, and so we have items associated with a drive. Since a Provider maps physical storage to drives (even if they're not a filesystem object, eg. Registry): we have cmdlets that deal with __items__. <br>
+These verbs apply to all __items__:
+```
+Get/Set, Copy/Move, New/Remove/Rename/Clear
+```
+Each provider has certain 'capabilities' for its associated cmdlets. <br>
+```
+ShouldProcess -> We can use `-WhatIf` & `-Confirm` to test before executing it.
+Filter        -> We can use `-Filter` to filter out content.
+Credentials   -> We can specify credentials to be provided each time a cmdlet is run.
+Transactions  -> We can commit or rollback changes made by the cmdlet.
+```
+
+__Built-In Providers__ <br>
+
+<center>
+
+| Provider | Drive(s) | OutputType | Capabilities |
+| :--: | :--: | :-- | :-- |
+| Alias | `Alias:` | `System.Management.Automation.AliasInfo` | ShouldProcess |
+| Certificate | `Cert:` | `Microsoft.PowerShell.Commands.X509StoreLocation` | ? |
+| | | `System.Security.Cryptography.X509Certificates.X509Certificate2` | . |
+| Environment | `Env:` | `System.Collections.DictionaryEntry` | ShouldProcess |
+| FileSystem | `C:` | `System.IO.FileInfo` | ShouldProcess, Filter, Credentials |
+| | | `System.IO.DirectoryInfo` | . |
+| Function | `Function:` | `System.Management.Automation.FunctionInfo` | ShouldProcess |
+| Registry | `HKLM: HKCU:` | `Microsoft.Win32.RegistryKey` | ShouldProcess, Transactions |
+| Variable | `Variable:` | `System.Management.Automation.PSVariable` | ShouldProcess |
+| WSMan | `WSMan:` | `Microsoft.WSMan.Management.WSManConfigContainerElement` | Credentials |
+
+</center>
+
+## Registry
+
+Refer: [Registry](https://en.m.wikipedia.org/wiki/Windows_Registry)
+
+The Registry is a database that store low-level settings for any Windows OS. <br>
+Registry files are stored in `%SystemRoot%\System32\Config` <br>
+
+<center>
+    <img src="resources/registry_files.png" title="Registry Files">
+</center>
+
+<center>
+    <img src="resources/registry_structure.png" title="Registry Structure">
+</center>
+
+## Structured Data (CSV, JSON, XML)
 
 https://www.youtube.com/watch?v=Ukuj_DxueIc&app=desktop
 https://github.com/jdhitsolutions/psdatafiles/tree/master/demos
+
+__NOTE__ <br>
+    All file conversion cmdlets use verbs like `Import`,`Export`,`ConvertTo`,`ConvertFrom`. <br>
+    These have specific meaning.
+    ```
+    Import/Export         -> convert & save to a file.
+    ConvertTo/ConvertFrom -> only convert (to be displayed or piped further).
+    ```
+
+__CSV__ <br>
+
 
 ## Databases
 
@@ -1294,8 +1365,8 @@ https://www.tutorialspoint.com/sqlite/index.htm
 
 ## Scripting
 
-See: [myScripts](scripts.md)
-Review: [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons).
+Also See: [myScripts](scripts.md) <br>
+Review: [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons). <br>
 
 ### Basics
 
@@ -1436,7 +1507,7 @@ https://www.youtube.com/watch?v=uoH6mnzwSZc
 
 # Recipies
 
-See: [myScripts](scripts.md)
+Also See: [myScripts](scripts.md)
 
 ## Clipboard Operations (`gcb`/`scb`)
 
@@ -1502,7 +1573,7 @@ See: [myScripts](scripts.md)
 - [x] Write templated strings to a file <br>
     This writes `file i.mp4; (i = 1-20)` to `MERGE.txt`, and then, attempts to merge these video files.
     ```
-    $page = @(); $n=1; while ($n -ne 20) {$page += "file $n.mp4"; $n++}
+    $page = @(); $n=1; while ($n -ne 21) {$page += "file $n.mp4"; $n++}
     $page | out-file -encoding ascii MERGE.txt
     ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
     ```

@@ -11,13 +11,15 @@
 
 ## Youtube
 
-- [x] Gather list of videos/playlists for a YouTube user/channel. <br>
-    I've managed to scrape link ids for videos/playlists and stored them to a JSON file. To build full links, you can easily use `$baseURL/watch?v=$video` & `$baseURL/playlist?list=$video` to build absolute links. The major issue with v1/v2 is that not all links are retrieved (eg. `jabykoay` yields 110 videos when there are many more). [Prateek Singh's implementation] uses DOM instead of simple query like mine. This way, you can get title of videos as well. But his way also has the same issue - his gets fewer videos than mine.
+- [x] __Gather list of videos/playlists for a YouTube user/channel.__ <br>
+    I've managed to scrape link ids for videos/playlists and store them to a JSON file. [[jabykoay]](jabykoay.json) [[teamcoco]](teamcoco.json) <br>
+    You can easily use `$baseURL/watch?v=$video` & `$baseURL/playlist?list=$video` to build absolute links. <br>
+    The major issue with v1/v2 is that not all links are retrieved (eg. `jabykoay` yields 110 videos when there are many more). [Prateek Singh's implementation](https://github.com/PrateekKumarSingh/PowershellScrapy/blob/master/Youtube/Get-YoutubeVideo.ps1) uses DOM instead of simple query like mine. This way, you can get title of videos as well. But his way also has the same issue - his gets fewer videos than mine.
 
 <details>
 <summary> v1 </summary>
 
-> CHANGES: See implementation of `$content`. No duplicate videos/playlist link except ones that contain both video & playlist reference in same link.
+> CHANGES: See implementation of `$content`. No duplicate video/playlist link except ones that contain both video & playlist reference in same link.
 
 ```powershell
 function Get-YouTubeVideos{
@@ -51,7 +53,7 @@ Get-YouTubeVideos -Name 'teamcoco' -id 'user' | ConvertTo-Json | Out-File -encod
 <details>
 <summary> v2 </summary>
 
-> CHANGES: See implementation of `$content`. Several duplicate videos/playlist links are present.
+> CHANGES: See implementation of `$content`. Several duplicate video/playlist links are present.
 
 ```powershell
 function Get-YouTubeVideos{

@@ -39,7 +39,6 @@
 - [Modules](#modules)
 - [Scripting](#scripting)
 - [Recipies](#recipies)
-- [Tools](#tools)
 - [ ] [PowerShell/Python](#powershell-python)
 
 ## General
@@ -1355,7 +1354,6 @@ __NOTE__ <br>
 
 __CSV__ <br>
 
-
 ## Databases
 
 ### SQLite
@@ -1365,8 +1363,8 @@ https://www.tutorialspoint.com/sqlite/index.htm
 
 ## Scripting
 
-Also See: [myScripts](scripts.md) <br>
 Review: [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons). <br>
+Also See: [myScripts](scripts.md) <br>
 
 ### Basics
 
@@ -1501,9 +1499,6 @@ https://www.youtube.com/watch?v=u6tdj1IFbpw
 https://www.sconstantinou.com/powershell-script-blocks/
 https://www.youtube.com/watch?v=WP_Olf8GH_g
 https://www.youtube.com/watch?v=uoH6mnzwSZc
-
-
-
 
 # Recipies
 
@@ -1705,102 +1700,5 @@ Also, finish review exercises & put code in relevant sections.
 
 ## Tools
 
-- [x] Write a utility that gets technical specifications of remote PCs. <br>
-Each entry is logged into a database. If this fails, log error info in a file.
-
-```powershell
-<#
-.SYNOPSIS
-Gets system-specifications of remote computers on a CIM server.
-.EXAMPLE
-PS> Get-MachineInfo -ComputerName localhost
-ComputerName Version    ServicePackMajorVersion
------------- -------    -----------------------
-localhost    10.0.18363                       0
-#>
-
-function Get-MachineInfo {
-    param (
-        [string[]]$ComputerName,
-        [string]$LogFailuresToPath,
-        [string]$Protocol = 'wsman',
-        [switch]$ProtocolFallback
-    )
-
-    forEach ($name in $computername){
-        if ($protocol -eq 'DCom'){
-            $option = New-CimSessionOption -Protocol DCom
-        } else {
-            $option = New-CimSessionOption -Protocol WSMan
-        }
-
-        $session = New-CimSession -ComputerName $name -SessionOption $option
-        $os = Get-CimInstance -ClassName Win32_OperatingSystem -CimSession $session
-        $session | Remove-CimSession
-        $os | Select-Object -Property @{n='ComputerName'; e={$name}},Version,ServicePackMajorVersion
-    }
-}
-```
-```
-PS> import-module -name 'C:\Users\Chaitanya Tejaswi\Documents\WindowsPowerShell\Modules\myTest' -force -verbose
-
-VERBOSE: Loading module from path 'C:\Users\Chaitanya Tejaswi\Documents\WindowsPowerShell\Modules\myTest\myTest.psm1'.
-VERBOSE: Exporting function 'Get-MachineInfo'.
-VERBOSE: Importing function 'Get-MachineInfo'.```
-
-PS> Get-MachineInfo -ComputerName localhost
-
-ComputerName Version    ServicePackMajorVersion
------------- -------    -----------------------
-localhost    10.0.18363                       0
-```
-
-- [x] Write a utility that changes logon passwords of services of remote PCs. <br>
-If this fails, log error info in a file. Passwords may be supplied as plain string.
-
-```powershell
-<#
-.SYNOPSIS
-Sets logon passwords of services of remote computers on a CIM server.
-.EXAMPLE
-PS> Set-ServiceLogon -ComputerName localhost
-                     -ServiceName BITS
-                     -NewPassword 'P@ssw0rd'
-
-PS> Set-ServiceLogon -ComputerName S1,S2
-                     -ServiceName BITS
-                     -NewPassword 'P@ssw0rd'
-                     -NewUser 'COMPANY\User'
-#>
-
-function Set-ServiceLogon {
-    param (
-        [string[]]$ComputerName,
-        [string]$ServiceName,
-        [string]$NewUser,
-        [string]$NewPassword,
-        [string]$ErrorLogFilePath
-    )
-
-    forEach ($name in $computername){
-        $option = New-CimSessionOption -Protocol WSMan
-        $session = New-CimSession -ComputerName $name -SessionOption $option
-
-        if ($PSBoundParameters.ContainsKey('NewUser')){
-            $args = @{'StartName'=$NewUser; 'StartPassword'=$NewPassword}
-        } else {
-            $args = @{'StartPassword'=$NewPassword}
-        }
-
-        Invoke-CimMethod -ComputerName $name -MethodName Change `
-                         -Query "SELECT * FROM  Win32_Service WHERE name='$ServiceName'" `
-                         -Arguments $args |
-                            Select-Object -Property @{n='ComputerName'; e={$name}} `
-                                                    @{n='Result'; e={$_.ReturnValue}}
-
-        $session | Remove-CimSession
-    }
-}
-```
 
 # PowerShell & Python

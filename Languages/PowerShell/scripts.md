@@ -8,18 +8,19 @@
 # Index
 
 - [YouTube](#youtube)
+- [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 
 ## Youtube
 
 - [x] __Gather list of videos/playlists for a YouTube user/channel.__ <br>
-    I've managed to scrape link ids for videos/playlists and store them to a JSON file. [[jabykoay]](jabykoay.json) [[teamcoco]](teamcoco.json) <br>
+    I've managed to scrape link ids for videos/playlists and store them to a JSON file. [[jabykoay]](resources/jabykoay.json) [[teamcoco]](resources/teamcoco.json) <br>
     You can easily use `$baseURL/watch?v=$video` & `$baseURL/playlist?list=$video` to build absolute links. <br>
     The major issue with v2A,B is that not all links are retrieved (eg. `jabykoay` yields 110 videos when there are many more). [Prateek Singh's implementation](https://github.com/PrateekKumarSingh/PowershellScrapy/blob/master/Youtube/Get-YoutubeVideo.ps1) uses DOM instead of simple query like mine. This way, you can get title of videos as well. But his way also has the same issue - his gets fewer videos than mine.
 
 <details>
 <summary> v1 </summary>
 
-> Gets Youtube playlists for a user, saves them to file, and opens all of them using a browser.
+> Gets Youtube playlists for a user, saves them to file, and opens all of them in a browser.
 
 ```powershell
 $tmp = New-TemporaryFile; $page = @();
@@ -206,3 +207,47 @@ function Set-ServiceLogon {
     }
 }
 ```
+
+## Structured Data (CSV, JSON, XML)
+
+- [x] Given a CSV file with `IP address, Department` entries, create a report containing DNS names of these computers with an access timestamp.
+
+    ```powershell
+    function Get-PCNames{
+        [cmdletBinding()]
+        param(
+
+            [Parameter (Mandatory=$True)]
+            [string]$Path,
+        )
+
+        $rows = Import-Csv $Path
+        forEach ($row in $rows){
+            try {
+                $output = [PSCustomObject]@{
+                    IPAddress  = $row.IPAddress
+                    Department = $row.Department
+                    IsOnline   = $False
+                    HostName   = $Null
+                    Error      = $Null
+                    Timestamp  = Get-Date -Format 'dd-MM-yy hh:mm:ss tt'
+                }
+                # Ping each IP address with an ICMP packet
+                if (Test-Connection -ComputerName $row.IPAddress -Count 1 -Quiet){
+                    $output.IsOnline = $True
+                }
+                # Get HostName of each IPAddress
+                if ($hostname = (Resolve-DnsName -Name $row.IPAddress -ErrorAction Stop).Name){
+                    $output.HostName = $hostname
+                }
+            } catch {
+                $output.Error = $_.Exception.Message
+            } finally {
+                $output
+            }
+        }
+    }
+    ```
+    ```
+    Get-PCNames -Path .\test.csv | Export-Csv -Path .\results.csv -Append -NoTypeInformation
+    ```

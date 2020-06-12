@@ -34,7 +34,7 @@
 - [Remote Access](#remote-access)
 - [Providers](#providers)
 - [Registry](#registry)
-- [Structured Data (CSV, JSON, XML)](#formatted-data-csv-json-xml)
+- [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases (SQLite, SQL Server)](#databases)
 - [Modules](#modules)
 - [Scripting](#scripting)
@@ -118,23 +118,6 @@
     copy, move  -> Copy-Item, Move-Item
     history     -> Get-History
     ```
-
-- Create new aliases <br>
-    Create `aliases.csv`
-    ```
-    Name,Value
-    gotodir,Get-ChildItem
-    sel,Select-Object
-    clip,Get-Clipboard
-    ```
-    Import these aliases using:
-    ```
-    import-csv aliases.csv | new-alias
-    ```
-
-<center><b>TODO</b></center>
-
-- [ ] Come up with useful aliases
 
 ## System Help
 
@@ -1065,12 +1048,12 @@ __Ans:__ _Objects_ <br>
                      @{name='Retention(days)';expression={$_.MininumRetentionDays}}
     ```
 - [x] Display service grouped-by their status (start/stop) <br>
-[[OUTPUT]](services.pdf)
+[[OUTPUT]](resources/services.pdf)
     ```
     gsv | sort status -desc | format-table -groupby status
     ```
 - [x] Display a list of all binaries (.exe) in `C:\Windows` with their name, versionInfo & fileSize <br>
-[[OUTPUT]](binaries.pdf)
+[[OUTPUT]](resources/binaries.pdf)
     ```
     ls C:\Windows\*.exe | format-list Name,VersionInfo,@{Name='Size';Expression={$_.length}}
     ```
@@ -1328,7 +1311,7 @@ __Built-In Providers__ <br>
 
 Refer: [Registry](https://en.m.wikipedia.org/wiki/Windows_Registry)
 
-The Registry is a database that store low-level settings for any Windows OS. <br>
+Registry is a database that stores low-level settings for any Windows OS. <br>
 Registry files are stored in `%SystemRoot%\System32\Config` <br>
 
 <center>
@@ -1341,8 +1324,8 @@ Registry files are stored in `%SystemRoot%\System32\Config` <br>
 
 ## Structured Data (CSV, JSON, XML)
 
-https://www.youtube.com/watch?v=Ukuj_DxueIc&app=desktop
-https://github.com/jdhitsolutions/psdatafiles/tree/master/demos
+Refer: [Talk (Jeff Hicks)](https://www.youtube.com/watch?v=Ukuj_DxueIc) + [Files](https://github.com/jdhitsolutions/psdatafiles/tree/master/demos), [Talk (Jason Horner)](https://www.youtube.com/watch?v=awSmiWx1X1Y) <br>
+Also See: [myScripts](scripts.md#structured-data-csv-json-xml) <br>
 
 __NOTE__ <br>
     All file conversion cmdlets use verbs like `Import`,`Export`,`ConvertTo`,`ConvertFrom`. <br>
@@ -1353,6 +1336,116 @@ __NOTE__ <br>
     ```
 
 __CSV__ <br>
+
+We use `Import-Csv` & `Export-Csv` to read from & write to CSV files. <br>
+
+- [x] Create new aliases <br>
+    Create `aliases.csv`
+    ```
+    Name,Value
+    gotodir,Get-ChildItem
+    sel,Select-Object
+    clip,Get-Clipboard
+    ```
+    Import these aliases using:
+    ```powershell
+    import-csv aliases.csv | new-alias
+    ```
+
+- CSV files are all strings
+    When you export objects to CSV, you lose type (end up having only Strings). <br>
+    Cast each header as a specific type.<br>
+    ```powershell
+    import-csv .\test.csv | forEach {
+        [PSCustomObject]@{
+            DeviceID = $_.DeviceID
+            'Total Memory (GB)' = $_.'Total Memory (GB)' -as [int32]
+            'Free Memory (GB)' = $_.'Free Memory (GB)' -as [int32]
+        }
+    } | gm
+
+    Name              MemberType   Definition
+    ----              ----------   ----------
+    Equals            Method       bool Equals(System.Object obj)
+    GetHashCode       Method       int GetHashCode()
+    GetType           Method       type GetType()
+    ToString          Method       string ToString()
+    DeviceID          NoteProperty string DeviceID=A:
+    Free Memory (GB)  NoteProperty int Free Memory (GB)=250
+    Total Memory (GB) NoteProperty int Total Memory (GB)=250
+    ```
+
+- [ ] Create a CSV marksheet for 5 students containing Name & Marks in Science, Maths, English, Hindi & ComputerScience. Import file, add TotalMarks & Percentage columns, then append them to file.
+    ```powershell
+
+    ```
+
+__JSON__ <br>
+
+We use `ConvertFrom-Json` & `ConvertTo-Json` to read from & write to JSON objects. <br>
+Since these aren't `Import` & `Export` cmdlets, we have to use `Out-File` to write to file. <br>
+Use `-depth n` to define the depth to which you want to parse the file. This is useful if you have a file with several levels of heirarchy, but what you need it just 1-2 levels only.<br>
+
+- [x] Read a JSON file
+    ```powershell
+    PS> cat .\test.json -Raw | convertfrom-json
+
+    DeviceID Total Memory (GB) Free Memory (GB)
+    -------- ----------------- ----------------
+    A:       250               250
+    B:       681               124
+    C:       118               39
+    ```
+
+- [x] Convert to JSON (eg. from CSV)
+    ```powershell
+    import-csv .\test.csv
+
+    DeviceID Total Memory (GB) Free Memory (GB)
+    -------- ----------------- ----------------
+    A:       250               250
+    B:       681               124
+    C:       118               39
+
+
+    import-csv .\test.csv | convertto-json
+
+    [
+        {
+            "DeviceID":  "A:",
+            "Total Memory (GB)":  "250",
+            "Free Memory (GB)":  "250"
+        },
+        {
+            "DeviceID":  "B:",
+            "Total Memory (GB)":  "681",
+            "Free Memory (GB)":  "124"
+        },
+        {
+            "DeviceID":  "C:",
+            "Total Memory (GB)":  "118",
+            "Free Memory (GB)":  "39"
+        }
+    ]
+    ```
+    Use the `-Compress` switch to strip all extra spaces (and minify the JSON file). <br>
+
+- Converting from JSON
+    When we `ConvertFrom-Json`, we get a `System.Object[]` array. It doesn't actually create objects of the expected data type. <br>
+    Using `ForEach`, operate on each entry & format it in the desired way. <br>
+    ```
+    cat .\test.json | convertfrom-json | gm
+
+    TypeName: System.Object[]
+    ...
+
+
+    cat .\test.json | convertfrom-json | forEach {
+        $_ | select Name,Size,@{name='TS'; expression={$_.timestamp -as [timespan]}}
+    }
+    ```
+
+- [ ] Use a simple REST API & operate on its headers to make a table.
 
 ## Databases
 
@@ -1636,13 +1729,22 @@ Before doing anything useful, make sure to install & configure Internet Explorer
 
 - [x] Get weather (temperatures) <br>
     Retrieving data for Delhi (28.7041° N, 77.1025° E).
-    ```
-    $myurl = 'https://weather.com/en-IN/weather/today/l/28.7041,77.1025?temp=c'
-    $response = curl -Uri $myurl
+    ```powershell
+    $URI = 'https://weather.com/en-IN/weather/today/l/28.7041,77.1025?temp=c'
+    $response = curl -Uri $URI
     ($response.allelements | where { $_.class -Match "\w+--location--\w+" -or $_.class -Match "\w+--tempHiLoValue--\w+" }).innerText
 
     Rohini Sector 2, Delhi Weather
     35°/26°
+    ```
+
+- [x] Get HTML (WebRequest) & Get JSON (RestMethod).
+    ```powershell
+    $response = Invoke-WebRequest -Uri 'https://github.com/CRTejaswi/API/blob/master/CV.json'
+    $response.content | out-file -encoding ascii test.html; firefox test.html
+
+    $response = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/CRTejaswi/API/master/CV.json'
+    $response | convertto-json | out-file -encoding ascii test.json; firefox test.json
     ```
 
 - [x] Get all of my Youtube playlists.

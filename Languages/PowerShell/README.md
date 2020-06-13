@@ -1352,7 +1352,7 @@ We use `Import-Csv` & `Export-Csv` to read from & write to CSV files. <br>
     import-csv aliases.csv | new-alias
     ```
 
-- CSV files are all strings
+- CSV files are all strings <br>
     When you export objects to CSV, you lose type (end up having only Strings). <br>
     Cast each header as a specific type.<br>
     ```powershell
@@ -1384,9 +1384,53 @@ __JSON__ <br>
 
 We use `ConvertFrom-Json` & `ConvertTo-Json` to read from & write to JSON objects. <br>
 Since these aren't `Import` & `Export` cmdlets, we have to use `Out-File` to write to file. <br>
-Use `-depth n` to define the depth to which you want to parse the file. This is useful if you have a file with several levels of heirarchy, but what you need it just 1-2 levels only.<br>
+Use `-depth n` to define the depth to which you want to parse the file. The default is 2. This is useful to know if you have a file with several levels of heirarchy. <br>
 
-- [x] Read a JSON file
+- Create a JSON file <br>
+    Wrap raw JSON data inside literal-strings `'...'`.
+    ```powershell
+    $json = '
+    [
+        {
+            "Country": "India",
+            "Capital": "New Delhi"
+        },
+        {
+            "Country": "US",
+            "Capital": "Washington DC"
+        }
+    ]'
+    $json | convertfrom-json
+
+    Country Capital
+    ------- -------
+    India   New Delhi
+    US      Washington DC
+    ```
+    Another way is to iteratively add rows to an empty array, then `ConvertTo-Json`.
+    ```powershell
+    $page = @()
+
+    $info = '' | select Country,Capital
+    $info.Country = 'India'; $info.Capital = 'New Delhi';
+    $page += $info
+
+    $info = '' | select Country,Capital
+    $info.Country = 'US'; $info.Capital = 'Washington DC';
+    $page += $info
+
+    $json = $page | convertto-json
+    $json | convertfrom-json
+    ```
+    ```
+    Country Capital
+    ------- -------
+    India   New Delhi
+    US      Washington DC
+    ```
+
+
+- Read a JSON file
     ```powershell
     PS> cat .\test.json -Raw | convertfrom-json
 
@@ -1397,7 +1441,7 @@ Use `-depth n` to define the depth to which you want to parse the file. This is 
     C:       118               39
     ```
 
-- [x] Convert to JSON (eg. from CSV)
+- `ConvertTo-Json` (eg. from CSV)
     ```powershell
     import-csv .\test.csv
 
@@ -1430,10 +1474,10 @@ Use `-depth n` to define the depth to which you want to parse the file. This is 
     ```
     Use the `-Compress` switch to strip all extra spaces (and minify the JSON file). <br>
 
-- Converting from JSON
+- `ConvertFrom-Json` <br>
     When we `ConvertFrom-Json`, we get a `System.Object[]` array. It doesn't actually create objects of the expected data type. <br>
     Using `ForEach`, operate on each entry & format it in the desired way. <br>
-    ```
+    ```powershell
     cat .\test.json | convertfrom-json | gm
 
     TypeName: System.Object[]
@@ -1444,6 +1488,21 @@ Use `-depth n` to define the depth to which you want to parse the file. This is 
         $_ | select Name,Size,@{name='TS'; expression={$_.timestamp -as [timespan]}}
     }
     ```
+
+- Modify JSON content <br>
+    To modify is to create a new file. To modify, access each entry using `forEach`, modify it, then save as new file. <br>
+    - [x] Your JSON file has student marks for an exam. Initially, you had filled it with test entries, but now, marks have been appended even for these test entries. Default marks of test entries to Null, so it doesn't skew calculations for entire class. <br>
+    ```powershell
+    $json = cat test.json | convertfrom-json
+    $json.update | forEach {
+        if ($_.Name -eq 'test'){
+            $_.Marks = $Null
+        }
+    } |
+    convertto-json -depth |
+    ```
+    - [ ] Modify JSON: Example where good forEach logic is used.
+
 
 - [ ] Use a simple REST API & operate on its headers to make a table.
 

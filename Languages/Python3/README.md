@@ -5,11 +5,21 @@
 # Python3
 > Personal notes for Python3 language.
 
+# References (General)
+
+[__Socratica__](https://www.youtube.com/playlist?list=PLi01XoE8jYohWFPpC17Z-wWhPOSuh8Er-) <br>
+[__CoreySchafer__](https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU) <br>
+
+- [Matplotlib](https://www.youtube.com/playlist?list=PL-osiE80TeTvipOqomVEeZ1HRrcEvtZB_)
+- [Pandas](https://www.youtube.com/playlist?list=PL-osiE80TeTsWmV9i9c58mdDCSskIFdDS)
+- [Flask](https://www.youtube.com/playlist?list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH)
+- [Django](https://www.youtube.com/playlist?list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p)
 
 # Index
 
 - [Data Structures & Algorithms](#data-structures-algorithms)
 - [CLI/GUI](#cligui)
+- [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases](#databases)
 - [Processing: Text](#text-processing)
 - [Processing: File](#file-processing)
@@ -22,6 +32,21 @@ Review: [DSA](dsa/DSA.md)
 ## CLI/GUI
 
 Review: [argparse](argparse/argparse.md), [Tkinter](tkinter/tkinter.md).
+
+## Structured Data (CSV, JSON, XML)
+
+Refer: [JSON (Schafer)](https://www.youtube.com/watch?v=9N6a-VLBa2I), [JSON APIs (Schafer)](https://www.youtube.com/watch?v=1lxrb_ezP-g) <br>
+
+__CSV__ <br>
+
+__JSON__ <br>
+
+__XML__ <br>
+
+
+
+
+
 
 ## Databases
 

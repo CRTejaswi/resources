@@ -224,7 +224,7 @@ function Set-ServiceLogon {
         $rows = Import-Csv $Path
         forEach ($row in $rows){
             try {
-                $output = [PSCustomObject]@{
+                $output = [PSCustomObject]  @{
                     IPAddress  = $row.IPAddress
                     Department = $row.Department
                     IsOnline   = $False

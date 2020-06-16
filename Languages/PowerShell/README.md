@@ -27,6 +27,7 @@
 - [Data Structures](#data-structures)
 - [Objects](#objects)
 - [Pipelining](#pipelining)
+- [Item Access](#item-access)
 - [Formatting](#formatting)
 - [Filtering & Comparisons](#filtering-comparisons)
 - [Background Processes (`Job`)](#background-processes-aka-job)
@@ -1022,6 +1023,36 @@ __Ans:__ _Objects_ <br>
 
     # Services
     gsv -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | select Name,Status | sort Name | out-gridview
+    ```
+
+## Item Access
+
+File/Folder are collectively called __Item__.
+
+- Current location
+    The `Get-Location` (aka `pwd`) gets current directory path. If you are working with multiple locations, you can push/pop those locations to/from a stack using `Push-Location`/`Pop-Locatio` (aka `pushd`/`popd`). <br>
+    ```powershell
+    # Get current location
+    pwd
+    # Save current location to stack; move to another
+    push 'B:\PowerShell'
+    # Goto previous location (stored on stack)
+    popd
+    ```
+
+- List items
+
+    `-Force` displays hidden items as well; `-Recurse` recursively lists items.
+    ```powershell
+    Get-ChildItem -Path C:\ -Force
+    ls C:\ -Force
+    ```
+
+    - [x] Find all binaries within `Program Files` that were last modified after October 1, 2005 and size is 1-10MB
+    ```powershell
+    ls $env:ProgramFiles *.exe -Recurse |
+        where {($_.LastWriteTime -gt '2005-10-01') -and ($_.Length -ge 1mb) -and ($_.Length -le 10mb)} |
+        select Name,@{name='LastWriteTime';expression={Get-Date -Format 'dd-MM-yy hh:mm:ss tt' $_.LastWriteTime}}
     ```
 
 ## Formatting

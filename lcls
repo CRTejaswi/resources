@@ -1,0 +1,49 @@
+[1mdiff --git a/Languages/PowerShell/README.md b/Languages/PowerShell/README.md[m
+[1mindex 5a0ef54..f367d79 100644[m
+[1m--- a/Languages/PowerShell/README.md[m
+[1m+++ b/Languages/PowerShell/README.md[m
+[36m@@ -27,6 +27,7 @@[m
+ - [Data Structures](#data-structures)[m
+ - [Objects](#objects)[m
+ - [Pipelining](#pipelining)[m
+[32m+[m[32m- [Item Access](#item-access)[m
+ - [Formatting](#formatting)[m
+ - [Filtering & Comparisons](#filtering-comparisons)[m
+ - [Background Processes (`Job`)](#background-processes-aka-job)[m
+[36m@@ -1024,6 +1025,36 @@[m [m__Ans:__ _Objects_ <br>[m
+     gsv -ComputerName (import-csv .\computers.csv | select -ExpandProperty hostname) | select Name,Status | sort Name | out-gridview[m
+     ```[m
+ [m
+[32m+[m[32m## Item Access[m
+[32m+[m
+[32m+[m[32mFile/Folder are collectively called __Item__.[m
+[32m+[m
+[32m+[m[32m- Current location[m
+[32m+[m[32m    The `Get-Location` (aka `pwd`) gets current directory path. If you are working with multiple locations, you can push/pop those locations to/from a stack using `Push-Location`/`Pop-Locatio` (aka `pushd`/`popd`). <br>[m
+[32m+[m[32m    ```powershell[m
+[32m+[m[32m    # Get current location[m
+[32m+[m[32m    pwd[m
+[32m+[m[32m    # Save current location to stack; move to another[m
+[32m+[m[32m    push 'B:\PowerShell'[m
+[32m+[m[32m    # Goto previous location (stored on stack)[m
+[32m+[m[32m    popd[m
+[32m+[m[32m    ```[m
+[32m+[m
+[32m+[m[32m- List items[m
+[32m+[m
+[32m+[m[32m    `-Force` displays hidden items as well; `-Recurse` recursively lists items.[m
+[32m+[m[32m    ```powershell[m
+[32m+[m[32m    Get-ChildItem -Path C:\ -Force[m
+[32m+[m[32m    ls C:\ -Force[m
+[32m+[m[32m    ```[m
+[32m+[m
+[32m+[m[32m    - [x] Find all binaries within `Program Files` that were last modified after October 1, 2005 and size is 1-10MB[m
+[32m+[m[32m    ```powershell[m
+[32m+[m[32m    ls $env:ProgramFiles *.exe -Recurse |[m
+[32m+[m[32m        where {($_.LastWriteTime -gt '2005-10-01') -and ($_.Length -ge 1mb) -and ($_.Length -le 10mb)} |[m
+[32m+[m[32m        select Name,@{name='LastWriteTime';expression={Get-Date -Format 'dd-MM-yy hh:mm:ss tt' $_.LastWriteTime}}[m
+[32m+[m[32m    ```[m
+[32m+[m
+ ## Formatting[m
+ [m
+ - Format-Table, Format-List, Format-Wide, Format-Custom[m

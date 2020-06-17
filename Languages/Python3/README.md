@@ -17,6 +17,7 @@
 
 # Index
 
+- [General](#general)
 - [Data Structures & Algorithms](#data-structures-algorithms)
 - [CLI/GUI](#cligui)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
@@ -25,6 +26,14 @@
 - [Processing: File](#file-processing)
 - [Processing: Image](#image-processing)
 - [Unsorted](#Unsorted)
+
+## General
+
+- Access Environment Variables <br>
+    You can also access User/System environment variables using:
+    ```
+    import os; API_KEY = os.environ.get('Youtube_ApiKey');
+    ```
 
 ## Data Structures & Algorithms
 Review: [DSA](dsa/DSA.md)

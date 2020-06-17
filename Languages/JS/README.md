@@ -9,12 +9,22 @@
 
 # Index
 
+- [General](#general)
 - [CLI/GUI](#cligui)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases](#databases)
 - [JS Engines](#js-engines)
 - [Unsorted](#Unsorted)
 
+
+- Access Environment Variables <br>
+    Environment Variables can't be accessed in plain JS. <br>
+    You can access User/System environment variables in NodeJS using [dotenv](https://github.com/motdotla/dotenv) package:
+    ```
+    require('dotenv').config();
+    console.log(process.env.Youtube_ApiKey); // <API_KEY>
+    ```
+    This approach gets values from a file - `.env` (and not from your PC). So, eh?!
 
 ## CLI/GUI
 

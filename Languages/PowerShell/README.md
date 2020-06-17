@@ -77,6 +77,13 @@
     Get-AppxPackage *xboxapp* | Remove-AppxPackage
     ```
 
+- Create/Modify Environment Variables <br>
+    You can also create User/System environment variables using this one-liner in Powershell.
+    ```
+    [Environment]::SetEnvironmentVariable("Youtube_ApiKey", "<API_KEY>", "User")
+    [Environment]::SetEnvironmentVariable("Youtube_ApiKey", "<API_KEY>", "Machine")
+    ```
+
 - Create New File/Folder
     ```
     ni -path 'C:\Users\CRTejaswi\Desktop' -ItemType 'directory' -name 'myTEST'

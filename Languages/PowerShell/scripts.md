@@ -7,8 +7,33 @@
 
 # Index
 
+- [Logins](#logins)
 - [YouTube](#youtube)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
+
+## Logins
+
+- [x] __Open webpage in browser & copy credentials for manual login__ <br>
+    This queries a [`$myLogins=logins.csv`](https://raw.githubusercontent.com/CRTejaswi/API/master/logins.csv) file for entries, and copies username/password to clipboard. <br>
+    It also opens the webpage in a browser to manually login (-disable using `-PassThru`). <br>
+    The `$PSBoundParameters.ContainsKey('<param>')` check is unnecessary since there aren't many columns to access, and doing so is verbose. <br>
+    ```powershell
+    function Get-Login{
+        [cmdletBinding()]
+        param(
+
+            [Parameter (Mandatory=$True)]
+            [string]$Site,
+
+            [switch]$PassThru
+        )
+
+        $logins = import-csv $myLogins
+        $match = $logins | where site -eq $Site
+        if (-not $PassThru) {firefox $match.link}
+        $match.username,$match.password | scb
+    }
+    ```
 
 ## Youtube
 

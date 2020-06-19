@@ -17,23 +17,77 @@
     This queries a [`$myLogins=logins.csv`](https://raw.githubusercontent.com/CRTejaswi/API/master/logins.csv) file for entries, and copies username/password to clipboard. <br>
     It also opens the webpage in a browser to manually login (-disable using `-PassThru`). <br>
     The `$PSBoundParameters.ContainsKey('<param>')` check is unnecessary since there aren't many columns to access, and doing so is verbose. <br>
-    ```powershell
-    function Get-Login{
-        [cmdletBinding()]
-        param(
 
-            [Parameter (Mandatory=$True)]
-            [string]$Site,
+<details>
+<summary> v1 </summary>
 
-            [switch]$PassThru
-        )
+```powershell
+# get-login -gdrive
 
-        $logins = import-csv $myLogins
-        $match = $logins | where site -eq $Site
-        if (-not $PassThru) {firefox $match.link}
-        $match.username,$match.password | scb
-    }
-    ```
+function Get-Login{
+    [cmdletBinding()]
+    param(
+
+        [Parameter (Mandatory=$True)]
+        [string]$Site,
+
+        [switch]$PassThru
+    )
+
+    $logins = import-csv $myLogins
+    $match = $logins | where site -eq $Site
+    if (-not $PassThru) {firefox $match.link}
+    $match.username,$match.password | scb
+}
+```
+
+</details>
+
+<details>
+<summary> v2 </summary>
+
+> CHANGES: Added `-List` option.
+
+```powershell
+# get-login -list
+# get-login -gdrive
+
+function Get-Login{
+    [cmdletBinding()]
+    param(
+        [string]$Site,
+        [switch]$List,
+        [switch]$PassThru
+    )
+
+    $logins = import-csv $myLogins
+    if ($List) {$logins.site}
+    $match = $logins | where site -eq $Site
+    if (-not $PassThru -and -not $List) {firefox $match.link}
+    $match.username,$match.password | scb
+}
+```
+
+</details>
+
+- [x] Get song lyrics; open in browser.
+
+```powershell
+# get-lyrics edsheeran beautifulpeople
+
+function Get-Lyrics{
+    [cmdletBinding()]
+    param(
+        [Parameter (Mandatory=$True)]
+        [string]$Artist,
+        [Parameter (Mandatory=$True)]
+        [string]$Song
+    )
+
+    $link = "https://www.azlyrics.com/lyrics/$Artist/$Song.html"
+    firefox $link
+}
+```
 
 ## Youtube
 

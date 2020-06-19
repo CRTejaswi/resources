@@ -39,6 +39,7 @@
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases (SQLite, SQL Server)](#databases)
 - [Modules](#modules)
+- [Parameters](#parameters)
 - [Scripting](#scripting)
 - [Recipies](#recipies)
 - [ ] [PowerShell/Python](#powershell-python)
@@ -1552,15 +1553,66 @@ http://ramblingcookiemonster.github.io/SQLite-and-PowerShell/
 https://www.darkartistry.com/2019/08/create-insert-and-query-sqlite-with-powershell/
 https://www.tutorialspoint.com/sqlite/index.htm
 
-## Scripting
+## Parameters
 
-Review: [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons). <br>
-Also See: [myScripts](scripts.md) <br>
+[__Common Parameters__](https://ss64.com/ps/common.html) <br>
+    Common parameters are universal cmdlet parameters.
+    ```
+    -Debug (-db)
+    -ErrorAction (-ea)
+    -ErrorVariable (-ev)
+    -InformationAction (-infa)
+    -InformationVariable (-iv)
+    -OutBuffer (-ob)
+    -OutVariable (-ov)
+    -PipelineVariable (-pv)
+    -Verbose (-vb)
+    -WarningAction (-wa)
+    -WarningVariable (-wv)
+    ```
+[__Parameter Names__](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/standard-cmdlet-parameter-names-and-types) <br>
+    For consistent names of parameters, PS lists 7 categories of parameter names:
 
-### Basics
+<center>
 
-__Specifying Parameters__ <br>
-    By specifying `CmdletBinding` (at the top of script), we can add several features to our parameters.
+| Category | Parameters |
+| :-- | :-- |
+| [Activity](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/activity-parameters) | Append, Insert, Include, Create, Erase, Force, Filter, Log, Recurse,  |
+| [Date & Time](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/date-and-time-parameters) | Created, Accessed, Modified, Before, After |
+| [Formatting](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/format-parameters) | As, Encoding, Width, Wrap |
+| [Property](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/property-parameters) | Count, Id, Name, Value, Property, Regex |
+| [Quantity](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/quantity-parameters) | All, Allocation, Count, Scope |
+| [Resource](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/resource-parameters) | Attribute, Drive, Port, Interface, Domain, Job, LiteralPath, Path, URL, Type |
+| [Security](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/security-parameters) | Credential, Privilege |
+
+</center>
+
+[__Passing Parameters In A Pipeline__](https://ss64.com/ps/syntax-args.html) <br>
+    Arguments to a script/cmdlet can be passed in 3 equivalent ways:
+    ```powershell
+    Get-ChildItem -Path $env:windir -Filter *.dll -Recurse
+
+    Get-ChildItem `
+        -Path $env:windir `
+        -Filter *.dll `
+        -Recurse
+
+    $myargs = @{
+        Path = "$env:windir"
+        filter = '*.dll'
+        Recurse = $true
+    }
+    Get-ChildItem @myargs
+    ```
+
+__Specifying Parameters in a Script__ <br>
+
+- Passing args by index <br>
+    You can access the Shell arguments in the called script using `$args` array.
+- Passing args by name <br>
+    You can access the Shell arguments in the called script using `param(...)` statement.
+
+By specifying [`CmdletBinding`](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_cmdletbindingattribute) (at the top of script), we can add several features to our parameters.
 
 - Enabling the features <br>
     All of these features listed below need `CmdletBinding` to be enabled.
@@ -1617,6 +1669,27 @@ __Specifying Parameters__ <br>
     Write-Verbose "Using $myVar Values"
     ```
 
+__Referencing Passed Parameters in a Script__ <br>
+A system hashtable, [`$PSBoundParameters`](https://ss64.com/ps/psboundparameters.html) contains all the parameters & their values passed to a script. <br>
+See [Get-Login](scripts.md#logins) for the actual script. <br>
+```powershell
+function Get-myLogin{
+    [cmdletBinding()]
+    param(
+        [string]$Site,
+        [switch]$List,
+        [switch]$Browser
+    )
+
+    $logins = import-csv $myLogins
+    switch ($PSBoundParameters.keys){
+        'Site' {$match = $logins | where site -eq $Site; $match.username,$match.password | scb}
+        'List' {$logins.site}
+        'Browser' {firefox $match.link}
+    }
+}
+```
+
 __Default Parameters__ <br>
 Refer `$PSDefaultParameterValues`. <br>
 You can set default values for parameters such as `-Path`, `-Credential`, ... by adding these values into a built-in variable, `$PSDefaultParameterValues`. <br>
@@ -1634,6 +1707,29 @@ Note that the scope of `$PSDefaultParameterValues` is limited to the shell when 
     ```
     Since invoke-command runs on local/remote PCs, this works as a basic security measure.
 
+
+
+
+- $PSBoundParameters
+https://ss64.com/ps/psboundparameters.html
+
+- Additional Topics
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters
+https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/strongly-encouraged-development-guidelines
+
+
+
+
+
+
+
+
+## Scripting
+
+Review: [Control Flow](#control-flow), [Filtering & Comparisons](#filtering-comparisons). <br>
+Also See: [myScripts](scripts.md) <br>
+
+### Basics
 
 __Operators__ <br>
 Refer `about_operators`. <br>

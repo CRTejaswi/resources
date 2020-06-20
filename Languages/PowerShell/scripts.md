@@ -7,9 +7,79 @@
 
 # Index
 
+- [Basics](#basics)
 - [Logins](#logins)
 - [YouTube](#youtube)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
+
+## Basics
+
+- [x] Calculate the sum of even numbers in the range 1-100.
+
+```powershell
+$range = 1..100; $range | where {$_ % 2 -eq 0} | measure -Sum
+
+(1..100 | where {-not ($_ % 2)} | measure -Sum).sum
+```
+
+- [x] Calculate the sum of multiples of __k__ within a range __start-stop__.
+
+```powershell
+function Get-mySum{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [int32]$Start,
+        [Parameter (Position=1,Mandatory=$True)]
+        [int32]$Stop,
+        [Parameter (Position=2,Mandatory=$True)]
+        [int32]$Base
+    )
+
+    ($Start..$Stop | where {-not ($_ % $Base)} | measure -Sum).sum
+}
+```
+
+- [x] Calculate sum, values & average of multiples of __k__ within a range __start-stop__.
+
+```powershell
+function Get-myStats{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [int32]$Start,
+        [Parameter (Position=1,Mandatory=$True)]
+        [int32]$Stop,
+        [Parameter (Position=2,Mandatory=$True)]
+        [int32]$Base
+    )
+
+    $values = @()
+    $values += $Start..$Stop | where {-not ($_ % $Base)}
+    $sum = ($values | measure -sum).sum
+
+    [PSCustomObject]@{
+        Start   = $Start
+        Stop    = $Stop
+        Base    = $Base
+        Values  = $values
+        Sum     = $sum
+        Average = $sum / $values.count
+    }
+}
+```
+```
+Get-myStats 1 100 5
+
+
+Start   : 1
+Stop    : 100
+Base    : 5
+Values  : {5, 10, 15, 20...}
+Sum     : 1050
+Average : 52.5
+```
+
 
 ## Logins
 
@@ -70,7 +140,7 @@ function Get-Login{
 
 </details>
 
-- [x] Get song lyrics; open in browser.
+- [x] __Get song lyrics; open in browser.__ <br>
 
 ```powershell
 # get-lyrics edsheeran beautifulpeople

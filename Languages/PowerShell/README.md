@@ -1557,19 +1557,21 @@ https://www.tutorialspoint.com/sqlite/index.htm
 
 [__Common Parameters__](https://ss64.com/ps/common.html) <br>
     Common parameters are universal cmdlet parameters.
-    ```
-    -Debug (-db)
-    -ErrorAction (-ea)
-    -ErrorVariable (-ev)
-    -InformationAction (-infa)
-    -InformationVariable (-iv)
-    -OutBuffer (-ob)
-    -OutVariable (-ov)
-    -PipelineVariable (-pv)
-    -Verbose (-vb)
-    -WarningAction (-wa)
-    -WarningVariable (-wv)
-    ```
+
+```
+-Debug (-db)
+-ErrorAction (-ea)
+-ErrorVariable (-ev)
+-InformationAction (-infa)
+-InformationVariable (-iv)
+-OutBuffer (-ob)
+-OutVariable (-ov)
+-PipelineVariable (-pv)
+-Verbose (-vb)
+-WarningAction (-wa)
+-WarningVariable (-wv)
+```
+
 [__Parameter Names__](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/standard-cmdlet-parameter-names-and-types) <br>
     For consistent names of parameters, PS lists 7 categories of parameter names:
 
@@ -1589,21 +1591,22 @@ https://www.tutorialspoint.com/sqlite/index.htm
 
 [__Passing Parameters In A Pipeline__](https://ss64.com/ps/syntax-args.html) <br>
     Arguments to a script/cmdlet can be passed in 3 equivalent ways:
-    ```powershell
-    Get-ChildItem -Path $env:windir -Filter *.dll -Recurse
 
-    Get-ChildItem `
-        -Path $env:windir `
-        -Filter *.dll `
-        -Recurse
+```powershell
+Get-ChildItem -Path $env:windir -Filter *.dll -Recurse
 
-    $myargs = @{
-        Path = "$env:windir"
-        filter = '*.dll'
-        Recurse = $true
-    }
-    Get-ChildItem @myargs
-    ```
+Get-ChildItem `
+    -Path $env:windir `
+    -Filter *.dll `
+    -Recurse
+
+$myargs = @{
+    Path = "$env:windir"
+    filter = '*.dll'
+    Recurse = $true
+}
+Get-ChildItem @myargs
+```
 
 __Specifying Parameters in a Script__ <br>
 
@@ -1706,23 +1709,6 @@ Note that the scope of `$PSDefaultParameterValues` is limited to the shell when 
     $PSDefaultParameterValues.add('Invoke-Command:Credential', {Get-Credential -UserName Administrator -Message "Enter Admin's Password"})
     ```
     Since invoke-command runs on local/remote PCs, this works as a basic security measure.
-
-
-
-
-- $PSBoundParameters
-https://ss64.com/ps/psboundparameters.html
-
-- Additional Topics
-https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters
-https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/strongly-encouraged-development-guidelines
-
-
-
-
-
-
-
 
 ## Scripting
 

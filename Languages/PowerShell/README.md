@@ -7,6 +7,7 @@
 
 # Resources
 
+- [IronScripter](https://ironscripter.us/category/challenge/)
 - TechSnips [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A)
 - [Jeff Hicks](https://jdhitsolutions.com/blog/)
 - Warren Frame [[PS recipies]](https://github.com/RamblingCookieMonster/PowerShell) [[PSSQLite]](https://github.com/RamblingCookieMonster/PSSQLite)
@@ -1589,7 +1590,7 @@ https://www.tutorialspoint.com/sqlite/index.htm
 
 </center>
 
-[__Passing Parameters In A Pipeline__](https://ss64.com/ps/syntax-args.html) <br>
+[__Passing Parameters to a script__](https://ss64.com/ps/syntax-args.html) <br>
     Arguments to a script/cmdlet can be passed in 3 equivalent ways:
 
 ```powershell

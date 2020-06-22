@@ -1,4 +1,4 @@
-    Copyright(c) 2020-
+Copyright(c) 2020-
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
 
@@ -80,6 +80,69 @@ Sum     : 1050
 Average : 52.5
 ```
 
+- [x] Code-File Inventory [\*](https://ironscripter.us/building-a-powershell-command-inventory/) <br>
+    Count no. of lines of code in files of a given directory. <br>
+
+```powershell
+$Path = 'B:\'
+
+# PowerShell files
+ls -Path $Path -Filter '*.ps*' -Recurse |
+    where {$_.extension -match "\.ps[md]?1$"} -outvariable files |
+    cat | measure -line |
+    select @{name='Path';expression={$Path}},
+    @{name='TotalFiles';expression={$files.count}},
+    lines,
+    @{name='Date';expression={get-date -Format 'dd-MM-yy hh:mm:ss'}}
+# Python files
+ls -Path $Path -Filter '*.py' -Recurse -outvariable files |
+    cat | measure -line |
+    select @{name='Path';expression={$Path}},
+    @{name='TotalFiles';expression={$files.count}},
+    lines,
+    @{name='Date';expression={get-date -Format 'dd-MM-yy hh:mm:ss'}}
+```
+```
+Path TotalFiles Lines Date
+---- ---------- ----- ----
+B:\          17  1297 22-06-2020 11:29:54
+
+Path TotalFiles   Lines Date
+---- ----------   ----- ----
+B:\        9392 2137211 22-06-2020 11:31:48
+```
+
+```powershell
+function Get-CodeFileLines{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [string]$Path,
+        [Parameter (Position=1,Mandatory=$True)]
+        [ValidateSet('.py','.c','.cpp','.h','.hpp','.asm','.hs','.js','.ps1')]
+        [string]$Name
+    )
+
+    ls -Path $Path -Filter "*$Name" -Recurse -outvariable files |
+        cat | measure -line |
+        select @{name='Path';expression={$Path}},
+        @{name='TotalFiles';expression={$files.count}},
+        lines,
+        @{name='Date';expression={Get-Date -Format 'dd-MM-yyyy hh:mm:ss'}}
+
+}
+```
+```
+Get-CodeFileLines B:\ .ps1; Get-CodeFileLines B:\ .js;
+
+Path TotalFiles Lines Date
+---- ---------- ----- ----
+B:\           3   356 22-06-2020 11:39:44
+
+Path TotalFiles Lines Date
+---- ---------- ----- ----
+B:\        3804 668922 22-06-2020 11:41:18
+```
 
 ## Logins
 

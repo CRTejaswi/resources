@@ -14,8 +14,21 @@
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases](#databases)
 - [JS Engines](#js-engines)
-- [Unsorted](#Unsorted)
+- Book: Learn ECMAscript (Prusty)
+    01. Introduction
+    02. Standard Library
+    03. Functional Programming
+    04. Asynchronous Programming
+    05. [Modular Programming](05.md)
+    06. [API - Reflect](06.md)
+    07. API - Proxy
+    08. Object-oriented Programming
+    09. Web (DOM) Programming
+    10. API - Storage
+    11. Web/Service Workers
+    12. Shared Memory & Atomics
 
+## General
 
 - Access Environment Variables <br>
     Environment Variables can't be accessed in plain JS. <br>

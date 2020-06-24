@@ -1,4 +1,4 @@
-Copyright(c) 2020-
+    Copyright(c) 2020-
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
 
@@ -143,6 +143,45 @@ Path TotalFiles Lines Date
 ---- ---------- ----- ----
 B:\        3804 668922 22-06-2020 11:41:18
 ```
+
+- [x] Output Code into Markdown files
+
+```powershell
+function Out-mdNotes{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [System.IO.FileInfo]$Path,
+        [Parameter (Position=1)]
+        [System.IO.FileInfo]$FilePath
+    )
+    $page = @()
+
+    if ($PSBoundParameters.containsKey('Path')){
+        switch ($Path.extension){
+            '.py' {
+                $page += '```python',(cat $Path),'```','```',(python $Path),'```'
+            }
+            '.c' {
+                $page += '```c',(cat $Path),'```','```',($Path.fullname.split('.')[0]+'.exe'),'```'
+            }
+            '.js' {
+                $page += '```javascript',(cat $Path),'```','```',(node $Path),'```'
+            }
+            default {
+                Write-Host "Unknown Language!"
+            }
+        }
+    }
+    Write-Verbose "$page"
+    $page | Out-File -Encoding utf8 $FilePath -Append
+}
+```
+
+<center>
+    <b>Issue</b> <br></center>
+    <img src="resources/Out-mdNotes.png" title="Issue with console.table()">
+</center>
 
 ## Logins
 

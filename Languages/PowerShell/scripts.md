@@ -168,6 +168,9 @@ function Out-mdNotes{
             '.js' {
                 $page += '```javascript',(cat $Path),'```','```',(node $Path),'```'
             }
+            '.ps1' {
+                $page += '```powershell',(cat $Path),'```','```',($Path),'```'
+            }
             default {
                 Write-Host "Unknown Language!"
             }
@@ -178,8 +181,50 @@ function Out-mdNotes{
 }
 ```
 
+- [x] Output to Markdown (templates)
+
+```
+0: README template
+1: ContestCoding solutions (PS/Py3/CC++/JS)
+```
+
+```powershell
+function Out-mdTemplate{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [int32]$Id,
+        [Parameter (Position=1,Mandatory=$True)]
+        [System.IO.FileInfo]$Path
+    )
+    $page = @()
+
+        switch ($Id){
+            0 {
+                $page += "    Copyright(c) 2020-`n    Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+`n",'# Title',"> Info`n",'# Index',"`n- `n- `n- `n",'# References'
+            }
+            1 {
+                $page += '```powershell','```'
+                $page += '```python','```'
+                $page += '```c','```'
+                $page += '```js','```'
+            }
+            default {
+                Write-Warning "Please select a valid template!"
+            }
+        }
+
+    Write-Verbose "$page"
+    $page | Out-File -Encoding utf8 $Path -Append
+}
+```
+
+Issues: <br>
+
+- Code output is instantly recorded. So, BIG PROBLEM if code execution takes time.
+- Tabular data has a bad output.
+
 <center>
-    <b>Issue</b> <br></center>
     <img src="resources/Out-mdNotes.png" title="Issue with console.table()">
 </center>
 

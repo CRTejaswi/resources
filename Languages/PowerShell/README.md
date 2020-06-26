@@ -24,7 +24,7 @@
 - [System Help](#system-help)
 - [Exception Handling](#exception-handling)
 - [Variables](#variables)
-- [Operators](operators)
+- [Operators](#operators)
 - [Control Flow](#control-flow)
 - [Data Structures](#data-structures)
 - [Objects](#objects)
@@ -208,6 +208,57 @@
 | `[adsi]` | ActiveDirectory Service Interface (ADSI) query |
 
 </center>
+
+## Operators
+
+__Initialize with a range of values__ <br>
+
+Use `..` operator to describe a range of integer values between any two values. <br>
+
+```powershell
+$x = 1..10; $y = 0.5..1
+
+1 2 3 4 5
+0 1
+```
+
+__Run code within quotes (`"..."`)__ <br>
+
+Quotes (`"..."`) can be effectively used as formatted strings. <br>
+Use the `$()` operator to execute code (commands, scripts, and scriptblocks `{...}`) within a quoted expression. <br>
+`$()` returns a single value by default. <br>
+
+```powershell
+PS> "The date is $(Get-Date -Format 'dd-MM-yy hh:mm tt')"
+
+The date is 26-06-20 11:34 AM
+
+PS> "Files in this directory are: $((ls -File).Name -join ', ')"
+
+Files in this directory are: README.md, scripts.md, test.ps1
+```
+
+__Run external code__ <br>
+
+Use `&` & `.` operators to run code (commands, scripts, and scriptblocks `{...}`) from anywhere on your PC. <br>
+`&` runs the code in a new (temporary) scope. All changes made here are lost as soon as the execution is over. <br>
+`.` runs the code in current scope. All changes made here are retained in current scope (shell/script). <br>
+These are needed because a command like `"B:\CRTejaswi\Codes\test.exe"` is interpreted as a string. <br>
+Syntax: [&/.] "[path/to/file]" [arguments] <br>
+
+```powershell
+& "B:\CRTejaswi\Codes\test.exe" 2 10 "B:\CRTejaswi\Files\test.txt"
+. "B:\CRTejaswi\Codes\test.exe" 2 10 "B:\CRTejaswi\Files\test.txt"
+
+$x=1; $x # 1
+& {$x = $x*10}; $x # 1
+. {$x = $x*10}; $x # 10
+```
+
+This is handy when you just want to run something repeatedly and are too lazy to source it in an environment variable. <br>
+
+An important feature of `.` operator is that everything within the code's script is now available in the current scope. <br>
+eg. If you run a script `. ./test.ps1`; every variable/function/cmdlet in `test.ps1` is now available in the Shell. <br>
 
 ## Control Flow
 

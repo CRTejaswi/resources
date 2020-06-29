@@ -11,6 +11,7 @@
 - [Logins](#logins)
 - [YouTube](#youtube)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
+- [Web Scraping](#web-scraping)
 
 ## Basics
 
@@ -547,3 +548,100 @@ function Set-ServiceLogon {
     ```
     Get-PCNames -Path .\test.csv | Export-Csv -Path .\results.csv -Append -NoTypeInformation
     ```
+
+## Web Scraping
+
+- [x] Scrape Latex equations & images from https://equplus.net/ . See [this](https://gitlab.com/kidiki1/ltmt/-/tree/crtejaswi).
+
+```powershell
+<#
+USAGE:
+    . .\test.ps1
+    $result = 1..413 | forEach {$(. Get-LatexEquation $_)}
+    $result | ConvertTo-Json | out-file -Encoding utf8 latexEquations.json -Append
+#>
+
+function Get-LatexEquation{
+    [cmdletBinding()]
+    param(
+        [Parameter(Position=0,Mandatory=$True)]
+        [ValidateRange(0,413)]
+        [int32]$Id,
+        [switch]$Image
+    )
+    $baseUrl = "https://equplus.net"
+    $urlEquation = "$baseUrl/eqninfo/Equation-$Id.html"
+    $urlImage = "$baseUrl/png/$("{0:d4}" -f $Id).png"
+    $result = @{}
+
+    switch ($PSBoundParameters.keys){
+        'Image' {
+            Invoke-WebRequest -Uri $urlImage -OutFile "$Id.png"
+        }
+        default {
+            $response = Invoke-WebRequest -Uri $urlEquation
+            $title = ($response.AllElements | where {$_.tagName -eq 'h1'}).innerText
+            $equation = ($response.allelements | where { $_.class -Match "latex" }).innerText
+            [PSCustomObject]@{
+                id = $Id
+                title = $title
+                equation = $equation
+            }
+        }
+    }
+}
+```
+
+- [x] Scrape Latex equations & images from https://dlmf.nist.gov . See [this](https://gitlab.com/kidiki1/ltmt/-/tree/crtejaswi).
+
+```powershell
+<#
+USAGE:
+    . .\test.ps1
+    Get-LatexEquation 1 -Image -Verbose
+    ConvertFrom-LatexToTxt .\files\
+#>
+
+function Get-LatexEquation{
+    [cmdletBinding()]
+    param(
+        [Parameter(Position=0,Mandatory=$True)]
+        [ValidateRange(1,36)]
+        [int32]$Id,
+        [switch]$Image
+    )
+    $baseUrl = "https://dlmf.nist.gov"
+    $sections = 0,17,11,12,48,24,20,25,28,20,76,15,20,31,33,19,26,18,40,38,15,10,21,23,20,20,21,20,34,20,16,18,17,25,13,10,15
+
+    forEach ($x in 1..$sections[$Id]){
+        Write-Verbose "$baseUrl/$Id.$x"
+        $response   = Invoke-WebRequest -Uri "$baseUrl/$Id.$x"
+        $links      = $response.links
+        $texFiles   = ($links.href -match '.tex$').trimStart('./')
+        $imageFiles = ($links.href -match '.png$').trimStart('./')
+        switch ($PSBoundParameters.keys){
+            'Image' {
+                forEach ($img in $imageFiles) {
+                    Invoke-WebRequest -Uri "$baseUrl/$img" -OutFile "images/$img"
+                }
+            }
+            default {
+                forEach ($file in $texFiles) {
+                    Invoke-WebRequest -Uri "$baseUrl/$file" -OutFile "files/$file"
+                }
+            }
+        }
+    }
+}
+
+function ConvertFrom-LatexToTxt{
+    [cmdletBinding()]
+    param(
+        [Parameter(Position=0,Mandatory=$True)]
+        [string]$Path
+    )
+        forEach ($file in (ls $Path).FullName){
+            pandoc -s $file -o $file.Replace('.tex','.txt')
+        }
+}
+```

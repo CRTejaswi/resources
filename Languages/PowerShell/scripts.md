@@ -358,7 +358,6 @@ function Get-LatexEquation{
     $baseUrl = "https://equplus.net"
     $urlEquation = "$baseUrl/eqninfo/Equation-$Id.html"
     $urlImage = "$baseUrl/png/$("{0:d4}" -f $Id).png"
-    $result = @{}
 
     switch ($PSBoundParameters.keys){
         'Image' {
@@ -433,7 +432,6 @@ function ConvertFrom-LatexToTxt{
         }
 }
 ```
-
 
 ## Youtube
 

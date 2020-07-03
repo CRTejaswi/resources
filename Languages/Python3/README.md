@@ -18,6 +18,7 @@
 # Index
 
 - [General](#general)
+- [myScripts](scripts.md)
 - [Data Structures & Algorithms](#data-structures-algorithms)
 - [CLI/GUI](#cligui)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
@@ -30,7 +31,7 @@
 ## General
 
 - Access Environment Variables <br>
-    You can also access User/System environment variables using:
+    You can access User/System environment variables using:
     ```
     import os; API_KEY = os.environ.get('Youtube_ApiKey');
     ```

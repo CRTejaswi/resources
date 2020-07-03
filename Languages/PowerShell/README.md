@@ -226,7 +226,7 @@ __Run code within quotes (`"..."`)__ <br>
 
 Quotes (`"..."`) can be effectively used as formatted strings. <br>
 Use the `$()` operator to execute code (commands, scripts, and scriptblocks `{...}`) within a quoted expression. <br>
-`$()` returns a single value by default. <br>
+`$()` returns a single value by default. It may return an array as well. <br>
 
 ```powershell
 PS> "The date is $(Get-Date -Format 'dd-MM-yy hh:mm tt')"
@@ -244,7 +244,7 @@ Use `&` & `.` operators to run code (commands, scripts, and scriptblocks `{...}`
 `&` runs the code in a new (temporary) scope. All changes made here are lost as soon as the execution is over. <br>
 `.` runs the code in current scope. All changes made here are retained in current scope (shell/script). <br>
 These are needed because a command like `"B:\CRTejaswi\Codes\test.exe"` is interpreted as a string. <br>
-Syntax: [&/.] "[path/to/file]" [arguments] <br>
+__Syntax:__ `[&/.] "[path/to/file]" [arguments]` <br>
 
 ```powershell
 & "B:\CRTejaswi\Codes\test.exe" 2 10 "B:\CRTejaswi\Files\test.txt"

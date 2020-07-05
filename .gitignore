@@ -17,3 +17,7 @@ Languages/PowerShell/study/
 Languages/Python3/*.html
 Languages/Python3/test.py
 Languages/Python3/study/
+Databases/*.html
+Databases/test.sql
+Databases/test.db
+Databases/study/

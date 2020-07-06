@@ -326,13 +326,12 @@ cat .\sanskritAlphabet.json | ConvertFrom-Json
 Import-Csv .\songs1.csv -Delimiter ';' | ConvertTo-Json | out-file -encoding utf8 .\songs1.json
 cat .\songs1.json | ConvertFrom-Json
 
-$baseURL       = 'https://www.youtube.com'
+$baseUrl       = 'https://www.youtube.com'
 $videoQuery    = '/watch?v='
 $playlistQuery = '/playlist?list='
 
-$items = Import-Csv .\songs1.csv -Delimiter ';'
-$songs = forEach ($link in $items.link){"$baseUrl$videoQuery$link"}
-firefox $songs
+$songs = Invoke-RestMethod 'https://crtejaswi.github.io/API/songs1.json'
+$songs | forEach {youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.title).%(ext)s" $baseUrl$videoQuery$($_.link)}
 ```
 
 - [`latex1.json`](https://crtejaswi.github.io/API/latex1.json) <br>

@@ -44,6 +44,7 @@
 - [Scripting](#scripting)
 - [Recipies](#recipies)
 - [ ] [PowerShell/Python](#powershell-python)
+- [ ] [PowerShell/JavaScript](#powershell-js)
 
 ## General
 
@@ -2035,4 +2036,17 @@ Also, finish review exercises & put code in relevant sections.
 ## Tools
 
 
-# PowerShell & Python
+## PowerShell-Python
+
+Execute Py3 scripts from PS, loading/storing data directly from the latter.
+
+https://www.apress.com/gp/book/9781484245033
+https://github.com/Apress/powershell-and-python-together
+
+## PowerShell-JavaScript
+
+- [ ] Using firefox/js for routine tasks from PS.
+    PS functions that aid in web application development or makes use of JS apis.
+- [ ] Executing PS Core instructions from NodeJS app.
+    https://www.jeansnyman.com/posts/executing-powershell-commands-in-a-nodejs-api/
+    https://github.com/IonicaBizau/powershell

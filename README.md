@@ -17,6 +17,7 @@
     - [Verilog](Languages/HDL/Verilog/README.md)
     - [SPICE](Languages/HDL/SPICE/README.md)
     - [µWind](Languages/HDL/µWind/README.md)
+- [Databases](Databases/README.md)
 
 ## Command Set <sup>[BROKEN]</sup>
 > Contains various command-set listing.

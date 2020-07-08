@@ -6,7 +6,21 @@
 
 # Index
 
+- [Setup](#setup)
 - [Templates](#templates)
+- [Challenges](#challenges)
+
+## Setup
+
+__SQLite__ <br>
+
+__SQLServer__ <br>
+
+__MySQL__ <br>
+
+__PostGreSQL__ <br>
+
+__MongoDB__ <br>
 
 ## Templates
 
@@ -16,3 +30,8 @@
 
 - [ ] Implement `outCsv` method.
 - [ ] Modify methods to automate CRUDing using a CSV file.
+
+
+## Challenges
+
+Refer: [[1]](https://www.hackerrank.com/domains/sql) [[2]](https://www.w3resource.com/sql-exercises/)

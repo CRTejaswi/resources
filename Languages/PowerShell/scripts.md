@@ -675,3 +675,73 @@ function Set-ServiceLogon {
     ```
 
 ## Web Scraping
+
+- __Scrape shlokas & audios from https://www.valmiki.iitk.ac.in/__ <br>
+
+```powershell
+<#
+USAGE:
+    . .\test.ps1
+    1..6 | Get-RamayanaData $_ -Audio -Verbose
+    1..6 | Merge-Audio $_ -Verbose
+    1..6 | Out-Ebook
+    OR,
+    Get-RamayanaData 1 -Audio -Verbose
+    Merge-Audio 1 -Verbose
+    Out-Ebook 1
+NOTE: Currently, there is no data for 1-6.
+Update $sections[6] when data is available.
+https://www.valmiki.iitk.ac.in/sloka?field_kanda_tid=6&language=dv
+#>
+
+function Get-RamayanaData{
+    [cmdletBinding()]
+    param(
+        [Parameter(Position=0,Mandatory=$True)]
+        [ValidateRange(1,6)]
+        [int32]$Id,
+        [switch]$Audio
+    )
+    $baseUrl = "https://www.valmiki.iitk.ac.in/"
+    $sections = 0,77,119,75,67,68,0
+
+    forEach ($x in 1..$sections[$Id]){
+        Write-Verbose "$baseUrl/sloka?field_kanda_tid=$Id&language=dv&field_sarga_value=$x"
+        $response   = Invoke-WebRequest -Uri "$baseUrl/sloka?field_kanda_tid=$Id&language=dv&field_sarga_value=$x"
+        $text = ($response.allElements | where {$_.class -match 'view-content'}).innerText
+        switch ($PSBoundParameters.keys){
+            'Audio' {
+                Invoke-WebRequest -Uri "$baseUrl/sites/default/files/audio/$Id-$x.mp3" -OutFile "audios/$Id-$x.mp3"
+            }
+            default {
+                $text | Out-File -encoding utf8 "files/$Id.txt" -Append
+            }
+        }
+    }
+}
+
+function Out-Ebook{
+    [cmdletBinding()]
+    param(
+        [Parameter(Position=0,Mandatory=$True)]
+        [ValidateRange(1,6)]
+        [int32]$Id
+    )
+    $volumes = 0,'BalaKanda','AyodhyaKanda','AranyaKanda','KishkindhaKanda','SundaraKanda','YuddhKanda'
+    pandoc "files/$Id.txt" --metadata title="$($volumes[$Id])" --epub-cover-image="cover.jpg" -o "files/$($volumes[$Id]).epub"
+}
+
+function Merge-Audio{
+    [cmdletBinding()]
+    param(
+        [Parameter(Position=0,Mandatory=$True)]
+        [ValidateRange(1,6)]
+        [int32]$Id
+    )
+    $sections = 0,77,119,75,67,68,0
+
+    $page = @(); $n=1; while ($n -ne $sections[$Id]+1) {$page += "file 'audios/$Id-$n.mp3'"; $n++}
+    $page | Out-File -Encoding ascii MERGE.txt
+    ffmpeg -f concat -safe 0 -i MERGE.txt -c copy "audios/$Id.mp3"
+}
+```

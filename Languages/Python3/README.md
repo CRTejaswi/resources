@@ -17,10 +17,12 @@
 
 # Index
 
-- [General](#general)
 - [myScripts](scripts.md)
+- [General](#general)
 - [Data Structures & Algorithms](#data-structures-algorithms)
 - [CLI/GUI](#cligui)
+- [IO Access](#io-access)
+- [File Access](#file-access)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases](#databases)
 - [Processing: Text](#text-processing)
@@ -42,6 +44,112 @@ Review: [DSA](dsa/DSA.md)
 ## CLI/GUI
 
 Review: [argparse](argparse/argparse.md), [Tkinter](tkinter/tkinter.md).
+
+## IO Access
+
+## File Access
+
+__R/W text files__ <br>
+
+```python
+# Read (all) / Read (line-by-line)
+with open('test.txt','r',encoding='utf-8') as f:
+    content = f.read()
+with open('test.txt','r',encoding='utf-8') as f:
+    lines = list(f)
+# Write/Append
+with open('test.txt','w',encoding='utf-8') as f:
+    f.write(content)
+with open('test.txt','a',encoding='utf-8') as f:
+    f.write(content)
+```
+
+__R/W binary files (structured binary data)__ <br>
+
+See: [`struct`](https://python.readthedocs.io/en/stable/library/struct.html#examples)
+
+Use `struct` module to serialize/deserialize values. <br>
+This serializes (=packs) `char`,`int`,`long`,`float`,`double` values. (Byte-Size = 1,4,4,4,8) <br>
+
+```python
+import struct
+
+# 1024 = 0x400
+data = struct.pack('>cilfd', 1024, 1024, 1024, 1024, 1024)
+print(data) # b'A\x00\x00\x04\x00\x00\x00\x04\x00D\x80\x00\x00@\x90\x00\x00\x00\x00\x00\x00'
+```
+
+A practical use would be to de-serialize bytes from a TCP packet. <br>
+
+<center>
+<img src="resources/file-access-1.png">
+</center>
+
+```python
+import struct
+
+with open('packet.dump','rb') as f:
+    data = struct.unpack_from('>HHLL',f.read())
+print(data) # (50291, 80, 2778997212, 644363807)
+
+with open('packet.dump','wb') as f:
+    data = struct.pack('>HHLL', 50291, 80, 2778997212, 644363807)
+    f.write(data)
+print(data) # b'\xc4s\x00P\xa5\xa4!\xdc&h6\x1f'
+```
+
+__Serializing/De-Serializing data (pickle, shelve)__ <br>
+
+Refer: [pickle](https://docs.python.org/3/library/pickle.html#examples), [shelve](https://docs.python.org/3/library/shelve.html#example) <br>
+
+Picking/Unpicking is serialization/de-serialization of Python objects. This allows persistent storage (file/db) of data & its transfer over a network. <br>
+
+```python
+import pickle
+
+data = {
+    'a': [1, 2.0, 3, 4+6j],
+    'b': ("character string", b"byte string"),
+    'c': {None, True, False}
+}
+# result = pickle.dumps(data)
+# b'\x80\x03}q\x00(X\x01\x00\x00\x00aq\x01]q\x02(K\x01G@\x00\x00\x00\x00\x00\x00\x00K\x03cbuiltins\ncomplex\nq\x03G@\x10\x00\x00\x00\x00\x00\x00G@\x18\x00\x00\x00\x00\x00\x00\x86q\x04Rq\x05eX\x01\x00\x00\x00bq\x06X\x10\x00\x00\x00character stringq\x07C\x0bbyte stringq\x08\x86q\tX\x01\x00\x00\x00cq\ncbuiltins\nset\nq\x0b]q\x0c(\x89\x88Ne\x85q\rRq\x0eu.'
+
+with open('data.pickle', 'wb') as f:
+    pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
+with open('data.pickle', 'rb') as f:
+    data = pickle.load(f)
+# pickle.loads(result)
+# {'a': [1, 2.0, 3, (4+6j)], 'b': ('character string', b'byte string'), 'c': {False, True, None}}
+```
+
+Pickling an object using `pickle` module serializes it; but it's difficult to access parts of the object when it is deserialized. This is overcome by Shelving (of pickled objects) into dictionaries using `shelve` module. <br>
+
+```python
+import shelve
+
+data = {
+    'a': [1, 2.0, 3, 4+6j],
+    'b': ("character string", b"byte string"),
+    'c': {None, True, False}
+}
+
+class Value:
+    def __init__(self, value):
+        self.value = value
+
+with shelve.open('test.db') as f:
+    f['data']  = data
+    f['value'] = Value(10)
+
+with shelve.open('test.db') as f:
+    print(f['data']['a'], f['value'].value) # [1, 2.0, 3, (4+6j)] 10
+```
+
+__R/W structured file-formats (CSV, JSON, XML)__ <br>
+__R/W compressed files (archives)__ <br>
+__R/W configuration files__ <br>
+
 
 ## Structured Data (CSV, JSON, XML)
 

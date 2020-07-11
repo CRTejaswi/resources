@@ -334,6 +334,59 @@ $songs = Invoke-RestMethod 'https://crtejaswi.github.io/API/songs1.json'
 $songs | forEach {youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.title).%(ext)s" $baseUrl$videoQuery$($_.link)}
 ```
 
+- [`songs2.json`](https://crtejaswi.github.io/API/songs2.json) <br>
+
+```powershell
+<#
+USAGE:
+    . .\test.ps1
+    Get-mySongs -List -Verbose
+    Get-mySongs -Audio -Lyrics
+#>
+function Get-mySongs{
+    [cmdletBinding()]
+    param(
+        [string]$Url='https://crtejaswi.github.io/API/songs2.json',
+        [switch]$List,
+        [switch]$Lyrics,
+        [switch]$Audio
+    )
+    $AudioUrl      = 'https://www.youtube.com'
+    $LyricsUrl     = 'https://www.azlyrics.com/lyrics'
+    $videoQuery    = '/watch?v='
+    $playlistQuery = '/playlist?list='
+
+    $entries = Invoke-RestMethod $Url
+
+    switch ($PSBoundParameters.keys){
+        'List' {$entries}
+        'Lyrics'{
+            # Add Keys
+            $songs = @{}; $entries.singer | Get-Unique | forEach {$songs.Add($_,@())}
+            # Update Values using Keys
+            forEach ($entry in $entries){
+                if ($songs.containsKey($entry.singer)){
+                    $songs[$entry.singer] += $entry.title
+                }
+            }
+            # Download Lyrics
+            forEach ($key in $songs.keys){
+                forEach ($title in $songs[$key]){
+                    $response = Invoke-WebRequest "$LyricsUrl/$($key.toLower().replace(" ",''))/$($title.toLower().replace(" ",'').replace("'",'')).html"
+                    ($response.allElements | where {$_.class -match 'container main-page'}).innerText | Out-File -encoding ascii "$key - $title.txt"
+                }
+            }
+        }
+        'Audio' {
+            $entries |
+            forEach {
+                youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.singer) - $($_.title).%(ext)s" $AudioUrl$videoQuery$($_.link)
+            }
+        }
+    }
+}
+```
+
 - [`latex1.json`](https://crtejaswi.github.io/API/latex1.json) <br>
 
 > Scrape Latex equations & images from https://equplus.net/ . See [this](https://gitlab.com/kidiki1/ltmt/-/tree/crtejaswi).
@@ -684,7 +737,7 @@ USAGE:
     . .\test.ps1
     1..6 | Get-RamayanaData $_ -Audio -Verbose
     1..6 | Merge-Audio $_ -Verbose
-    1..6 | Out-Ebook
+    1..6 | Out-Ebook $_ -Verbose
     OR,
     Get-RamayanaData 1 -Audio -Verbose
     Merge-Audio 1 -Verbose

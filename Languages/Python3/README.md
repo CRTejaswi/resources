@@ -19,10 +19,11 @@
 
 - [myScripts](scripts.md)
 - [General](#general)
-- [Data Structures & Algorithms](#data-structures-algorithms)
-- [CLI/GUI](#cligui)
 - [IO Access](#io-access)
 - [File Access](#file-access)
+- [Data Structures](#data-structures)
+- [Algorithms](#algorithms)
+- [CLI/GUI](#cligui)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases](#databases)
 - [Processing: Text](#text-processing)
@@ -32,14 +33,45 @@
 
 ## General
 
-- Access Environment Variables <br>
-    You can access User/System environment variables using:
-    ```
-    import os; API_KEY = os.environ.get('Youtube_ApiKey');
-    ```
+__Imports__ <br>
 
-## Data Structures & Algorithms
-Review: [DSA](dsa/DSA.md)
+Refer: [Import](https://realpython.com/python-import/) <br>
+
+- Import, Un-Import, Re-Import, CheckIfImported Modules
+```python
+import this
+del this
+...
+dir(this)
+```
+
+- Discovering a new module/package
+```python
+import this
+dir(); dir(this); # GlobalScope, LocalScope ('this')
+# ['__annotations__', '__builtins__', '__doc__', '__loader__', '__name__', '__package__', '__spec__', 'this']
+# ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'c', 'd', 'i', 's']
+
+globals(); this.__dict__; # NameSpace: Global, Local ('this')
+# {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, 'this': <module 'this' from 'C:\\Users\\Chaitanya Tejaswi\\AppData\\Local\\Programs\\Python\\Python37\\lib\\this.py'>}
+# {...}
+```
+
+
+
+__Shell__ <br>
+
+- Clear Screen
+```python
+import subprocess; subprocess.run('cls', shell=True); del subprocess;
+```
+
+__Access Environment Variables__ <br>
+You can access User/System environment variables using:
+```python
+import os; API_KEY = os.environ.get('Youtube_ApiKey');
+```
+
 
 ## CLI/GUI
 
@@ -66,7 +98,7 @@ with open('test.txt','a',encoding='utf-8') as f:
 
 __R/W binary files (structured binary data)__ <br>
 
-See: [`struct`](https://python.readthedocs.io/en/stable/library/struct.html#examples)
+Refer: [`struct`](https://python.readthedocs.io/en/stable/library/struct.html#examples)
 
 Use `struct` module to serialize/deserialize values. <br>
 This serializes (=packs) `char`,`int`,`long`,`float`,`double` values. (Byte-Size = 1,4,4,4,8) <br>
@@ -75,7 +107,7 @@ This serializes (=packs) `char`,`int`,`long`,`float`,`double` values. (Byte-Size
 import struct
 
 # 1024 = 0x400
-data = struct.pack('>cilfd', 1024, 1024, 1024, 1024, 1024)
+data = struct.pack('>cilfd', b'A', 1024, 1024, 1024, 1024)
 print(data) # b'A\x00\x00\x04\x00\x00\x00\x04\x00D\x80\x00\x00@\x90\x00\x00\x00\x00\x00\x00'
 ```
 
@@ -98,11 +130,13 @@ with open('packet.dump','wb') as f:
 print(data) # b'\xc4s\x00P\xa5\xa4!\xdc&h6\x1f'
 ```
 
-__Serializing/De-Serializing data (pickle, shelve)__ <br>
+__Serializing/De-Serializing Python Objects (pickle, shelve)__ <br>
 
 Refer: [pickle](https://docs.python.org/3/library/pickle.html#examples), [shelve](https://docs.python.org/3/library/shelve.html#example) <br>
 
-Picking/Unpicking is serialization/de-serialization of Python objects. This allows persistent storage (file/db) of data & its transfer over a network. <br>
+Binary file access is serialization/de-serialization of values. <br>
+"Pickling/Unpickling" is serialization/de-serialization of Python objects. <br>
+This allows for persistent storage (file/db) of data & its transfer over a network. <br>
 
 ```python
 import pickle
@@ -123,7 +157,7 @@ with open('data.pickle', 'rb') as f:
 # {'a': [1, 2.0, 3, (4+6j)], 'b': ('character string', b'byte string'), 'c': {False, True, None}}
 ```
 
-Pickling an object using `pickle` module serializes it; but it's difficult to access parts of the object when it is deserialized. This is overcome by Shelving (of pickled objects) into dictionaries using `shelve` module. <br>
+"Pickling" an object using `pickle` module serializes it; but it's difficult to access parts of the object when it is deserialized. This is overcome by "Shelving" (pickled objects) into dictionaries using `shelve` module. <br>
 
 ```python
 import shelve
@@ -147,24 +181,29 @@ with shelve.open('test.db') as f:
 ```
 
 __R/W structured file-formats (CSV, JSON, XML)__ <br>
-__R/W compressed files (archives)__ <br>
-__R/W configuration files__ <br>
-
-
-## Structured Data (CSV, JSON, XML)
 
 Refer: [JSON (Schafer)](https://www.youtube.com/watch?v=9N6a-VLBa2I), [JSON APIs (Schafer)](https://www.youtube.com/watch?v=1lxrb_ezP-g) <br>
 
-__CSV__ <br>
+__R/W to/from databases__ <br>
 
-__JSON__ <br>
+Review: [Databases](#databases)
 
-__XML__ <br>
+- [SQLite](https://github.com/CRTejaswi/Resources/blob/master/Databases/resources/SQLite.py)
+- [SQLServer](https://github.com/CRTejaswi/Resources/blob/master/Databases/resources/SQLServer.py)
 
+__R/W XML/HTML files__ <br>
+    __R/W compressed files (archives)__ <br>
+__R/W configuration files__ <br>
 
+## Data Structures
+Review: [DSA](dsa/DSA.md)
 
+## Algorithms
+Review: [DSA](dsa/DSA.md)
 
-
+<center>
+<img src="resources/algorithms-1.png">
+</center>
 
 ## Databases
 

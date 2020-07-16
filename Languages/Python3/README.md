@@ -57,8 +57,6 @@ globals(); this.__dict__; # NameSpace: Global, Local ('this')
 # {...}
 ```
 
-
-
 __Shell__ <br>
 
 - Clear Screen
@@ -204,6 +202,55 @@ Review: [DSA](dsa/DSA.md)
 <center>
 <img src="resources/algorithms-1.png">
 </center>
+
+__Search, Sort & Filter__ <br>
+
+Refer: [sorted](https://docs.python.org/3/howto/sorting.html), [bisect](https://docs.python.org/3/library/bisect.html), [bisect - recipie](https://code.activestate.com/recipes/577197-sortedcollection/). <br>
+
+When the size of data is small, it's better to get all the elements, and sort it exactly once using `sorted`. <br>
+When the size of data is large, `bisect` is more effective. `bisect` module implements an algorithm for inserting elements into a list while maintaining the list in sorted order. <br>
+
+```python
+import bisect
+
+values = [14, 85, 77, 26, 50, 45, 66, 79, 10, 3, 84, 77, 1]
+_list = []
+
+print('Val  Pos  Contents')
+print('---  ---  --------')
+for value in values:
+    index = bisect.bisect(_list,value)
+    bisect.insort(_list,value)
+    print(f'{value:3}  {index:3}  {_list}')
+```
+```
+Val  Pos  Contents
+---  ---  --------
+ 14    0  [14]
+ 85    1  [14, 85]
+ 77    1  [14, 77, 85]
+ 26    1  [14, 26, 77, 85]
+ 50    2  [14, 26, 50, 77, 85]
+ 45    2  [14, 26, 45, 50, 77, 85]
+ 66    4  [14, 26, 45, 50, 66, 77, 85]
+ 79    6  [14, 26, 45, 50, 66, 77, 79, 85]
+ 10    0  [10, 14, 26, 45, 50, 66, 77, 79, 85]
+  3    0  [3, 10, 14, 26, 45, 50, 66, 77, 79, 85]
+ 84    9  [3, 10, 14, 26, 45, 50, 66, 77, 79, 84, 85]
+ 77    8  [3, 10, 14, 26, 45, 50, 66, 77, 77, 79, 84, 85]
+  1    0  [1, 3, 10, 14, 26, 45, 50, 66, 77, 77, 79, 84, 85]
+```
+
+```python
+import bisect
+
+def grade(score, breakpoints=[60,70,80,90], grades='FDCBA'):
+    index = bisect.bisect(breakpoints, score)
+    return grades[index]
+
+[ grade(score) for score in [33,99,73,81,90,24,77,95] ]
+# ['F', 'A', 'C', 'B', 'A', 'F', 'C', 'A']
+```
 
 ## Databases
 

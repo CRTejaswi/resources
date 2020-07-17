@@ -17,6 +17,8 @@
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases](#databases)
 - [JS Engines](#js-engines)
+- [SVG](#svg)
+- [D3js](#data-visualization)
 - Book: Learn ECMAscript (Prusty)
     01. Introduction
     02. Standard Library
@@ -63,3 +65,11 @@ __XML__ <br>
 Install [JS Shell Utility](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Introduction_to_the_JavaScript_shell). <br>
 Also see [Firefox: JS Interpreter](https://developer.mozilla.org/en-US/docs/Tools/Web_Console/The_command_line_interpreter) <br>
 See [Yulia Startsev's streams](https://developer.mozilla.com/events/compiler-compiler-yulia-startsev/) to get started with SpiderMonkey. Later on, decide which project to focus on. <br>
+
+## SVG
+
+Refer: [Basics](https://codepen.io/crtejaswi/pen/GRowgmB)
+
+## Data Visualization
+
+Refer: [Basics](https://codepen.io/crtejaswi/pen/wvMQBpO)

@@ -70,6 +70,24 @@ See [Yulia Startsev's streams](https://developer.mozilla.com/events/compiler-com
 
 Refer: [Basics](https://codepen.io/crtejaswi/pen/GRowgmB)
 
+__Shapes__ <br>
+
+<center>
+
+| Tag | Attributes |
+| :--: | :-- |
+| `<line>` | |
+| `<rect>` | |
+| `<polyline>` | |
+| `<polygon>` | |
+| `<circle>` | |
+| `<ellipse>` | |
+| `<text>` | |
+| `<image>` | |
+| `<path>` | |
+
+</center>
+
 ## Data Visualization
 
 Refer: [Basics](https://codepen.io/crtejaswi/pen/wvMQBpO)

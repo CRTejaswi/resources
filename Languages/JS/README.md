@@ -68,7 +68,7 @@ See [Yulia Startsev's streams](https://developer.mozilla.com/events/compiler-com
 
 ## SVG
 
-Refer: [Basics](https://codepen.io/crtejaswi/pen/GRowgmB)
+Refer: [Basics](https://codepen.io/crtejaswi/pen/GRowgmB), [Tutorial](https://www.w3.org/Graphics/SVG/IG/resources/svgprimer.html), [Tutorial](http://tutorials.jenkov.com/svg/index.html) & [Videos](https://www.youtube.com/playlist?list=PLL8woMHwr36F2tCFnWTbVBQAGQ6nTcXOO), [SVG Elements](https://developer.mozilla.org/en-US/docs/Web/SVG/Element#SVG_elements_by_category).
 
 __Shapes__ <br>
 
@@ -76,18 +76,30 @@ __Shapes__ <br>
 
 | Tag | Attributes |
 | :--: | :-- |
-| `<line>` | |
-| `<rect>` | |
-| `<polyline>` | |
+| `<line>` | `x1,y1,x2,y2`, `stroke`,`stroke-width`, `stroke-linecap`, `stroke-dasharray` |
+| `<polyline>` | `points`, `fill`, `stroke`,`stroke-width`, `stroke-linecap`, `stroke-dasharray` |
+| `<rect>` | `x,y`, `width,height`, `fill`, `stroke`,`stroke-width` |
 | `<polygon>` | |
-| `<circle>` | |
-| `<ellipse>` | |
-| `<text>` | |
-| `<image>` | |
-| `<path>` | |
+| `<circle>` | `cx,cy,r`, `fill`, `stroke`,`stroke-width`, `stroke-dasharray` |
+| `<ellipse>` | `cx,cy,rx,ry`, `fill`, `stroke`,`stroke-width`, `stroke-dasharray` |
+| `<path>` | `d (M-LQCA)`, `fill`, `stroke`,`stroke-width`, `stroke-dasharray` |
+| `<text>` | `x,y`, `fill`, `font`, `font-family`, `font-size` |
+| `<image>` | `xlink:href`, `x,y`, `width,height`, `preserveAspectRatio` |
+| `<marker>` | `id`, `refX,refY`, `viewBox`, `markerWidth,markerHeight`, `orient`, `preserveAspectRatio` |
 
 </center>
 
+`<path>` is the most import shape, with a curve sketched by `M-LQCA` ("Move to M(x,y), then move linearly/quadratically/cubically/on an ellipticalArc").
+```xml
+<path d="M 0,0 L 100,0" fill="none" stroke="#000000"/>
+<path d="M 0,0 Q 150,200 100,100 z" fill="none" stroke="#ff0000"/>
+<path d="M 0,0 C 150,200 150,150 100,100 z" fill="none" stroke="#00ff00"/>
+<path d="M 0,0 A 150,200 0 0,0 100,100 z" fill="none" stroke="#0000ff"/>
+```
+
+<img src="resources/svg1.png">
+
+
 ## Data Visualization
 
-Refer: [Basics](https://codepen.io/crtejaswi/pen/wvMQBpO)
+Refer: [Basics](https://codepen.io/crtejaswi/pen/wvMQBpO), [Tutorial](https://observablehq.com/collection/@d3/learn-d3), [Video](https://www.youtube.com/watch?v=TOJ9yjvlapY), [Videos](https://www.youtube.com/watch?v=_8V5o2UHG0E&t=9330s), [Examples](https://observablehq.com/@d3/gallery).

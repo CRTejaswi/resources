@@ -47,6 +47,231 @@
 ## CLI/GUI
 
 
+    Copyright (c) 2019-
+    Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: MIT
+
+
+## Array
+
+## Object
+ - [Defining Properties & Methods](#Object01)
+ - [Generic Properties & Methods](#Object02)
+
+<a id="Object01"></a>
+
+### Defining Properties & Methods
+1. __Using Object-Initialization__ \
+    Explanation of code-snippet.
+``` js
+SYNTAX:
+    var obj = {
+              property(params) {...},
+              *generator(params) {...},
+        async property(params) {...},
+        async *generator(params) {...},
+
+              [property](params) {...},
+              *[generator](params) {...},
+        async [property](params) {...},
+
+          get property(){...},
+          set property(value){...}
+    };
+```
+``` js
+var car1 = {
+    make: 'Honda',
+    model: 'City',
+    year: 2008
+};
+var car2 = {
+    make: 'Suzuki',
+    model: 'Wagon-R',
+    year: 2017
+};
+
+console.table([car1, car2]);
+```
+```
+(index)  make    model    year
+   0    Honda    City     2008
+   1    Suzuki  Wagon-R   2017
+```
+
+2. __Using A Constructor-Function__ \
+    Explanation of code-snippet.
+``` js
+function Car(make, model, year){
+    this.make = make;
+    this.model = model;
+    this.year = year;
+    this.displayCar = displayCar;
+};
+function displayCar(){
+    var result = `A Beautiful ${this.year} ${this.make} ${this.model}`;
+    return result;
+}
+
+var car1 = new Car('Honda', 'City', 2008);
+var car2 = new Car('Suzuki', 'Wagon-R', 2017);
+console.log(car1.displayCar());
+console.log(car2.displayCar());
+```
+```
+A Beautiful 2008 Honda City
+A Beautiful 2017 Suzuki Wagon-R
+```
+
+3. __Using `Object.create` Method__ \
+    Explanation of code-snippet.
+``` js
+var Car = {
+    make: '',
+    model: '',
+    year: undefined
+};
+
+var car1 = Object.create(Car);
+var car2 = Object.create(Car);
+
+car1.make = 'Honda'; car1.model = 'City'; car1.year = 2008;
+car2.make = 'Suzuki'; car2.model = 'Wagon-R'; car2.year = 2017;
+
+console.table([car1, car2]);
+```
+```
+(index)  make    model    year
+   0    Honda    City     2008
+   1    Suzuki  Wagon-R   2017
+```
+<a id="Object02"></a>
+
+### Generic Properties & Methods
+1. __Using Object-Initialization__ \
+    Explanation of code-snippet.
+``` js
+SYNTAX:
+    var obj = {
+              property(params) {...},
+              *generator(params) {...},
+        async property(params) {...},
+        async *generator(params) {...},
+
+              [property](params) {...},
+              *[generator](params) {...},
+        async [property](params) {...},
+
+          get property(){...},
+          set property(value){...}
+    };
+```
+
+
+### Iterator v Iterable Protocol
+- Iterator Protocol
+``` js
+let obj = {
+    array: [1,2,3,4,5],
+    nextIndex: 0,
+    next: function(){
+        return (this.nextIndex < this.array.length)
+            ? {value: this.array[this.nextIndex++],
+               done: false}
+            : {done: true}
+    }
+};
+
+for (var i=0; i < 5; i++)
+    console.log(obj.next().value);
+console.log(obj.next().done);
+```
+- Iterable Protocol
+``` js
+let obj = {
+    array: [1,2,3,4,5],
+    nextIndex: 0,
+    [Symbol.iterator]: function(){
+        return {
+            array: this.array,
+            nextIndex: this.nextIndex,
+            next: function(){
+                return (this.nextIndex < this.array.length)
+                    ? {value: this.array[this.nextIndex++],
+                       done: false}
+                    : {done: true}
+            }
+        }
+    }
+};
+
+let iterable = obj[Symbol.iterator]()
+for (var i=0; i < 5; i++)
+    console.log(iterable.next().value);
+console.log(iterable.next().done);
+```
+Outputs of both these code-snippets are:
+```
+1
+2
+3
+4
+5
+true
+```
+- Generator (Iterator + Iterable)
+
+    - Returns the next natural number
+``` js
+  function* foo(n){
+    while (true)
+        yield ++n;
+}
+
+let generator = foo(0);
+for (var i = 0; i < 10; i++)
+    console.log(generator.next().value);
+```
+
+## Promise
+``` js
+var car1 = {
+    make: 'Honda',
+    model: 'City',
+    year: 2008
+};
+var car2 = {
+    make: 'Suzuki',
+    model: 'Wagon-R',
+    year: 2017
+};
+console.table([car1, car2]);
+
+Promise.resolve(car1)
+    .then (function(value){
+        console.log(value.make, value.model, value.year);
+        console.log(value[0], value[1], value[2]);
+        console.log(value['make'], value['model'], value['year']);
+    });
+Promise.reject(car2)
+    .then (null, function(value){
+        console.log(value.make, value.model, value.year);
+        console.log(value[0], value[1], value[2]);
+        console.log(value['make'], value['model'], value['year']);
+    });
+```
+```
+(index)  make    model    year
+   0    Honda    City     2008
+   1    Suzuki  Wagon-R   2017
+​
+Honda City 2008
+undefined undefined undefined
+Honda City 2008
+Suzuki Wagon-R 2017
+undefined undefined undefined
+Suzuki Wagon-R 2017
+```
+
 ## Structured Data (CSV, JSON, XML)
 
 Refer:
@@ -89,7 +314,7 @@ __Shapes__ <br>
 
 </center>
 
-`<path>` is the most import shape, with a curve sketched by `M-LQCA` ("Move to M(x,y), then move linearly/quadratically/cubically/on an ellipticalArc").
+`<path>` is the most important shape, with a curve sketched by `M-LQCA` ("Move to M(x,y), then move linearly/quadratically/cubically/on an ellipticalArc").
 ```xml
 <path d="M 0,0 L 100,0" fill="none" stroke="#000000"/>
 <path d="M 0,0 Q 150,200 100,100 z" fill="none" stroke="#ff0000"/>

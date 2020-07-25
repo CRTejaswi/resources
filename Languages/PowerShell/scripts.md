@@ -431,6 +431,10 @@ function Get-LatexEquation{
 
 - [`latex2.json`](https://crtejaswi.github.io/API/latex2.json) <br>
 
+```powershell
+$entries = irm 'https://crtejaswi.github.io/API/latex2.json'
+```
+
 > Scrape Latex equations & images from https://dlmf.nist.gov . See [this](https://gitlab.com/kidiki1/ltmt/-/tree/crtejaswi).
 
 ```powershell
@@ -484,6 +488,37 @@ function ConvertFrom-LatexToTxt{
         }
 }
 ```
+
+> Export JSON from CSV file.
+
+```powershell
+import-csv .\latex2.csv -Delimiter ';' | forEach {
+    [PSCustomObject] @{
+        Title      = $_.title
+        Equations  = $_.equations -as [string[]]
+        Datasets   = $_.datasets -as [string[]]
+        Tags       = $_.tags -as [string[]]
+        References = $_.references -as [string[]]
+    }
+} | convertto-json | out-file -encoding utf8 .\latex2.json
+```
+
+```powershell
+(cat .\1.4.E4.tex).replace("\[","").replace("\]","")
+
+f^{\prime}(x)=\frac{\mathrm{d}f}{\mathrm{d}x}=\lim_{h\to 0}\frac{f(x+h)-f(x)}{%h}.
+
+$texUrl = 'https://render.githubusercontent.com/render/math?math='
+(cat .\1.4.E4.tex).replace("\[","").replace("\]","").replace("+","%2B") | scb
+firefox "$texUrl$(gcb)"
+iwr "$texUrl$(gcb)" -OutFile test.svg
+ magick -density 300 .\test.svg .\test.png
+```
+
+<center>
+    <img src="resources/api_latex2_1.png">
+    <img src="resources/api_latex2_2.png">
+</center>
 
 ## Youtube
 

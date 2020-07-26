@@ -503,16 +503,19 @@ import-csv .\latex2.csv -Delimiter ';' | forEach {
 } | convertto-json | out-file -encoding utf8 .\latex2.json
 ```
 
+> Display Tex equation (eg. 1.4.E4.tex). Check [4muLatex](https://thinktype.herokuapp.com/add_equation) to verify MathJax output.
+
 ```powershell
 (cat .\1.4.E4.tex).replace("\[","").replace("\]","")
 
 f^{\prime}(x)=\frac{\mathrm{d}f}{\mathrm{d}x}=\lim_{h\to 0}\frac{f(x+h)-f(x)}{%h}.
 
 $texUrl = 'https://render.githubusercontent.com/render/math?math='
+$datasetUrl = 'https://dlmf.nist.gov'
 (cat .\1.4.E4.tex).replace("\[","").replace("\]","").replace("+","%2B") | scb
-firefox "$texUrl$(gcb)"
+firefox "$texUrl$(gcb)" "$datasetUrl/1.4.E4.png"
 iwr "$texUrl$(gcb)" -OutFile test.svg
- magick -density 300 .\test.svg .\test.png
+magick -density 300 .\test.svg .\test.png
 ```
 
 <center>

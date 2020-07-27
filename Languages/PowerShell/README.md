@@ -145,14 +145,14 @@ eg. Display a countdown timer using a progressbar.
     ```
 
 - Remove BOM from UTF-8 Files <sup>[BROKEN]</sup>
-```powershell
-function Remove-BOM ($OldPath, $NewPath){
-    $content  = Get-Content $OldPath -Raw
-    $encoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($NewPath, $content, $encoding)
-}
-Remove-BOM -Path .\test.json
-```
+    ```powershell
+    function Remove-BOM ($OldPath, $NewPath){
+        $content  = Get-Content $OldPath -Raw
+        $encoding = New-Object System.Text.UTF8Encoding $False
+        [System.IO.File]::WriteAllLines($NewPath, $content, $encoding)
+    }
+    Remove-BOM -Path .\test.json
+    ```
 
 - Binding Keyboard Shortcuts <sup>[BROKEN]</sup> <br>
 Use `PSReadline` module cmdlets. <br>
@@ -163,26 +163,26 @@ eg. Press `Ctrl+H` to display a GridView of command history. Select a cmd to exe
     }
     ```
 
-- Timing script executions
+- Timing script executions <br>
 The naive way is to use `Get-Date`. <br>
-```powershell
-$start = Get-Date
-...
-$stop  = Get-Date
-$duration = $stop - $start; $duration.TotalMilliseconds;
-```
+    ```powershell
+    $start = Get-Date
+    ...
+    $stop  = Get-Date
+    $duration = $stop - $start; $duration.TotalMilliseconds;
+    ```
 You can also use the StopWatch (.NET class). <br>
-```powershell
-$stopwatch = [Diagnostics.StopWatch]::StartNew()
-...
-$stopwatch.Stop()
-$stopwatch.ElapsedMilliseconds
-...
-$stopwatch.Restart()
-...
-$stopwatch.Stop()
-$stopwatch.ElapsedMilliseconds
-```
+    ```powershell
+    $stopwatch = [Diagnostics.StopWatch]::StartNew()
+    ...
+    $stopwatch.Stop()
+    $stopwatch.ElapsedMilliseconds
+    ...
+    $stopwatch.Restart()
+    ...
+    $stopwatch.Stop()
+    $stopwatch.ElapsedMilliseconds
+    ```
 
 
 ## System Help

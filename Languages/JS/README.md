@@ -46,11 +46,6 @@
 
 ## CLI/GUI
 
-
-    Copyright (c) 2019-
-    Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: MIT
-
-
 ## Array
 
 ## Object

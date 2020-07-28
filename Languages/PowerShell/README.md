@@ -164,14 +164,14 @@ eg. Press `Ctrl+H` to display a GridView of command history. Select a cmd to exe
     ```
 
 - Timing script executions <br>
-The naive way is to use `Get-Date`. <br>
+    The naive way is to use `Get-Date`. <br>
     ```powershell
     $start = Get-Date
     ...
     $stop  = Get-Date
     $duration = $stop - $start; $duration.TotalMilliseconds;
     ```
-You can also use the StopWatch (.NET class). <br>
+    You can also use `StopWatch` (.NET class). <br>
     ```powershell
     $stopwatch = [Diagnostics.StopWatch]::StartNew()
     ...
@@ -184,6 +184,27 @@ You can also use the StopWatch (.NET class). <br>
     $stopwatch.ElapsedMilliseconds
     ```
 
+__Bulk__ <br>
+
+- Emails
+    ```powershell
+    Send-MailMessage `
+        -from "aeronfinium@gmail.com" -To "abc@gmail.com","xyz@gmail.com" `
+        -SmtpServer "smtp.gmail.com" -usessl -Credential (Get-Credential) `
+        -Subject "Test Message" `
+        -Body "Sent from PS shell -- Chaitanya Tejaswi" `
+        -Attachments test.pdf,test.mp3,test.mp4
+    ```
+- Merge files
+    ```powershell
+    $page = @(); $n=1; while ($n -ne 11) {$page += "file $n.mp4"; $n++}; $page | out-file -encoding ascii MERGE.txt; ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
+    (ls) -match '^\d{2}\.mp4' | del
+    ```
+- Rename files <br>
+    The `$_.extension` is helpful when dealing with similar files but different encodings (eg. BMP, JPG, GIF, PNG, SVG).
+    ```powershell
+    $i=1; ls | forEach {ren $_.name "$i$($_.extension)"; $i++}
+    ```
 
 ## System Help
 

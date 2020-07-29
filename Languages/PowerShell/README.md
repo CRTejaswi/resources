@@ -106,6 +106,8 @@
     gm  -> Get-Member  (to learn more about an object)
     gal -> Get-Alias
 
+    gc  -> Get-Content (or 'cat'; Read from file)
+    sc  -> Set-Content (Write to file)
     gcb -> Get-Clipboard (Copy from clipboard)
     scb -> Set-Clipboard (Copy to clipboard)
     gps -> Get-Process
@@ -195,10 +197,16 @@ __Bulk__ <br>
         -Body "Sent from PS shell -- Chaitanya Tejaswi" `
         -Attachments test.pdf,test.mp3,test.mp4
     ```
-- Merge files
+- Merge files <br>
+    Text files.
+    ```powershell
+    Get-Content test.txt,test.md,test.html,test.py | Set-Content OUTPUT.md
+    cat test.txt,test.md,test.html,test.py | sc OUTPUT.md
+    ```
+    AV files.
     ```powershell
     $page = @(); $n=1; while ($n -ne 11) {$page += "file $n.mp4"; $n++}; $page | out-file -encoding ascii MERGE.txt; ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
-    (ls) -match '^\d{2}\.mp4' | del
+    (ls) -match '^\d{1,2}\.mp4' | del
     ```
 - Rename files <br>
     The `$_.extension` is helpful when dealing with similar files but different encodings (eg. BMP, JPG, GIF, PNG, SVG).

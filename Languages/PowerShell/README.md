@@ -8,8 +8,9 @@
 # Resources
 
 - [IronScripter](https://ironscripter.us/category/challenge/)
-- TechSnips [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A)
 - [Jeff Hicks](https://jdhitsolutions.com/blog/)
+- [Adam Bertram](https://adamtheautomator.com)
+- [TechSnips](https://www.youtube.com/c/TechSnips/videos) [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A)
 - Warren Frame [[PS recipies]](https://github.com/RamblingCookieMonster/PowerShell) [[PSSQLite]](https://github.com/RamblingCookieMonster/PSSQLite)
 - [Prateek Singh](https://github.com/PrateekKumarSingh/PowerShell-Interview)
 - [powershell.org](https://powershell.org/articles/)
@@ -39,6 +40,7 @@
 - [Registry](#registry)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases (SQLite, SQL Server)](#databases)
+- [Compressed Files](#compressed-files)
 - [Modules](#modules)
 - [Parameters](#parameters)
 - [Scripting](#scripting)
@@ -208,6 +210,7 @@ __Bulk__ <br>
     $page = @(); $n=1; while ($n -ne 11) {$page += "file $n.mp4"; $n++}; $page | out-file -encoding ascii MERGE.txt; ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
     (ls) -match '^\d{1,2}\.mp4' | del
     ```
+    Add `-fflags +igndts` to ffmpeg options in case of `Non-monotonous DTS in output stream` error. <br>
 - Rename files <br>
     The `$_.extension` is helpful when dealing with similar files but different encodings (eg. BMP, JPG, GIF, PNG, SVG).
     ```powershell
@@ -1688,6 +1691,77 @@ Use `-depth n` to define the depth to which you want to parse the file. The defa
 http://ramblingcookiemonster.github.io/SQLite-and-PowerShell/
 https://www.darkartistry.com/2019/08/create-insert-and-query-sqlite-with-powershell/
 https://www.tutorialspoint.com/sqlite/index.htm
+
+## Compressed Files
+
+Refer: [`System.IO.Compression.ZipFile`](https://docs.microsoft.com/en-us/dotnet/api/system.io.compression.zipfile) <br>
+
+- List contents of a compressed file
+
+    ```powershell
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [System.IO.Compression.ZipFile]::Open('test.zip',2)
+    $zip.Entries.fullName
+    ...
+    $zip.Dispose()
+    ```
+
+- Compress a file/folder
+
+    ```powershell
+    $Source = '..\test\'; $Destination = 'test.zip';
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($Source, $Destination)
+    ```
+
+- De-Compress a file
+
+    ```powershell
+    $Source = 'test.zip'; $Destination = '..\test\';
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($Source, $Destination)
+    ```
+
+- Add files to an existing compressed file <br>
+    Open the file as a `ZipFile` object using `Open()`. Here, `0,1,2 = Read, Write, R/W` denotes the R/W access. <br>
+    Use `CreatEntryFromFile()`  method to add entries. Here, `0,1,2 = Fast, Best, NoCompression` denotes fast compression, most-efficient compression & no compression. <br>
+    ```powershell
+    $Path = 'test.zip'; $file1 = 'test.pdf'; $file2 = 'test.mp4'
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [System.IO.Compression.ZipFile]::Open($Path,2)
+    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $file1, 'test.pdf', 0)
+    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $file2, 'test.mp4', 1)
+    ...
+    $zip.Dispose()
+    ```
+
+- Compress/De-Compress specific files <br>
+
+    This compresses .txt files, and adds them to a ZIP archive. <br>
+    ```powershell
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [System.IO.Compression.ZipFile]::Open('test.zip',2)
+
+    ls *.txt | forEach {
+        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $_.Name, 0)
+    }
+    ...
+    $zip.Dispose()
+    ```
+
+    This de-compresses .txt files & files modified in the last month. <br>
+    ```powershell
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [System.IO.Compression.ZipFile]::Open('test.zip',2)
+    $zip.Entries | where Name -like *.txt | forEach {
+        [System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, $_.Name)
+    }
+    $zip.Entries | where {$_.LastWriteTime.DateTime -gt (Get-Date).AddMonths(-1)} | forEach {
+        [System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, $_.Name)
+    }
+    ...
+    $zip.Dispose()
+    ```
 
 ## Parameters
 

@@ -47,6 +47,7 @@
 - [Recipies](#recipies)
 - [ ] [PowerShell/Python](#powershell-python)
 - [ ] [PowerShell/JavaScript](#powershell-js)
+- [Unsorted](#unsorted)
 
 ## General
 
@@ -2190,9 +2191,6 @@ __REST APIs__ <br>
 Also, finish review exercises & put code in relevant sections.
 
 
-## Tools
-
-
 ## PowerShell-Python
 
 Execute Py3 scripts from PS, loading/storing data directly from the latter.
@@ -2207,3 +2205,11 @@ https://github.com/Apress/powershell-and-python-together
 - [ ] Executing PS Core instructions from NodeJS app.
     https://www.jeansnyman.com/posts/executing-powershell-commands-in-a-nodejs-api/
     https://github.com/IonicaBizau/powershell
+
+## Unsorted
+
+- Lenovo BIOS Settings
+    https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/managing-lenovo-bios-settings-part-1
+    https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/managing-lenovo-bios-settings-part-2
+    https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/managing-lenovo-bios-settings-part-3
+    https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/managing-lenovo-bios-settings-part-4

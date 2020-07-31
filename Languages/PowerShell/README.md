@@ -218,6 +218,25 @@ __Bulk__ <br>
     $i=1; ls | forEach {ren $_.name "$i$($_.extension)"; $i++}
     ```
 
+__Add Context-Menu Options__ <sup>[BROKEN]</sup><br>
+
+A context-menu opens up when you right click a file. <br>
+This adds an option __Open This With ST3__ to the context-menu for `.ps1` files. <br>
+```powershell
+$ContextOption  = "Open This With ST3"
+$ContextCommand = 'subl "%1"'
+
+$baseKey = 'Registry::HKEY_CLASSES_ROOT\.ps1'
+$id = (Get-ItemProperty $baseKey).'(Default)'
+$ownId = $ContextOption.Replace(' ','')
+$ContextOptionKey = "HKCU:\Software\Classes\$id\Shell\$ownId"
+$ContextCommandKey = "$ContextOptionKey\Command"
+
+New-Item -Path $ContextCommandKey -Value $ContextCommand -Force
+Set-Item -Path $ContextOptionKey -Value $ContextOption
+```
+
+
 ## System Help
 
 - Update help.
@@ -1725,7 +1744,7 @@ Refer: [`System.IO.Compression.ZipFile`](https://docs.microsoft.com/en-us/dotnet
 
 - Add files to an existing compressed file <br>
     Open the file as a `ZipFile` object using `Open()`. Here, `0,1,2 = Read, Write, R/W` denotes the R/W access. <br>
-    Use `CreatEntryFromFile()`  method to add entries. Here, `0,1,2 = Fast, Best, NoCompression` denotes fast compression, most-efficient compression & no compression. <br>
+    Use `CreatEntryFromFile()`  method to add entries. Here, `0,1,2 = Fast, Best, NoCompression` denotes the compression mode. <br>
     ```powershell
     $Path = 'test.zip'; $file1 = 'test.pdf'; $file2 = 'test.mp4'
     Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -1938,7 +1957,7 @@ Refer `about_operators`. <br>
 | `-as` | type casts an object | `1000/3 -as [int]` => `333` |
 | `-is` | type checks an object | `12.45 -is [int]` => `False` |
 | `-replace` | replace substring within a string | `'Hello World' -replace 'e',3` => `H3llo World` |
-| `-join` | convert array to delimited-string | `1,2,3,4,5 -join '|'` => `1|2|3|4|5` |
+| `-join` | convert array to delimited-string | `1,2,3,4,5 -join '|'` => __`1|2|3|4|5`__ |
 | `-split` | convert delimited-string to array | `"1 2 3 4 5" -split " "` => `1, 2, 3, 4, 5` |
 | `-like` | wildcarded substring matching | `'this' -like '*his*'` => `True` |
 | `-contains` | checks if an object exists in a collection | `'abc','bcd','cde' -contains 'bcd'` => `True`|

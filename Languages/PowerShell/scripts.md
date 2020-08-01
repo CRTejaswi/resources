@@ -83,6 +83,33 @@ Sum     : 1050
 Average : 52.5
 ```
 
+- [x] Download Windows binaries of common softwares
+
+```powershell
+$vlc_url         = "https://mirror.downloadvn.com/videolan/vlc/last/win32/"
+$vlc             = "$vlc_url$((iwr $vlc_url).links.href -match '\.exe$')"
+$firefox         = "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US"
+$sublime_url     = "https://www.sublimetext.com/3"
+$sublime         = $((iwr $sublime_url).links.href -match 'x64 Setup.exe$')
+$python_url      = "https://www.python.org/downloads/windows/"
+$python          = "$(((iwr $python_url).links.href -match '-amd64.exe$')[0])"
+$ffmpeg          = "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-latest-win64-static.zip"
+$imagemagick_url = "https://imagemagick.org/download/binaries"
+$imagemagick     = "$imagemagick_url/$(((iwr $imagemagick_url).links.href -match 'HDRI-x64-dll.exe$')[-1])"
+# $pandoc          = ...
+$miktex_url      = "https://miktex.org"
+$miktex          = "$miktex_url$(((iwr "$miktex_url/download").links.href -match 'x64.exe$')[0])"
+
+iwr $vlc -OutFile 'vlc.exe'
+iwr $firefox -OutFile 'firefox.exe'
+iwr $sublime -OutFile 'sublimetext.exe'
+iwr $python -OutFile 'python3.exe'
+iwr $ffmpeg -OutFile 'ffmpeg.zip'
+iwr $imagemagick -OutFile 'imagemagick.exe'
+# iwr $pandoc -OutFile 'pandoc.exe'
+iwr $miktex -OutFile 'miktex.exe'
+```
+
 - [x] Code-File Inventory [\*](https://ironscripter.us/building-a-powershell-command-inventory/) <br>
     Count no. of lines of code in files of a given directory. <br>
 

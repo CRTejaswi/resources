@@ -7,25 +7,25 @@
 ## Language(s)
 > Contains language specific notes/recipies.
 
-- [PowerShell](Languages/PowerShell/README.md)
-- [Python3](Languages/Python3/README.md)
-- [CCpp](Languages/CCpp/README.md)
-- [Haskell](Languages/Haskell/README.md)
-- [JavaScript](Languages/JS/README.md)
-- [HDL](Languages/HDL/README.md) <sup>[BROKEN]</sup>
-    - [VHDL](Languages/HDL/VHDL/README.md)
-    - [Verilog](Languages/HDL/Verilog/README.md)
-    - [SPICE](Languages/HDL/SPICE/README.md)
-    - [µWind](Languages/HDL/µWind/README.md)
-- [Databases](Databases/README.md)
+- [PowerShell](Languages/ps/README.md)
+- [Python3](Languages/py3/README.md)
+- [CCpp](Languages/ccoo/README.md)
+- [Haskell](Languages/haskell/README.md)
+- [JavaScript](Languages/js/README.md)
+- [HDL](Languages/hdl/README.md) <sup>[BROKEN]</sup>
+    - [VHDL](Languages/hdl/vhdl/README.md)
+    - [Verilog](Languages/hdl/verilog/README.md)
+    - [SPICE](Languages/hdl/spice/README.md)
+    - [µWind](Languages/hdl/µwind/README.md)
+- [Databases](databases/README.md)
 
 ## Command Set <sup>[BROKEN]</sup>
 > Contains various command-set listing.
 
-- [AT Commands](CommandSet/AT-Commands.pdf)
+- [AT Commands](commandset/at-commands.pdf)
 
 
 ## Unsorted
 > Contains miscellaneous unsorted notes/recipies.
 
-- [Beazley](Unsorted/Beazley.md)
+- [Beazley](unsorted/beazley.md)

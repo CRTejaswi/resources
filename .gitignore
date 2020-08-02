@@ -1,5 +1,6 @@
 *.html
 *.lnk
+unsorted/
 Languages/ccpp/*.html
 Languages/ccpp/test.c
 Languages/ccpp/test.cpp

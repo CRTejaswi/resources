@@ -1,7 +1,6 @@
 *.html
 *.lnk
 study/
-unsorted/
 languages/ccpp/*.html
 languages/ccpp/test.c
 languages/ccpp/test.cpp

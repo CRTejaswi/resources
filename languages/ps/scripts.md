@@ -261,7 +261,7 @@ Issues: <br>
 ## Logins
 
 - [x] __Open webpage in browser & copy credentials for manual login__ <br>
-    This queries a [`$myLogins=logins.csv`](https://raw.githubusercontent.com/CRTejaswi/API/master/logins.csv) file for entries, and copies username/password to clipboard. <br>
+    This queries a [`$myLogins=logins.csv`](https://raw.githubusercontent.com/CRTejaswi/api/master/logins.csv) file for entries, and copies username/password to clipboard. <br>
     It also opens the webpage in a browser to manually login (-disable using `-PassThru`). <br>
     The `$PSBoundParameters.ContainsKey('<param>')` check is unnecessary since there aren't many columns to access, and doing so is verbose. <br>
 
@@ -340,14 +340,14 @@ function Get-Lyrics{
 
 > Recipies to parse APIs.
 
-- [`sanskritAlphabet.json`](https://crtejaswi.github.io/API/sanskritAlphabet.json) <br>
+- [`sanskritAlphabet.json`](https://crtejaswi.github.io/api/sanskritAlphabet.json) <br>
 
 ```powershell
 Import-Csv .\sanskritAlphabet.csv -delimiter ';' | ConvertTo-Json | out-file -encoding utf8 .\sanskritAlphabet.json
 cat .\sanskritAlphabet.json | ConvertFrom-Json
 ```
 
-- [`songs1.json`](https://crtejaswi.github.io/API/songs1.json) <br>
+- [`songs1.json`](https://crtejaswi.github.io/api/songs1.json) <br>
 
 ```powershell
 Import-Csv .\songs1.csv -Delimiter ';' | ConvertTo-Json | out-file -encoding utf8 .\songs1.json
@@ -357,11 +357,11 @@ $baseUrl       = 'https://www.youtube.com'
 $videoQuery    = '/watch?v='
 $playlistQuery = '/playlist?list='
 
-$songs = Invoke-RestMethod 'https://crtejaswi.github.io/API/songs1.json'
+$songs = Invoke-RestMethod 'https://crtejaswi.github.io/api/songs1.json'
 $songs | forEach {youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.title).%(ext)s" $baseUrl$videoQuery$($_.link)}
 ```
 
-- [`songs2.json`](https://crtejaswi.github.io/API/songs2.json) <br>
+- [`songs2.json`](https://crtejaswi.github.io/api/songs2.json) <br>
 
 ```powershell
 <#
@@ -373,7 +373,7 @@ USAGE:
 function Get-mySongs{
     [cmdletBinding()]
     param(
-        [string]$Url='https://crtejaswi.github.io/API/songs2.json',
+        [string]$Url='https://crtejaswi.github.io/api/songs2.json',
         [switch]$List,
         [switch]$Lyrics,
         [switch]$Audio
@@ -414,7 +414,7 @@ function Get-mySongs{
 }
 ```
 
-- [`latex1.json`](https://crtejaswi.github.io/API/latex1.json) <br>
+- [`latex1.json`](https://crtejaswi.github.io/api/latex1.json) <br>
 
 > Scrape Latex equations & images from https://equplus.net/ . See [this](https://gitlab.com/kidiki1/ltmt/-/tree/crtejaswi).
 
@@ -456,10 +456,10 @@ function Get-LatexEquation{
 }
 ```
 
-- [`latex2.json`](https://crtejaswi.github.io/API/latex2.json) <br>
+- [`latex2.json`](https://crtejaswi.github.io/api/latex2.json) <br>
 
 ```powershell
-$entries = irm 'https://crtejaswi.github.io/API/latex2.json'
+$entries = irm 'https://crtejaswi.github.io/api/latex2.json'
 ```
 
 > Scrape Latex equations & images from https://dlmf.nist.gov . See [this](https://gitlab.com/kidiki1/ltmt/-/tree/crtejaswi).
@@ -549,6 +549,20 @@ magick -density 300 .\test.svg .\test.png
     <img src="resources/api_latex2_1.png">
     <img src="resources/api_latex2_2.png">
 </center>
+
+- [`interviews1.json`](https://crtejaswi.github.io/api/interviews1.json) <br>
+
+```powershell
+Import-Csv .\interviews1.csv -Delimiter ';' | ConvertTo-Json | out-file -encoding utf8 .\interviews1.json
+cat .\interviews1.json | ConvertFrom-Json
+
+$baseUrl       = 'https://www.youtube.com'
+$videoQuery    = '/watch?v='
+$playlistQuery = '/playlist?list='
+
+$interviews = Invoke-RestMethod 'https://crtejaswi.github.io/api/interviews1.json'
+$interviews | forEach {youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.title ($_.creator)).%(ext)s" $baseUrl$playlistQuery$($_.link)}
+```
 
 ## Youtube
 

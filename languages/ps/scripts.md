@@ -413,6 +413,12 @@ function Get-mySongs{
     }
 }
 ```
+Do this to download selected songs (Downloads songs by __Julie Delpy__):
+```powershell
+get-mysongs -List | where {$_.singer -match '^Julie'} | forEach {
+    youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.singer) - $($_.title).%(ext)s" $AudioUrl$videoQuery$($_.link)
+}
+```
 
 - [`latex1.json`](https://crtejaswi.github.io/api/latex1.json) <br>
 

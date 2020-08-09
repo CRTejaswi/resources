@@ -413,12 +413,23 @@ function Get-mySongs{
     }
 }
 ```
-Do this to download selected songs (Downloads songs by __Julie Delpy__):
+To download selected songs (Downloads songs by __Julie Delpy__):
 ```powershell
 get-mysongs -List | where {$_.singer -match '^Julie'} | forEach {
     youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.singer) - $($_.title).%(ext)s" $AudioUrl$videoQuery$($_.link)
 }
 ```
+RegEx to replace YouTube link with video-id:
+```
+https://www.youtube.com/watch\?v=([a-zA-Z0-9_-]+)(&list=[a-zA-Z0-9&=_-]+)?
+$1
+```
+To lookup YouTube for songs by a singer (eg. __Guy Sebastian__), assuming `title,singer` is updated in `songs2.csv`:
+```powershell
+import-csv -Delimiter ';' .\songs2.csv | where {$_.singer -match '^Guy'} |
+    forEach {firefox "https://www.youtube.com/results?search_query=$($_.singer.tolower().replace(' ','+'))+$($_.title.tolower().replace(' ','+'))"}
+```
+
 
 - [`latex1.json`](https://crtejaswi.github.io/api/latex1.json) <br>
 

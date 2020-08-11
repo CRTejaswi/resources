@@ -413,7 +413,7 @@ function Get-mySongs{
     }
 }
 ```
-To download selected songs (Downloads songs by __Julie Delpy__):
+To download selected songs by a singer (eg. __Julie Delpy__):
 ```powershell
 get-mysongs -List | where {$_.singer -match '^Julie'} | forEach {
     youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.singer) - $($_.title).%(ext)s" $AudioUrl$videoQuery$($_.link)
@@ -430,6 +430,12 @@ import-csv -Delimiter ';' .\songs2.csv | where {$_.singer -match '^Guy'} |
     forEach {firefox "https://www.youtube.com/results?search_query=$($_.singer.tolower().replace(' ','+'))+$($_.title.tolower().replace(' ','+'))"}
 ```
 
+- [ ] YouTube API: Search singer's official account for video links.
+
+To check singer's discography (= list of songs) (eg. __Guy Sebastian__):
+```
+firefox 'https://en.m.wikipedia.org/wiki/Guy_Sebastian#Discography'
+```
 
 - [`latex1.json`](https://crtejaswi.github.io/api/latex1.json) <br>
 

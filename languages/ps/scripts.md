@@ -436,6 +436,14 @@ To check singer's discography (= list of songs) (eg. __Guy Sebastian__):
 ```
 firefox 'https://en.m.wikipedia.org/wiki/Guy_Sebastian#Discography'
 ```
+To show lyrics for specific singer (eg. __Guy Sebastian__) in browser:
+```powershell
+$LyricsUrl = @()
+$songs = irm https://crtejaswi.github.io/api/songs2.json
+
+$songs | where {$_.singer -match '^Guy'} | forEach {$LyricsUrl += "https://www.azlyrics.com/lyrics/$($_.singer.toLower().replace(" ",''))/$($_.title.toLower().replace(" ",'').replace("'",'')).html"}
+firefox $LyricsUrl
+```
 
 - [`latex1.json`](https://crtejaswi.github.io/api/latex1.json) <br>
 

@@ -413,37 +413,45 @@ function Get-mySongs{
     }
 }
 ```
-To download selected songs by a singer (eg. __Julie Delpy__):
+
 ```powershell
-get-mysongs -List | where {$_.singer -match '^Julie'} | forEach {
+# CSV -> JSON:
+Import-Csv .\songs2.csv -Delimiter ';' | ConvertTo-Json | Out-File -Encoding ascii .\songs2.json
+cat .\songs2.json | ConvertFrom-Json
+
+# Add entries (10, for singer 'JessieJ'):
+$i=1; while ($i -ne 11) {";JessieJ;;" | Out-File -Encoding ascii .\songs2.csv -Append; $i++}
+
+# Lookup YouTube for songs (by singer 'JessieJ'), assuming `title,singer` is updated in `songs2.csv`:
+import-csv -Delimiter ';' .\songs2.csv | where {$_.singer -match '^Jessie'}
+import-csv -Delimiter ';' .\songs2.csv | where {$_.singer -match '^Jessie'} |
+    forEach {firefox "https://www.youtube.com/results?search_query=$($_.singer.tolower().replace(' ','+'))+$($_.title.tolower().replace(' ','+'))"}
+
+# Display lyrics for songs (by singer 'JessieJ') in browser:
+$LyricsUrl = @()
+$songs = irm 'https://crtejaswi.github.io/api/songs2.json'
+$songs | where {$_.singer -match '^Jessie'} | forEach {$LyricsUrl += "https://www.azlyrics.com/lyrics/$($_.singer.toLower().replace(" ",''))/$($_.title.toLower().replace(" ",'').replace("'",'')).html"}
+firefox $LyricsUrl
+
+# Download selected songs (by singer 'Julie Delpy'):
+Get-mySongs -List | where {$_.singer -match '^Julie'} | forEach {
     youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.singer) - $($_.title).%(ext)s" $AudioUrl$videoQuery$($_.link)
 }
+
+# Check discography (= list of songs) (by singer 'JessieJ') in browser:
+firefox 'https://en.m.wikipedia.org/wiki/Jessie_J#Discography'
 ```
-RegEx to replace YouTube link with video-id:
+
+RegEx to replace YouTube link with video-id (ST3):
 ```
 https://www.youtube.com/watch\?v=([a-zA-Z0-9_-]+)(&list=[a-zA-Z0-9&=_-]+)?
 $1
 ```
-To lookup YouTube for songs by a singer (eg. __Guy Sebastian__), assuming `title,singer` is updated in `songs2.csv`:
-```powershell
-import-csv -Delimiter ';' .\songs2.csv | where {$_.singer -match '^Guy'} |
-    forEach {firefox "https://www.youtube.com/results?search_query=$($_.singer.tolower().replace(' ','+'))+$($_.title.tolower().replace(' ','+'))"}
-```
 
 - [ ] YouTube API: Search singer's official account for video links.
+- [ ] Use ST3 regex from PS directly.
+- [ ] CSV->JSON: Update only modified entries, instead of converting whole file.
 
-To check singer's discography (= list of songs) (eg. __Guy Sebastian__):
-```
-firefox 'https://en.m.wikipedia.org/wiki/Guy_Sebastian#Discography'
-```
-To show lyrics for specific singer (eg. __Guy Sebastian__) in browser:
-```powershell
-$LyricsUrl = @()
-$songs = irm https://crtejaswi.github.io/api/songs2.json
-
-$songs | where {$_.singer -match '^Guy'} | forEach {$LyricsUrl += "https://www.azlyrics.com/lyrics/$($_.singer.toLower().replace(" ",''))/$($_.title.toLower().replace(" ",'').replace("'",'')).html"}
-firefox $LyricsUrl
-```
 
 - [`latex1.json`](https://crtejaswi.github.io/api/latex1.json) <br>
 

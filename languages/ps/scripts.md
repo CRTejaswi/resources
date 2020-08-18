@@ -343,14 +343,14 @@ function Get-Lyrics{
 - [`sanskritAlphabet.json`](https://crtejaswi.github.io/api/sanskritAlphabet.json) <br>
 
 ```powershell
-Import-Csv .\sanskritAlphabet.csv -delimiter ';' | ConvertTo-Json | out-file -encoding utf8 .\sanskritAlphabet.json
+Import-Csv .\sanskritAlphabet.csv -delimiter ';' | ConvertTo-Json | Out-File -encoding utf8 .\sanskritAlphabet.json
 cat .\sanskritAlphabet.json | ConvertFrom-Json
 ```
 
 - [`songs1.json`](https://crtejaswi.github.io/api/songs1.json) <br>
 
 ```powershell
-Import-Csv .\songs1.csv -Delimiter ';' | ConvertTo-Json | out-file -encoding utf8 .\songs1.json
+Import-Csv .\songs1.csv -Delimiter ';' | ConvertTo-Json | Out-File -encoding utf8 .\songs1.json
 cat .\songs1.json | ConvertFrom-Json
 
 $baseUrl       = 'https://www.youtube.com'
@@ -462,7 +462,7 @@ $1
 USAGE:
     . .\test.ps1
     $result = 1..413 | forEach {$(. Get-LatexEquation $_)}
-    $result | ConvertTo-Json | out-file -Encoding utf8 latexEquations.json -Append
+    $result | ConvertTo-Json | Out-File -Encoding utf8 latexEquations.json -Append
 #>
 
 function Get-LatexEquation{
@@ -566,7 +566,7 @@ import-csv .\latex2.csv -Delimiter ';' | forEach {
         Tags       = $_.tags -as [string[]]
         References = $_.references -as [string[]]
     }
-} | convertto-json | out-file -encoding utf8 .\latex2.json
+} | convertto-json | Out-File -encoding utf8 .\latex2.json
 ```
 
 > Display Tex equation (eg. 1.4.E4.tex). Check [4muLatex](https://thinktype.herokuapp.com/add_equation) to verify MathJax output.
@@ -592,7 +592,7 @@ magick -density 300 .\test.svg .\test.png
 - [`interviews1.json`](https://crtejaswi.github.io/api/interviews1.json) <br>
 
 ```powershell
-Import-Csv .\interviews1.csv -Delimiter ';' | ConvertTo-Json | out-file -encoding utf8 .\interviews1.json
+Import-Csv .\interviews1.csv -Delimiter ';' | ConvertTo-Json | Out-File -encoding utf8 .\interviews1.json
 cat .\interviews1.json | ConvertFrom-Json
 
 $baseUrl       = 'https://www.youtube.com'
@@ -602,6 +602,42 @@ $playlistQuery = '/playlist?list='
 $interviews = Invoke-RestMethod 'https://crtejaswi.github.io/api/interviews1.json'
 $interviews | forEach {youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "$($_.title ($_.creator)).%(ext)s" $baseUrl$playlistQuery$($_.link)}
 ```
+
+- [`podcasts.json`](https://crtejaswi.github.io/api/podcasts.json) <sup>[BROKEN]</sup><br>
+
+```powershell
+Import-Csv .\podcasts.csv -Delimiter ';' | ConvertTo-Json | Out-File -Encoding ascii .\podcasts.json
+cat .\podcasts.json | ConvertFrom-Json
+
+function Get-myPodcast{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [ValidSet({($response = irm https://crtejaswi.github.io/api/podcasts.json).title})]
+        [string]$Name
+    )
+
+#    $response = irm https://crtejaswi.github.io/api/podcasts.json
+#    $titles = $response.title
+    if ($Name -in $titles){
+        "$Name"
+    }
+}
+
+$response = iwr https://omny.fm/shows/conan-o-brien-needs-a-friend/playlists/podcast.rss
+$episodes = (($response.allElements | where {$_.tagName -match 'enclosure'}).url) -replace "\?utm_source.+$",""
+$episodes = [System.Collections.Generic.Stack[String]]($episodes)
+vlc $episodes.pop()
+
+$response = iwr https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a9760146922b/e5396d16-bb83-4010-b10d-aac50173aa2a/d6fdfe94-2e9a-40c3-b010-aac50173aa2f/podcast.rss
+$episodes = (($response.allElements | where {$_.tagName -match 'enclosure'}).url) -replace "\?utm_source.+$",""
+$episodes = [System.Collections.Generic.Stack[String]]($episodes)
+vlc $episodes.pop()
+```
+
+- [ ] Since links are captured randomly, is stack/queue any good for this use-case? If episode-number was also captured, array would be easier to use (eg, `$episodes[10]`).
+- [ ] Custom-Object to capture all entries & store int hashtable with keys = `$response.title`. Give this as `ValidateSet` to list all available podcasts for user to query using `Get-myPodcast`.
+
 
 ## Youtube
 
@@ -622,7 +658,7 @@ $response = curl -Uri $URI
 $links = $response.links
 $page += $links.href -match '^/playlist'
 $page.count # 13
-$page.replace('/playlist', 'www.youtube.com/playlist') | out-file $tmp.fullname
+$page.replace('/playlist', 'www.youtube.com/playlist') | Out-File $tmp.fullname
 firefox (cat $tmp.fullname)
 ```
 </details>

@@ -633,10 +633,15 @@ $response = iwr https://www.omnycontent.com/d/playlist/aaea4e69-af51-495e-afc9-a
 $episodes = (($response.allElements | where {$_.tagName -match 'enclosure'}).url) -replace "\?utm_source.+$",""
 $episodes = [System.Collections.Generic.Stack[String]]($episodes)
 vlc $episodes.pop()
+
+
+# Open YT link for podcast ('Bill Burr')
+$response = irm https://crtejaswi.github.io/api/podcasts.json
+firefox ($response | where {$_.artist -match '^Bill'}).link
 ```
 
 - [ ] Since links are captured randomly, is stack/queue any good for this use-case? If episode-number was also captured, array would be easier to use (eg, `$episodes[10]`).
-- [ ] Custom-Object to capture all entries & store int hashtable with keys = `$response.title`. Give this as `ValidateSet` to list all available podcasts for user to query using `Get-myPodcast`.
+- [ ] Custom-Object to capture all entries & store in hashtable with keys = `$response.title`. Give this as `ValidateSet` to list all available podcasts for user to query using `Get-myPodcast`.
 
 
 ## Youtube

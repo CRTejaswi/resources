@@ -287,7 +287,7 @@ $i=1; while ($i -le $count) {"$i,,," | Out-File -Encoding ascii index.csv -Appen
 
 <center>
     <img src="resources/billmerge1.png" title="CSV file entries" height="480">
-    <a href="https://drive.google.com/drive/folders/1ofzTze2uh3xWFZdjbpxMqPd0ST8-IA6L?usp=sharing"><img src="resources/billmerge2.png" title="Video containing first page of all files" height="480"></a></center>
+    <a href="https://drive.google.com/file/d/1qOmSeELPLVZ0ckp8uXPiU1mYnW8H1E9S/view?usp=sharing"><img src="resources/billmerge2.png" title="Video containing first page of all files" height="480"></a></center>
 
 
 ## Logins

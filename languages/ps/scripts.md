@@ -258,6 +258,38 @@ Issues: <br>
     <img src="resources/Out-mdNotes.png" title="Issue with console.table()">
 </center>
 
+- [x] Simplify Bills
+
+> Sort & Save bills (pdf) from a dataset categorically.
+
+```powershell
+# Copy dataset files from harddrive
+copy $Path,$Path,$Path... dataset\ -recurse
+copy 'D:\ELC BILL PHC OCT 2017 ONWARDS\','D:\ELECTRIC BILLS 26.06.17\' dataset\ -recurse
+# Copy files (pdf) to current location
+copy (ls .\dataset\ -Recurse).FullName .
+ls -Directory | where {$_.Name -notcontains 'dataset'} | del
+# Rename all pdfs in directory
+$i=1; (ls -File) | forEach {ren $_ "$i$($_.Extension)"; $i++}
+# Capture image of first page of pdf
+(ls -File) | forEach {pdftopng -l 1 -r 300 -mono $_.FullName $_.BaseName}
+ls *.png | forEach {ren $_ "$($_.BaseName -replace '\-.+','')$($_.Extension)"}
+# Combine images into a video (display each image for 2s)
+ffmpeg -r 0.5 -f image2 -s 1280x720 -i %d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p index.mp4
+# Delete unwanted files, move all pdf files together
+$count = (ls -File *.png).count; del *.png; mkdir files; move *.pdf files
+# Create reference CSV file
+"id,type,date,meta" | Out-File -Encoding ascii index.csv
+$i=1; while ($i -le $count) {"$i,,," | Out-File -Encoding ascii index.csv -Append; $i++}
+# [MANUAL] Add entries to CSV file
+# Rename files using CSV colums as properties & save to respective directories
+```
+
+<center>
+    <img src="resources/billmerge1.png" title="CSV file entries" height="480">
+    <a href="https://drive.google.com/drive/folders/1ofzTze2uh3xWFZdjbpxMqPd0ST8-IA6L?usp=sharing"><img src="resources/billmerge2.png" title="Video containing first page of all files" height="480"></a></center>
+
+
 ## Logins
 
 - [x] __Open webpage in browser & copy credentials for manual login__ <br>

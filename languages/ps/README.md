@@ -45,6 +45,7 @@
 - [Parameters](#parameters)
 - [Scripting](#scripting)
 - [Recipies](#recipies)
+- [MS Office](#ms-office)
 - [ ] [PowerShell/Python](#powershell-python)
 - [ ] [PowerShell/JavaScript](#powershell-js)
 - [Unsorted](#unsorted)
@@ -2200,6 +2201,41 @@ __REST APIs__ <br>
 - https://www.youtube.com/watch?v=_WjT2mrKXuE
 - https://www.youtube.com/watch?v=yfwTAnfMhzw
 - https://www.youtube.com/watch?v=AAPxI4QXPw8
+
+## MS Office
+
+Windows offers assembly-level .NET API to access [MS Office (Core)](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.core), [MS Word](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word), [MS Excel](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel), and a few other Office utilities. <br>
+Instances can be accessed using [COM objects](https://ss64.com/ps/new-object.html) in .NET/PS <br>
+
+__Word__ <br>
+
+- Basic script
+```powershell
+$FilePath = 'C:\Users\2PIN\Desktop\test.docx'
+$MSWord = New-Object -ComObject Word.Application
+$MSWord.visible = $True
+$file = $MSWord.Documents.Add()
+$content = $MSWord.selection
+
+$content.typeParagraph()
+$content.typeText('This is a test document.')
+$content.typeText("`nContent added by $($env:USERNAME) on $(Get-Date -Format 'dd-MM-yyyy hh:mm')")
+$content.font.bold = 1; $content.typeText("`nBold Text"); $content.font.bold = 0;
+$content.font.italic = 1; $content.typeText("`nItalic Text"); $content.font.italic = 0;
+$content.font.underline = 1; $content.typeText("`nUnderlined Text"); $content.font.underline = 0;
+
+$file.saveAs($FilePath, 16); $file.close();
+$MSWord.quit(); $null = [System.Runtime.InteropServices.Marshal]::ReleaseComObject([System.__ComObject]$MSWord);
+Remove-Variable MSWord
+```
+- I/O from text files
+```powershell
+$content.typeParagraph()
+$content.font.bold = 1; $content.typeText("`nContent added by $($env:USERNAME) on $(Get-Date -Format 'dd-MM-yyyy hh:mm')`n"); $content.font.bold = 0;
+$content.typeText("$(cat test.md)")
+```
+
+__Excel__ <br>
 
 ## To-Do
 

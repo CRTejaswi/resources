@@ -7,16 +7,19 @@
 
 # Resources
 
-- [IronScripter](https://ironscripter.us/category/challenge/)
-- [Jeff Hicks](https://jdhitsolutions.com/blog/)
-- [Adam Bertram](https://adamtheautomator.com)
-- [TechSnips](https://www.youtube.com/c/TechSnips/videos) [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A)
-- Warren Frame [[PS recipies]](https://github.com/RamblingCookieMonster/PowerShell) [[PSSQLite]](https://github.com/RamblingCookieMonster/PSSQLite)
-- [Prateek Singh](https://github.com/PrateekKumarSingh/PowerShell-Interview)
-- [powershell.org](https://powershell.org/articles/)
-- [MS DevBlog](https://devblogs.microsoft.com/scripting/)
-- [GitHub](https://github.com/PowerShell/PowerShell)
-- [Awesome PS](https://github.com/janikvonrotz/awesome-powershell)
+| Link | Description |
+| :--: | :-- |
+| [IronScripter](https://ironscripter.us/category/challenge/) | Monthly PS challenges. |
+| [powershell.org](https://powershell.org/articles/) | PS news. |
+| [MS DevBlog](https://devblogs.microsoft.com/scripting/) | Short pieces on PS use-cases. |
+| [Awesome PS](https://github.com/janikvonrotz/awesome-powershell) | Collection of PS projects/utilities. |
+| [GitHub](https://github.com/PowerShell/PowerShell) | Source-Code for PS Core. |
+| [Jeff Hicks](https://jdhitsolutions.com/blog/) | The No-nonsense programmer; The 'David Beazley' of PS. |
+| [Adam Bertram](https://adamtheautomator.com) |  |
+| [Doug Finke](https://dfinke.github.io/) | Guy who wrote [ImportExcel](https://github.com/dfinke/ImportExcel) - a module to access xlsx files without installing MSOffice. |
+| [TechSnips](https://www.youtube.com/c/TechSnips/videos) [[1]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzSNQ4rui7_dJ26kgM22BKY) [[2]](https://www.youtube.com/playlist?list=PLviQuRV5ySnzt8YpB14SfHeJm8Rh0oO1A) | Short, infomative clips on various use-cases of PS. |
+| Warren Frame [[PS recipies]](https://github.com/RamblingCookieMonster/PowerShell) | Guy who wrote [PSSQLite](https://github.com/RamblingCookieMonster/PSSQLite) - a module to access SQLite databases in PS. |
+| [Prateek Singh](https://github.com/PrateekKumarSingh/PowerShell-Interview) | Indian guy who uses PS for fun. |
 
 # Index
 
@@ -2206,9 +2209,11 @@ __REST APIs__ <br>
 
 Windows offers assembly-level .NET API to access [MS Office (Core)](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.core), [MS Word](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word), [MS Excel](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel), and a few other Office utilities. <br>
 Instances can be accessed using [COM objects](https://ss64.com/ps/new-object.html) in .NET/PS <br>
+These can also be accessed without having MS Office installed on your PC by making use of PS modules available through PSGallery. <br>
 
 __Word__ <br>
 
+Windows offers a [native .NET API for MS Word](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word). <br>
 - Basic script
 ```powershell
 $FilePath = 'C:\Users\2PIN\Desktop\test.docx'
@@ -2235,7 +2240,9 @@ $content.font.bold = 1; $content.typeText("`nContent added by $($env:USERNAME) o
 $content.typeText("$(cat test.md)")
 ```
 
-__Excel__ <br>
+If you do not have MS Office installed, you can use the [`PSWriteWord`](https://www.powershellgallery.com/packages/PSWriteWord/) module (`Install-Module PSWriteWord`) to deal with `docx` files. <br>
+See: [1](https://laptrinhx.com/pswriteword-version-0-5-1-2347222064/) [2](https://evotec.xyz/hub/scripts/pswriteword-powershell-module/) [3](https://github.com/EvotecIT/PSWriteWord)
+
 
 ## To-Do
 

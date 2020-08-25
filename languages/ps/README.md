@@ -2214,9 +2214,10 @@ These can also be accessed without having MS Office installed on your PC by maki
 __Word__ <br>
 
 Windows offers a [native .NET API for MS Word](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word). <br>
+
 - Basic script
 ```powershell
-$FilePath = 'C:\Users\2PIN\Desktop\test.docx'
+$FilePath = 'test.docx'
 $MSWord = New-Object -ComObject Word.Application
 $MSWord.visible = $True
 $file = $MSWord.Documents.Add()
@@ -2241,7 +2242,44 @@ $content.typeText("$(cat test.md)")
 ```
 
 If you do not have MS Office installed, you can use the [`PSWriteWord`](https://www.powershellgallery.com/packages/PSWriteWord/) module (`Install-Module PSWriteWord`) to deal with `docx` files. <br>
-See: [1](https://laptrinhx.com/pswriteword-version-0-5-1-2347222064/) [2](https://evotec.xyz/hub/scripts/pswriteword-powershell-module/) [3](https://github.com/EvotecIT/PSWriteWord)
+See: [[1]](https://laptrinhx.com/pswriteword-version-0-5-1-2347222064/) [[2]](https://evotec.xyz/hub/scripts/pswriteword-powershell-module/) [[3]](https://github.com/EvotecIT/PSWriteWord)
+
+__Excel__ <br>
+
+Windows offers a [native .NET API for MS Excel](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel). <br>
+See: [Excel.Application](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application?view=excel-pia), [Worksheets](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel.worksheets), [[Demo]](https://maliyaablog.com/2017/10/02/how-to-createwrite-and-save-excel-using-powershell/) <br>
+
+```powershell
+$FilePath = 'test.xlsx'
+$MSExcel = New-Object -ComObject Excel.Application
+$MSExcel.visible = $True
+$file = $MSExcel.Workbooks.Add()
+$worksheet = $file.Worksheets.Item(1)
+
+$worksheet.cells.item(1,1) = "ProcessName"
+$worksheet.cells.item(1,2) = "Id"
+$worksheet.cells.item(1,3) = "Handles"
+
+$row = 2; $column = 1;
+
+gps | select processName,id,handles | forEach {
+    $worksheet.cells.item($row,1) = $_.processName
+    $worksheet.cells.item($row,2) = $_.id
+    $worksheet.cells.item($row,3) = $_.handles
+    $worksheet.columns.autofit()
+    $row++
+}
+
+$file.saveAs($FilePath); $file.close();
+$MSExcel.quit(); $null = [System.Runtime.InteropServices.Marshal]::ReleaseComObject([System.__ComObject]$MSExcel);
+Remove-Variable MSExcel
+```
+
+If you do not have MS Office installed, you can use the [`ImportExcel`](https://www.powershellgallery.com/packages/ImportExcel/) module (`Install-Module ImportExcel`) to deal with `xlsx` files. <br>
+See: [[1]](https://dfinke.github.io/powershell/2019/07/31/Creating-beautiful-Powershell-Reports-in-Excel.html) [[2]](https://www.youtube.com/watch?v=4Xw7r6436w0) [[3]](https://github.com/dfinke/ImportExcel) <br>
+```powershell
+gps | Export-Excel test.xlsx -Show
+```
 
 
 ## To-Do

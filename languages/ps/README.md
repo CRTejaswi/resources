@@ -2207,15 +2207,15 @@ __REST APIs__ <br>
 
 ## MS Office
 
-Windows offers assembly-level .NET API to access [MS Office (Core)](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.core), [MS Word](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word), [MS Excel](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel), and a few other Office utilities. <br>
-Instances can be accessed using [COM objects](https://ss64.com/ps/new-object.html) in .NET/PS <br>
+Windows offers assembly-level (.dll) .NET API to access [MS Office (Core)](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.core), [MS Word](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word), [MS Excel](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel), and a few other Office utilities. <br>
+Instances can be accessed using [COM objects](https://ss64.com/ps/new-object.html) in .NET/PS. <br>
 These can also be accessed without having MS Office installed on your PC by making use of PS modules available through PSGallery. <br>
 
 __Word__ <br>
 
-Windows offers a [native .NET API for MS Word](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word). <br>
+See: [Word.Application](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word._application), [Documents](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word.documents) <br>
+[Needs MSOffice installed on your PC.] <br>
 
-- Basic script
 ```powershell
 $FilePath = 'test.docx'
 $MSWord = New-Object -ComObject Word.Application
@@ -2234,6 +2234,7 @@ $file.saveAs($FilePath, 16); $file.close();
 $MSWord.quit(); $null = [System.Runtime.InteropServices.Marshal]::ReleaseComObject([System.__ComObject]$MSWord);
 Remove-Variable MSWord
 ```
+
 - I/O from text files
 ```powershell
 $content.typeParagraph()
@@ -2242,12 +2243,15 @@ $content.typeText("$(cat test.md)")
 ```
 
 If you do not have MS Office installed, you can use the [`PSWriteWord`](https://www.powershellgallery.com/packages/PSWriteWord/) module (`Install-Module PSWriteWord`) to deal with `docx` files. <br>
-See: [[1]](https://laptrinhx.com/pswriteword-version-0-5-1-2347222064/) [[2]](https://evotec.xyz/hub/scripts/pswriteword-powershell-module/) [[3]](https://github.com/EvotecIT/PSWriteWord)
+See: [[1]](https://laptrinhx.com/pswriteword-version-0-5-1-2347222064/) [[2]](https://evotec.xyz/hub/scripts/pswriteword-powershell-module/) [[3]](https://github.com/EvotecIT/PSWriteWord) <br>
+
+```powershell
+```
 
 __Excel__ <br>
 
-Windows offers a [native .NET API for MS Excel](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel). <br>
-See: [Excel.Application](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application?view=excel-pia), [Worksheets](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel.worksheets), [[Demo]](https://maliyaablog.com/2017/10/02/how-to-createwrite-and-save-excel-using-powershell/) <br>
+See: [Excel.Application](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application), [Worksheets](https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel.worksheets) <br>
+[Needs MSOffice installed on your PC.] <br>
 
 ```powershell
 $FilePath = 'test.xlsx'
@@ -2276,7 +2280,8 @@ Remove-Variable MSExcel
 ```
 
 If you do not have MS Office installed, you can use the [`ImportExcel`](https://www.powershellgallery.com/packages/ImportExcel/) module (`Install-Module ImportExcel`) to deal with `xlsx` files. <br>
-See: [[1]](https://dfinke.github.io/powershell/2019/07/31/Creating-beautiful-Powershell-Reports-in-Excel.html) [[2]](https://www.youtube.com/watch?v=4Xw7r6436w0) [[3]](https://github.com/dfinke/ImportExcel) <br>
+See: [[1]](https://dfinke.github.io/powershell/2019/07/31/Creating-beautiful-Powershell-Reports-in-Excel.html) [[2]](https://www.youtube.com/watch?v=4Xw7r6436w0) [[3]](https://github.com/dfinke/ImportExcel) [[4]](https://adamtheautomator.com/powershell-excel-tutorial/) <br>
+
 ```powershell
 gps | Export-Excel test.xlsx -Show
 ```

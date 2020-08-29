@@ -17,6 +17,12 @@
 
 ## Basics
 
+- [x] Rename files
+
+```powershell
+ls | forEach { ren $_ "$($_.BaseName -replace 'WebHD_720p\((\d+)\)','$1')$($_.Extension)" }
+```
+
 - [x] Calculate the sum of even numbers in the range 1-100.
 
 ```powershell

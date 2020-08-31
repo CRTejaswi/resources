@@ -195,6 +195,11 @@ eg. Press `Ctrl+H` to display a GridView of command history. Select a cmd to exe
 
 __Bulk__ <br>
 
+- Move files to current directory
+    ```powershell
+    move ((ls B:\CRTejaswi\Downloads\) -match '^\d{1}.mp4').FullName .
+    ```
+
 - Emails
     ```powershell
     Send-MailMessage `
@@ -204,6 +209,12 @@ __Bulk__ <br>
         -Body "Sent from PS shell -- Chaitanya Tejaswi" `
         -Attachments test.pdf,test.mp3,test.mp4
     ```
+    Get all email addresses from HTML object
+    ```powershell
+    $response.Links | forEach {
+        if ($_.href.ToLower().StartsWith("mailto:")){ $_.href.SubString(7) }
+    }
+    ```
 - Merge files <br>
     Text files.
     ```powershell
@@ -212,8 +223,8 @@ __Bulk__ <br>
     ```
     AV files.
     ```powershell
-    $page = @(); $n=1; while ($n -ne 11) {$page += "file $n.mp4"; $n++}; $page | out-file -encoding ascii MERGE.txt; ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
-    (ls) -match '^\d{1,2}\.mp4' | del
+    $count = ((ls) -match '^\d+\.mp4$').count; $page = @(); $n=1; while ($n -ne $count+1) {$page += "file $n.mp4"; $n++}; $page | out-file -encoding ascii MERGE.txt; ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
+    (ls) -match '^\d+\.mp4' | del
     ```
     Add `-fflags +igndts` to ffmpeg options in case of `Non-monotonous DTS in output stream` error. <br>
 - Rename files <br>
@@ -222,6 +233,12 @@ __Bulk__ <br>
     $i=1; ls | forEach {ren $_.name "$i$($_.extension)"; $i++}
     ```
 
+__Multimedia__ <br>
+
+- Create & Play a playlist
+    ```powershell
+    (ls *.mp3).fullName | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
+    ```
 __Add Context-Menu Options__ <sup>[BROKEN]</sup><br>
 
 A context-menu opens up when you right click a file. <br>

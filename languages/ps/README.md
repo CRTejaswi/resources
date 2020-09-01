@@ -163,6 +163,16 @@ eg. Display a countdown timer using a progressbar.
     Remove-BOM -Path .\test.json
     ```
 
+- Execute lines from a text file <br>
+    ```powershell
+    & { Invoke-Expression (Get-Content -Raw README.md) }
+    & { iex (cat -Raw README.md) }
+    ```
+- List all open GUI windows <br>
+    ```powershell
+    gps | where {$_.MainWindowTitle -ne ""} | select MainWindowTitle
+    ```
+
 - Binding Keyboard Shortcuts <sup>[BROKEN]</sup> <br>
 Use `PSReadline` module cmdlets. <br>
 eg. Press `Ctrl+H` to display a GridView of command history. Select a cmd to execute. <br>

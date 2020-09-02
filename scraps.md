@@ -6,6 +6,9 @@
 
 # Index
 
+- [Video Bookmarks](#video-bookmarks)
+
+
 ## Video Bookmarks
 
 - Partitioning a video using subtitles

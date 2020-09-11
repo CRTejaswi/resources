@@ -209,7 +209,10 @@ __Bulk__ <br>
     ```powershell
     move ((ls B:\CRTejaswi\Downloads\) -match '^\d{1}.mp4').FullName .
     ```
-
+    Copy/Move files using regex.
+    ```powershell
+    ls $Path | where {$_.Name -match 'ca'} | forEach {copy $_.fullname .}
+    ```
 - Emails
     ```powershell
     Send-MailMessage `
@@ -242,6 +245,12 @@ __Bulk__ <br>
     ```powershell
     $i=1; ls | forEach {ren $_.name "$i$($_.extension)"; $i++}
     ```
+    Use regex to rename files. <br>
+    eg. sparse_dca,denoising_dca,variational_dca -> dca_denoising,dca_sparse,dca_variational
+    ```powershell
+    (ls).Name | ren -NewName {$_ -replace '(\w+)_dca','dca_$1'}
+    ```
+
 
 __Multimedia__ <br>
 

@@ -254,10 +254,15 @@ __Bulk__ <br>
 
 __Multimedia__ <br>
 
+- Play in background (system tray)
+    ```powershell
+    vlc --qt-start-minimized --play-and-exit $Music
+    ```
 - Create & Play a playlist
     ```powershell
     (ls *.mp3).fullName | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
     ```
+
 __Add Context-Menu Options__ <sup>[BROKEN]</sup><br>
 
 A context-menu opens up when you right click a file. <br>
@@ -276,6 +281,15 @@ New-Item -Path $ContextCommandKey -Value $ContextCommand -Force
 Set-Item -Path $ContextOptionKey -Value $ContextOption
 ```
 
+__Location Access__ <br>
+To view physical location using GMaps, enable all location access features on Windows 10, then:
+```powershell
+Add-Type -AssemblyName System.Device
+$coordinates = [System.Device.Location.GeoCoordinateWatcher]::new()
+$coordinates.Start()
+$location = $coordinates.position.location
+firefox "google.com/maps?q=$($location.latitude),$($location.longitude)"
+```
 
 ## System Help
 

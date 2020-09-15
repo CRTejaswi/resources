@@ -26,6 +26,8 @@
 - [CLI/GUI](#cligui)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases](#databases)
+- [Design Styles](style/style.md)
+- [Design Patterns](pattern/pattern.md)
 - [Processing: Text](#text-processing)
 - [Processing: File](#file-processing)
 - [Processing: Image](#image-processing)

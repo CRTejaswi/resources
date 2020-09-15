@@ -7,12 +7,45 @@
 
 # The Problem
 
-Given a text file, produce a list of words with their frequencies, printing 'N' of them out in a decreasing order of frequency. <br>
+Given a text file, produce a list of words with their frequencies, printing 'N=25' of them out in a decreasing order of frequency. <br>
 Make sure to "lowercase" everything, and ignore stopwords (the, for, in, ...). <br>
+
+# The Result
+
+```
+PS> py .\test.py .\pride-and-prejudice.txt
+
+mr - 786
+elizabeth - 635
+very - 488
+darcy - 418
+such - 395
+mrs - 343
+much - 329
+more - 327
+bennet - 323
+bingley - 306
+jane - 295
+miss - 283
+one - 275
+know - 239
+before - 229
+herself - 227
+though - 226
+well - 224
+never - 220
+sister - 218
+soon - 216
+think - 211
+now - 209
+time - 203
+good - 201
+```
 
 # Index
 
 - [01](#01)
+- [02](#02)
 
 ## 01
 
@@ -63,7 +96,7 @@ def style1():
     - make data[2] = 0 (start index of current word) if any alphanumeric character is encountered.
     - if the character isn't alphanumeric (=> end of word), process the word.
         - select line from start:stop index. make it lowercase.
-        - don't process the word if if is 1-2 character long, or a stopword.
+        - don't process single-letter words or stopwords.
         - match currentWord with each word from word_frequencies file.
             - start by simply appending the word to file after checking the match flag (data[4]).
             - every consequent match => set the match flag (data[4]) and increment the frequency (data[7]) by 1.
@@ -138,32 +171,106 @@ def style1():
 if __name__ == '__main__':
     style1()
 ```
-```
-PS> py .\test.py .\pride-and-prejudice.txt
 
-mr - 786
-elizabeth - 635
-very - 488
-darcy - 418
-such - 395
-mrs - 343
-much - 329
-more - 327
-bennet - 323
-bingley - 306
-jane - 295
-miss - 283
-one - 275
-know - 239
-before - 229
-herself - 227
-though - 226
-well - 224
-never - 220
-sister - 218
-soon - 216
-think - 211
-now - 209
-time - 203
-good - 201
+## 02
+
+__Constraints__ <br>
+
+- Implement primary/secondary memory operations on a stack/heap respectively.
+- Implement all functionality using procedures - names associated with a set of instructions.
+
+```python
+#!/usr/bin/env python3
+import os
+import re
+import sys
+import string
+import operator
+
+stack = []
+heap = {}
+
+
+def read_file():
+    '''
+    POPs a filepath and PUSHes its contents in place.
+    '''
+    with open(stack.pop()) as f:
+        stack.append([f.read()])
+
+
+def filter_characters():
+    '''
+    POPs entries from stack and replaces them with a version in which non-alphanumeric characters are replaced by whitespace.
+    '''
+    stack.append(re.compile('[\W_]+'))
+    stack.append([stack.pop().sub(' ', stack.pop()[0]).lower()])
+
+
+def scan():
+    '''
+    POPs a string, PUSHes words from the string in place.
+    '''
+    stack.extend(stack.pop()[0].split())
+
+
+def remove_stopwords():
+    '''
+    POPs a list of words from stack, removes stopwords.
+    '''
+    with open('stopwords.txt') as f:
+        stack.append(f.read().split(','))
+    stack[-1].extend(list(string.ascii_lowercase))
+    heap['words'] = []
+    heap['stopwords'] = stack.pop()
+    while len(stack) > 0:
+        if stack[-1] in heap['stopwords']:
+            stack.pop()
+        else:
+            heap['words'].append(stack.pop())
+    stack.extend(heap['words'])
+    del heap['words']
+    del heap['stopwords']
+
+
+def frequencies():
+    '''
+    Takes a list of words and returns dictionary mapping these words with their occurence frequencies.
+    '''
+    heap['word_frequencies'] = {}
+    while len(stack) > 0:
+        if stack[-1] in heap['word_frequencies']:
+            stack.append(heap['word_frequencies'][stack[-1]])
+            stack.append(1)
+            stack.append(stack.pop() + stack.pop())
+        else:
+            stack.append(1)
+        heap['word_frequencies'][stack.pop()] = stack.pop()
+    stack.append(heap['word_frequencies'])
+    del heap['word_frequencies']
+
+
+def sort():
+    stack.extend(sorted(stack.pop().items(), key=operator.itemgetter(1)))
+
+
+if __name__ == '__main__':
+    # Process the file using procedures defined above.
+    stack.append(sys.argv[1])
+    read_file()
+    filter_characters()
+    scan()
+    remove_stopwords()
+    frequencies()
+    sort()
+    # ...
+    stack.append(0)
+    while stack[-1] < 25 and len(stack) > 1:
+        heap['i'] = stack.pop()
+        (w, f) = stack.pop()
+        print(w, '-', f)
+        stack.append(heap['i'])
+        stack.append(1)
+        stack.append(stack.pop() + stack.pop())
 ```
+

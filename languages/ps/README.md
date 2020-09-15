@@ -2082,6 +2082,12 @@ Also See: [myScripts](scripts.md)
     gcb | pandoc $_ --metadata title='Title' --pdf-engine=xelatex -o output.pdf
     ```
 
+- [x] Generate epub/mobi from text files.
+    ```
+    (ls) -match $Pattern | forEach {pandoc $($_.FullName) --metadata title="$($_.BaseName)" --epub-cover-image="$($_.BaseName).jpg" -o "$($_.BaseName).epub"}
+    ls *.epub | forEach {kindlegen $_.FullName}
+    ```
+
 - [x] Copy code(s)/text & save as code-file/text-file <br>
     `ascii` is ideal. `utf8` gives `UTF-8 with BOM`, so, you'll have to re-encode in editor.
     ```

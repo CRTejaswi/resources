@@ -105,6 +105,8 @@ $imagemagick     = "$imagemagick_url/$(((iwr $imagemagick_url).links.href -match
 # $pandoc          = ...
 $miktex_url      = "https://miktex.org"
 $miktex          = "$miktex_url$(((iwr "$miktex_url/download").links.href -match 'x64.exe$')[0])"
+$anydesk         = "https://download.anydesk.com/AnyDesk.exe"
+
 
 iwr $vlc -OutFile 'vlc.exe'
 iwr $firefox -OutFile 'firefox.exe'
@@ -114,6 +116,7 @@ iwr $ffmpeg -OutFile 'ffmpeg.zip'
 iwr $imagemagick -OutFile 'imagemagick.exe'
 # iwr $pandoc -OutFile 'pandoc.exe'
 iwr $miktex -OutFile 'miktex.exe'
+iwr $anydesk -OutFile 'anydesk.exe'
 ```
 
 - [x] Code-File Inventory [\*](https://ironscripter.us/building-a-powershell-command-inventory/) <br>

@@ -43,6 +43,7 @@
 - [Registry](#registry)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Databases (SQLite, SQL Server)](#databases)
+- [PDFs](#pdf)
 - [Compressed Files](#compressed-files)
 - [Modules](#modules)
 - [Parameters](#parameters)
@@ -892,8 +893,9 @@ __Queue__ <br>
 
 Unlike UNIX, PS outputs objects (instead of text). This makes it easy to sort them. <br>
 This instruction gets all the members (properties/methods) of `get-process` cmdlet, sorted by name. <br>
-    ```powershell
-    get-process | get-member | sort Name
+
+```
+get-process | get-member | sort Name
 
        TypeName: System.Diagnostics.Process
 
@@ -991,7 +993,7 @@ This instruction gets all the members (properties/methods) of `get-process` cmdl
     WorkingSet                 Property       int WorkingSet {get;}
     WorkingSet64               Property       long WorkingSet64 {get;}
     WS                         AliasProperty  WS = WorkingSet64
-    ```
+```
 
 - Objects: Sorting & Selecting <br>
     Use `Sort-Object` (`sort`) & `Select-Object`(`select`).
@@ -1006,7 +1008,7 @@ __Group-Object__ <br>
 We can group objects based on like values/properties. <br>
 
 ```powershell
-$Object | Measure-Object <switch>
+$Object | Group-Object <switch>
 ```
 
 - [x] Group email addresses by provider <br>
@@ -1251,15 +1253,11 @@ __Ans:__ _Objects_ <br>
 
 File/Folder are collectively called __Item__.
 
-- Current location
-    The `Get-Location` (aka `pwd`) gets current directory path. If you are working with multiple locations, you can push/pop those locations to/from a stack using `Push-Location`/`Pop-Locatio` (aka `pushd`/`popd`). <br>
+- Current location <br>
+    The `Get-Location` (aka `pwd`) gets current directory path. If you are working with multiple locations, you can push/pop those locations to/from a stack using `Push-Location`/`Pop-Location` (aka `pushd`/`popd`). <br>
     ```powershell
-    # Get current location
-    pwd
-    # Save current location to stack; move to another
-    push 'B:\PowerShell'
-    # Goto previous location (stored on stack)
-    popd
+    # Get current location; Save current location to stack & move to another; Goto previous location (stored on stack)
+    pwd; push 'B:\PowerShell'; popd
     ```
 
 - List items
@@ -1765,6 +1763,45 @@ Use `-depth n` to define the depth to which you want to parse the file. The defa
 http://ramblingcookiemonster.github.io/SQLite-and-PowerShell/
 https://www.darkartistry.com/2019/08/create-insert-and-query-sqlite-with-powershell/
 https://www.tutorialspoint.com/sqlite/index.htm
+
+## PDF
+
+See: [[1]](https://www.signalwarrant.com/convert-to-and-merge-pdfs-with-itextsharp-and-powershell/), [[2]](https://social.technet.microsoft.com/wiki/contents/articles/30427.creating-pdf-files-using-powershell.aspx), [iText (examples)](https://itextpdf.com/en/resources/books), [iText (videos)](https://www.youtube.com/c/itext/videos) <br>
+
+iText offers a .NET API to deal with PDFs (C#, PS). <br>
+The latest version is [iText7](https://github.com/itext/itext7-dotnet), but due to a lack of proper documentation, we'll use [iText5](https://github.com/itext/itextsharp).
+
+- Export pdf from text file <sup>[BROKEN]</sup>
+```powershell
+function Export-Pdf {
+<#
+.SYNOPSIS
+Exports PDF from a text file.
+.EXAMPLE
+PS> Export-Pdf -FilePath test.txt
+
+PS> Export-Pdf -FilePath test.ps1
+#>
+    [cmdletBinding()]
+    param(
+        [string]$FilePath
+    )
+    # Invoke contents of binary
+    $DLLPath = 'C:\Program Files\myBinaries\itext5\itextsharp.dll'
+    Add-Type -Path $DLLPath -ErrorAction Stop
+    # Convert TXT -> PDF
+    $OutFile = "$($FilePath.BaseName).pdf"
+    $File = New-Object -TypeName iTextSharp.text.Document
+    $FileStream = New-Object -TypeName IO.FileStream -ArgumentList ($OutFile, [System.IO.FileMode]::Create)
+    $Paragraph = New-Object -TypeName iTextSharp.text.Paragraph
+    [iTextSharp.text.pdf.PdfWriter]::GetInstance($File, $FileStream)
+    [iTextSharp.text.FontFactory]::RegisterDirectories()
+    $Paragraph.add((Get-Content -Path $($FilePath.FullName) |
+        forEach {"$_ `n"}
+    ))
+    $File.open(); $File.add($Paragraph); $File.close();
+}
+```
 
 ## Compressed Files
 

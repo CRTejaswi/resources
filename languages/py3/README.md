@@ -31,6 +31,7 @@
 - [Processing: Text](#text-processing)
 - [Processing: File](#file-processing)
 - [Processing: Image](#image-processing)
+- [Custom Containters](#custom-containers)
 - [Unsorted](#Unsorted)
 
 ## General
@@ -453,9 +454,64 @@ if __name__ == '__main__':
 
 ```
 
-### Unsorted (Generic Content)
-- [Generic Content](generic/generic.md)
+## Custom Containers
 
+__List__ <br>
+
+- Implements a list with modified methods
+
+```python
+#!/usr/bin/env python3
+class _list:
+    def __init__(self, *args):
+        self.values = list(args)
+
+    def __repr__(self):
+        return f'{self.values}'
+
+    def __len__(self):
+        return len(self.values)
+
+    def extend(self, newList=None, *values):
+        if newList and type(newList) == list:
+            return self.values.extend(newList)
+        elif values:
+            values = list(values)
+            return self.values.extend(values)
+
+    def __add__(self, values=[]):
+        for i in range(len(values)):
+            self.values[i] += values[i]
+        return self.values
+
+    def __sub__(self, values=[]):
+        for i in range(len(values)):
+            self.values[i] -= values[i]
+        return self.values
+
+    def __mul__(self, values=[]):
+        for i in range(len(values)):
+            self.values[i] *= values[i]
+        return self.values
+
+    def __div__(self, values=[]):
+        for i in range(len(values)):
+            self.values[i] /= values[i]
+        return self.values
+
+    def __floordiv__(self, values=[]):
+        for i in range(len(values)):
+            self.values[i] //= values[i]
+        return self.values
+
+    def __mod__(self, values=[]):
+        for i in range(len(values)):
+            self.values[i] %= values[i]
+        return self.values
+
+    def type(self):
+        return [type(self.values), self.values]
+```
 
 ### Web Applications
 - [Flask](flask/flask.md)
@@ -487,4 +543,6 @@ __Resources:__ <br>
 - [Philipp Wagner](https://bytefish.de/tag/opencv/)
 - [Phillip Hasper](http://hasper.info/tag/opencv/)
 
+### Unsorted (Generic Content)
+- [Generic Content](generic/generic.md)
 

@@ -263,6 +263,12 @@ __Multimedia__ <br>
     ```powershell
     (ls *.mp3).fullName | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
     ```
+- Text to Speech
+    ```powershell
+    Add-Type -AssemblyName System.Speech
+    $tts = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer
+    $tts.Speak($(cat .\notes.txt))
+    ```
 
 __Add Context-Menu Options__ <sup>[BROKEN]</sup><br>
 

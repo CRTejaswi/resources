@@ -263,11 +263,25 @@ __Multimedia__ <br>
     ```powershell
     (ls *.mp3).fullName | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
     ```
-- Text to Speech
+- Text to Speech <br>
+    See: [SpeechSynthesizer](https://docs.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesize)
     ```powershell
     Add-Type -AssemblyName System.Speech
+
     $tts = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer
+    $tts.SpeakAsync($(cat .\notes.txt))
+
+    $tts = [System.Speech.Synthesis.SpeechSynthesizer]::new()
+    $tts.SetOutputToWaveFile("$($pwd)\test.wav")
     $tts.Speak($(cat .\notes.txt))
+    ```
+    ```powershell
+    $tts.SpeakAsync("The current date and time is $(Get-Date)")
+
+    $services = Get-Service W* | Select-Object -First 5
+    forEach ($service in $services){ `
+        $tts.SpeakAsync("The Service $($service.displayname) is $($service.status)") | Out-Null `
+    }
     ```
 
 __Add Context-Menu Options__ <sup>[BROKEN]</sup><br>

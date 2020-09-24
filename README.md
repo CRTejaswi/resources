@@ -18,6 +18,8 @@
     - [SPICE](languages/hdl/spice/README.md)
     - [µWind](languages/hdl/µwind/README.md)
 - [Databases](databases/README.md)
+- [Satellite Imaging](topics/satellite-imaging/satellite-imaging.md)
+
 
 ## Command Set <sup>[BROKEN]</sup>
 > Contains various command-set listing.

@@ -264,7 +264,7 @@ __Multimedia__ <br>
     (ls *.mp3).fullName | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
     ```
 - Text to Speech <br>
-    See: [SpeechSynthesizer](https://docs.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesize)
+    See: [SpeechSynthesizer](https://docs.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesizer)
     ```powershell
     Add-Type -AssemblyName System.Speech
 
@@ -274,6 +274,14 @@ __Multimedia__ <br>
     $tts = [System.Speech.Synthesis.SpeechSynthesizer]::new()
     $tts.SetOutputToWaveFile("$($pwd)\test.wav")
     $tts.Speak($(cat .\notes.txt))
+
+    $tts.GetInstalledVoices().VoiceInfo
+    $tts.SelectVoice("Microsoft Zira Desktop")
+    $tts.SetOutputToWaveFile("$($pwd)\notes.wav")
+    $tts.Speak($(cat .\notes.txt))
+    ffmpeg -i notes.wav notes.mp3; del notes.wav;
+
+    Remove-Variable tts
     ```
     ```powershell
     $tts.SpeakAsync("The current date and time is $(Get-Date)")

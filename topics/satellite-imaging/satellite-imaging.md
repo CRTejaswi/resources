@@ -9,7 +9,6 @@
 - [Software Setup](#software-setup)
 - [Data Types](#data-types)
 
-https://www.earthdatascience.org/courses/intro-to-earth-data-science/file-formats/use-spatial-data/file-formats-exercise/
 
 ## Software Setup
 
@@ -20,7 +19,7 @@ https://www.earthdatascience.org/courses/intro-to-earth-data-science/file-format
     ```
 - GDAL; rasterio/fiona <br>
     Download binaries for [gdal](http://www.lfd.uci.edu/~gohlke/pythonlibs/#gdal), [rasterio](http://www.lfd.uci.edu/~gohlke/pythonlibs/#rasterio), [fiona](https://www.lfd.uci.edu/~gohlke/pythonlibs/#fiona). <br>
-    GDAL is the main software - rasterio/fiona are Py3 wrappers around GDAL for dealing with raster/vector images. <br>
+    GDAL is the main software - rasterio/fiona are Py3 wrappers around GDAL to deal with raster/vector images. <br>
     ```
     python -m pip install --user gdal.whl rasterio.whl fiona.whl
     ```
@@ -110,5 +109,6 @@ Physical Co-ordinates:        (623577.0,4214037.0) (637626.0,4185885.0)
 
 # References
 
-- [Python: Earth Data Science](https://www.earthdatascience.org/courses/use-data-open-source-python/)
-
+- [GDAL](https://gdal.org/tutorials/index.html)
+- [Python: Earth Data Science](https://www.earthdatascience.org/courses/use-data-open-source-python/) ([exercise](https://www.earthdatascience.org/courses/intro-to-earth-data-science/file-formats/use-spatial-data/file-formats-exercise/))
+- [Python: GeoHackWeek2019](https://geohackweek.github.io/raster/)

@@ -105,7 +105,9 @@ $imagemagick     = "$imagemagick_url/$(((iwr $imagemagick_url).links.href -match
 # $pandoc          = ...
 $miktex_url      = "https://miktex.org"
 $miktex          = "$miktex_url$(((iwr "$miktex_url/download").links.href -match 'x64.exe$')[0])"
+$pdftk           = "https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-win-setup.exe"
 $anydesk         = "https://download.anydesk.com/AnyDesk.exe"
+
 
 
 iwr $vlc -OutFile 'vlc.exe'
@@ -116,6 +118,7 @@ iwr $ffmpeg -OutFile 'ffmpeg.zip'
 iwr $imagemagick -OutFile 'imagemagick.exe'
 # iwr $pandoc -OutFile 'pandoc.exe'
 iwr $miktex -OutFile 'miktex.exe'
+iwr $pdftk -OutFile 'pdftk-server.exe'
 iwr $anydesk -OutFile 'anydesk.exe'
 ```
 

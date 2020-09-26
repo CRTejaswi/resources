@@ -1831,6 +1831,38 @@ PS> Export-Pdf -FilePath test.ps1
 }
 ```
 
+[PDFtk](https://www.pdflabs.com/tools/pdftk-server/) is another useful shell utility.
+
+```powershell
+# Download PDF (Python3.8.6 documentation)
+iwr 'https://docs.python.org/3/archives/python-3.8.6-docs-pdf-a4.zip' -OutFile python.zip
+# Extract content (use either 7zip or .NET module)
+7z e .\python.zip -r
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+[System.IO.Compression.ZipFile]::ExtractToDirectory("$(pwd)\python.zip", "$(pwd)")
+# Retain only 'reference.pdf'
+ls *.pdf | where {$_.BaseName -notmatch '^ref'} | del
+ren .\reference.pdf .\test.pdf;
+
+# Get number-of-pages in file
+(pdftk test.pdf dump_data) -match 'NumberOfPages'
+# Encrypt file
+pdftk test.pdf output test_encrypted.pdf user_pw password allow printing
+# Decrypt file
+pdftk test_encrypted.pdf input_pw password output test.pdf
+# Merge files
+pdftk .\A.pdf .\B.pdf cat output mix.pdf
+pdftk *.pdf cat output mix.pdf
+# Split files
+pdftk test.pdf cat 1-10 21-30 31-40 output mix.pdf
+# Alternate & Merge files ('odd.pdf' is in ascending/descending order)
+pdftk A=even.pdf B=odd.pdf shuffle A B output mix.pdf
+pdftk A=even.pdf B=odd.pdf shuffle A Bend-1 output mix.pdf
+# Split entire file into individual page-files
+pdftk test.pdf burst
+```
+
+
 ## Compressed Files
 
 Refer: [`System.IO.Compression.ZipFile`](https://docs.microsoft.com/en-us/dotnet/api/system.io.compression.zipfile) <br>

@@ -45,6 +45,7 @@
 - [Databases (SQLite, SQL Server)](#databases)
 - [PDFs](#pdf)
 - [Compressed Files](#compressed-files)
+- [Text Editors](#text-editors)
 - [Modules](#modules)
 - [Parameters](#parameters)
 - [Scripting](#scripting)
@@ -1933,6 +1934,27 @@ Refer: [`System.IO.Compression.ZipFile`](https://docs.microsoft.com/en-us/dotnet
     ...
     $zip.Dispose()
     ```
+
+## Text Editors
+
+__GNU Nano__ <br>
+
+<center>
+
+| Shortcut | Description |
+| :-- | :-- |
+| Alt+3 | Comment/Uncomment |
+| Alt+Shift+3 | Display line numbers |
+| Ctrl+K/U | Cut/Paste |
+| Alt+6 | Copy current line |
+| Alt+U/E | Undo/Redo |
+| Ctrl+C | Cursor position (row, column, character index) |
+| F2 | Exit |
+| Ctrl+S; F3 | Save/Save-As |
+| Ctrl+W,Alt+W | Find/Find-Next |
+| Alt+R | Replace |
+
+</center>
 
 ## Parameters
 

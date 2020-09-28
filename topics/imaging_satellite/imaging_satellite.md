@@ -29,7 +29,7 @@
     python -m pip install --user earthengine-api --upgrade
     ```
 - Folium <br>
-    for plotting interactive maps.
+    To plot interactive maps.
     ```
     python -m pip install folium
     ```
@@ -106,6 +106,35 @@ Physical Co-ordinates:        (623577.0,4214037.0) (637626.0,4185885.0)
     <img src="resources/1.png" height=480>
     <img src="resources/2.png" height=480>
 </center>
+
+## Graphical Indicators
+
+__Vegetation__ <br>
+__Water__ <br>
+__Road__ <br>
+
+```python
+def get_vegetation():
+    '''
+    Gets/Plots vegetation (NDVI)
+    '''
+    ...
+def get_water():
+    '''
+    Gets/Plots water bodies (NDWI)
+    '''
+    ...
+def get_roads():
+    '''
+    Gets/Plots roads (?)
+    '''
+    ...
+def get_():
+    '''
+    Gets/Plots ? regions (?)
+    '''
+    ...
+```
 
 # References
 

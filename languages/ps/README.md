@@ -1957,6 +1957,16 @@ __GNU Nano__ <br>
 
 </center>
 
+- select/delete all <br>
+Use `Alt+T` to cut from current line to eof.
+- work with several files at once <br>
+Open multiple files using `nano test.ps1 test.py test.txt`; go back-and-forth using `Alt+,` and `Alt+.`.
+- insert text from files <br>
+Use `Ctrl+R` to insert-from-file. Enter filename, then press enter.
+- save backup files <br>
+Run `nano -BC .\backup test.txt`. B/C => backup/path-to-backup-directory.
+
+
 ## Git
 
 ### GitHub CLI
@@ -1976,9 +1986,9 @@ __Gist__ <br>
 gh gist list
 $Gists=@(); gh gist list | forEach {$Gists += $_.ToString().Split('')[0]}
 ```
-- Create a new gist (multiple files)
+- Create a new gist (multiple files: code, text, stdin)
 ```
-gh gist create --public test.ps1 test.py - -d 'Gist: Test'
+gh gist create --public test.ps1 test.py test.txt - -d 'Gist: Test'
 ```
 - View files from a gist
 ```

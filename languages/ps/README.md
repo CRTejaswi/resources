@@ -46,6 +46,7 @@
 - [PDFs](#pdf)
 - [Compressed Files](#compressed-files)
 - [Text Editors](#text-editors)
+- [Git](#git)
 - [Modules](#modules)
 - [Parameters](#parameters)
 - [Scripting](#scripting)
@@ -1955,6 +1956,41 @@ __GNU Nano__ <br>
 | Alt+R | Replace |
 
 </center>
+
+## Git
+
+### GitHub CLI
+
+__Repo__ <br>
+
+- View repo (README)
+```
+gh repo view
+gh repo view crtejaswi/quiz
+```
+
+__Gist__ <br>
+
+- List all gists
+```
+gh gist list
+$Gists=@(); gh gist list | forEach {$Gists += $_.ToString().Split('')[0]}
+```
+- Create a new gist (multiple files)
+```
+gh gist create --public test.ps1 test.py - -d 'Gist: Test'
+```
+- View files from a gist
+```
+gh gist view 90dd9b9ed4402a8ea82ec8048935ec59
+gh gist view $Gists[0]
+gh gist view $Gists[1] -f gistfile2.txt
+```
+- Edit files from a gist
+```
+gh gist edit 90dd9b9ed4402a8ea82ec8048935ec59 -f gistfile2.txt
+gh gist edit $Gists[1] -f gistfile2.txt
+```
 
 ## Parameters
 

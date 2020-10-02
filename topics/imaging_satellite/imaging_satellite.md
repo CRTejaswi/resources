@@ -28,6 +28,11 @@
     ```
     python -m pip install --user earthengine-api --upgrade
     ```
+- GeoPandas <br>
+    Pandas (data analysis), but for GIS.
+    ```
+    python -m pip install --user geopandas
+    ```
 - Folium <br>
     To plot interactive maps.
     ```
@@ -136,8 +141,31 @@ def get_():
     ...
 ```
 
+## Digital Elevation Models
+
+Surface -> Terrain -> Height <br>
+<center><img src="resources/elevation models.png" height=720></center>
+
+## GIS Datasets
+
+__Google Maps__ <br>
+
+```
+Map:              https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}
+Satellite:        http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}
+Satellite-Hybrid: https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}
+Terrain:          https://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}
+Roads:            https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}
+```
+
 # References
 
+- [QGIS: GIS Intro](https://docs.qgis.org/3.10/en/docs/gentle_gis_introduction/)
+- [QGIS: Tutorial](https://docs.qgis.org/3.10/en/docs/training_manual/)
+- [QGIS: Python Cookbook](https://docs.qgis.org/3.10/en/docs/pyqgis_developer_cookbook/)
+- [QGIS: Python API](https://qgis.org/pyqgis/3.10/)
 - [GDAL](https://gdal.org/tutorials/index.html)
 - [Python: Earth Data Science](https://www.earthdatascience.org/courses/use-data-open-source-python/) ([exercise](https://www.earthdatascience.org/courses/intro-to-earth-data-science/file-formats/use-spatial-data/file-formats-exercise/))
 - [Python: GeoHackWeek2019](https://geohackweek.github.io/raster/)
+- [GIS: ML/DL Resources](https://github.com/robmarkcole/satellite-image-deep-learning)
+- [Hans](https://www.youtube.com/c/HansvanderKwast/playlists)

@@ -73,9 +73,9 @@ You can access User/System environment variables using:
 import os; API_KEY = os.environ.get('Youtube_ApiKey');
 ```
 
-__Unpacking Values__ <br>
+__Unpack Values__ <br>
 Use dynamic assignment with `*_`. <br>
-```python
+```py
 items = [1,2,3,4,5]
 head,*tail = items
 
@@ -83,18 +83,27 @@ head # 1
 tail # [2,3,4,5]
 ```
 - Calculate average grade from a set of test marks barring the first & last.
-```python
+```py
 _,total,_ = marks
 avg(total)
 ```
 - Get trailing & current values.
-```python
+```py
 *trailing,current = values
 ```
 - Split a string and save values as variables.
-```python
+```py
 *_,crs = 'urn:ogc:def:crs:OGC:1.3:CRS84'.split(':')
 crs # 'CRS84'
+```
+```py
+records = [
+    ('name', 'address', 'phone'),
+    ('Alice', 104, 62355),
+    ('Bob', 201, 23144),
+]
+headers,*_ = records
+headers # ('name', 'address', 'phone')
 ```
 
 ## CLI/GUI

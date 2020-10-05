@@ -52,6 +52,7 @@
 - [Scripting](#scripting)
 - [Recipies](#recipies)
 - [MS Office](#ms-office)
+- [Android SDK](#android-sdk)
 - [ ] [PowerShell/Python](#powershell-python)
 - [ ] [PowerShell/JavaScript](#powershell-js)
 - [Unsorted](#unsorted)
@@ -164,6 +165,20 @@ eg. Display a countdown timer using a progressbar.
         [System.IO.File]::WriteAllLines($NewPath, $content, $encoding)
     }
     Remove-BOM -Path .\test.json
+    ```
+
+- Work with file/folder <br>
+    Save filepath in $PROFILE variable. <br>
+    Open file/folder using editor/cd. 
+    ```
+    $ImagingSatellite="B:\CRTejaswi\Codes\resources\topics\imaging_satellite\imaging_satellite.md"
+    nano $ImagingSatellite
+    cd (ls $ImagingSatellite).Directory
+    ```
+
+- Check filesize before downloading <br>
+    ```
+    (iwr $url -Method Head).Headers.'Content-Length'/1MB
     ```
 
 - Execute lines from a text file <br>
@@ -2506,6 +2521,10 @@ See: [[1]](https://dfinke.github.io/powershell/2019/07/31/Creating-beautiful-Pow
 ```powershell
 gps | Export-Excel test.xlsx -Show
 ```
+
+## Android SDK
+
+See: [Android SDK](https://developer.android.com/studio/releases/platform-tools), [Setup](https://www.youtube.com/watch?v=0Anz2Y2O4Tk).
 
 
 ## To-Do

@@ -106,6 +106,28 @@ headers,*_ = records
 headers # ('name', 'address', 'phone')
 ```
 
+- Get Min/Max <br>
+To get smallest/largest element, use: `min(), max()`. <br>
+To get 'n' smallest/largest elements (n << sizeof(Object)), use: `heapq.nsmallest(n), heapq.nlargest(n)`. <br>
+To get 'n' smallest/largest elements (n ~ sizeof(Object)), use: `sorted(Object)[:N], sorted(Object)[-N:]`. <br>
+
+```py
+import heapq
+
+portfolio = [
+    {'name': 'ABC', 'shares': 100, 'price': 90.1},
+    {'name': 'BCD', 'shares': 50, 'price': 190.1},
+    {'name': 'CDE', 'shares': 200, 'price': 290.1},
+    {'name': 'DEF', 'shares': 10, 'price': 590.1},
+    {'name': 'FGH', 'shares': 30, 'price': 80.1},
+]
+cheap = heapq.nsmallest(3, portfolio, key=lambda x: x['price'])
+expensive = heapq.nlargest(3, portfolio, key=lambda x: x['price'])
+# [{'name': 'FGH', 'shares': 30, 'price': 80.1}, {'name': 'ABC', 'shares': 100, 'price': 90.1}, {'name': 'BCD', 'shares': 50, 'price': 190.1}]
+# [{'name': 'DEF', 'shares': 10, 'price': 590.1}, {'name': 'CDE', 'shares': 200, 'price': 290.1}, {'name': 'BCD', 'shares': 50, 'price': 190.1}]
+```
+
+
 ## CLI/GUI
 
 Review: [argparse](argparse/argparse.md), [Tkinter](tkinter/tkinter.md).

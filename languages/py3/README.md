@@ -73,61 +73,6 @@ You can access User/System environment variables using:
 import os; API_KEY = os.environ.get('Youtube_ApiKey');
 ```
 
-__Unpack Values__ <br>
-Use dynamic assignment with `*_`. <br>
-```py
-items = [1,2,3,4,5]
-head,*tail = items
-
-head # 1
-tail # [2,3,4,5]
-```
-- Calculate average grade from a set of test marks barring the first & last.
-```py
-_,total,_ = marks
-avg(total)
-```
-- Get trailing & current values.
-```py
-*trailing,current = values
-```
-- Split a string and save values as variables.
-```py
-*_,crs = 'urn:ogc:def:crs:OGC:1.3:CRS84'.split(':')
-crs # 'CRS84'
-```
-```py
-records = [
-    ('name', 'address', 'phone'),
-    ('Alice', 104, 62355),
-    ('Bob', 201, 23144),
-]
-headers,*_ = records
-headers # ('name', 'address', 'phone')
-```
-
-- Get Min/Max <br>
-To get smallest/largest element, use: `min(), max()`. <br>
-To get 'n' smallest/largest elements (n << sizeof(Object)), use: `heapq.nsmallest(n), heapq.nlargest(n)`. <br>
-To get 'n' smallest/largest elements (n ~ sizeof(Object)), use: `sorted(Object)[:N], sorted(Object)[-N:]`. <br>
-
-```py
-import heapq
-
-portfolio = [
-    {'name': 'ABC', 'shares': 100, 'price': 90.1},
-    {'name': 'BCD', 'shares': 50, 'price': 190.1},
-    {'name': 'CDE', 'shares': 200, 'price': 290.1},
-    {'name': 'DEF', 'shares': 10, 'price': 590.1},
-    {'name': 'FGH', 'shares': 30, 'price': 80.1},
-]
-cheap = heapq.nsmallest(3, portfolio, key=lambda x: x['price'])
-expensive = heapq.nlargest(3, portfolio, key=lambda x: x['price'])
-# [{'name': 'FGH', 'shares': 30, 'price': 80.1}, {'name': 'ABC', 'shares': 100, 'price': 90.1}, {'name': 'BCD', 'shares': 50, 'price': 190.1}]
-# [{'name': 'DEF', 'shares': 10, 'price': 590.1}, {'name': 'CDE', 'shares': 200, 'price': 290.1}, {'name': 'BCD', 'shares': 50, 'price': 190.1}]
-```
-
-
 ## CLI/GUI
 
 Review: [argparse](argparse/argparse.md), [Tkinter](tkinter/tkinter.md).
@@ -252,6 +197,169 @@ __R/W configuration files__ <br>
 
 ## Data Structures
 Review: [DSA](dsa/DSA.md)
+
+### List, Set, Tuple, Dictionary
+
+__Unpack Values__ <br>
+Use dynamic assignment with `*_`. <br>
+```py
+items = [1,2,3,4,5]
+head,*tail = items
+
+head # 1
+tail # [2,3,4,5]
+```
+
+- Calculate average grade from a set of test marks barring the first & last.
+```py
+_,total,_ = marks
+avg(total)
+```
+
+- Get trailing & current values.
+```py
+*trailing,current = values
+```
+
+- Split a string and save values as variables.
+```py
+*_,crs = 'urn:ogc:def:crs:OGC:1.3:CRS84'.split(':')
+crs # 'CRS84'
+```
+```py
+records = [
+    ('name', 'address', 'phone'),
+    ('Alice', 104, 62355),
+    ('Bob', 201, 23144),
+]
+headers,*_ = records
+headers # ('name', 'address', 'phone')
+```
+```py
+# Custom sort/select entries before unpacking
+```
+
+__Get Min/Max__ <br>
+To get smallest/largest element, use: `min(), max()`. <br>
+To get 'n' smallest/largest elements (n << sizeof(Object)), use: `heapq.nsmallest(n), heapq.nlargest(n)`. <br>
+To get 'n' smallest/largest elements (n ~ sizeof(Object)), use: `sorted(Object)[:N], sorted(Object)[-N:]`. <br>
+
+```py
+import heapq
+
+portfolio = [
+    {'name': 'ABC', 'shares': 100, 'price': 90.1},
+    {'name': 'BCD', 'shares': 50, 'price': 190.1},
+    {'name': 'CDE', 'shares': 200, 'price': 290.1},
+    {'name': 'DEF', 'shares': 10, 'price': 590.1},
+    {'name': 'FGH', 'shares': 30, 'price': 80.1},
+]
+cheap = heapq.nsmallest(3, portfolio, key=lambda x: x['price'])
+expensive = heapq.nlargest(3, portfolio, key=lambda x: x['price'])
+# [{'name': 'FGH', 'shares': 30, 'price': 80.1}, {'name': 'ABC', 'shares': 100, 'price': 90.1}, {'name': 'BCD', 'shares': 50, 'price': 190.1}]
+# [{'name': 'DEF', 'shares': 10, 'price': 590.1}, {'name': 'CDE', 'shares': 200, 'price': 290.1}, {'name': 'BCD', 'shares': 50, 'price': 190.1}]
+```
+
+__Dict: Insert/Remove Values__ <br>
+
+```py
+records = {}
+records['Alice'] = [32, 'Host', 12]
+records['Bob'] = [24]
+records['Cathy'] = set()
+records['Dell'] = {}
+
+records['Bob'].append('Client')
+records['Bob'].append(1)
+records['Cathy'].update({'Client',2})
+records['Dell'].update({'credentials': [27,'Host',12]})
+records
+'''
+{
+'Alice': [32, 'Host', 12],
+'Bob': [24, 'Client', 1],
+'Cathy': {'Client', 2},
+'Dell': {'credentials': [27, 'Host', 12]}
+}
+'''
+```
+
+__Dict: Maintain Insertion Order__ <br>
+
+```py
+from collections import OrderedDict
+records = OrderedDict()
+records['Alice'] = [32, 'Host']
+records['Bob'] = [24, 'Client']
+
+import json
+json.dumps(records)
+# '{"Alice": [32, "Host"], "Bob": [24, "Client"]}'
+```
+
+__Dict: Set Arithmetic__ <br>
+`keys()`/`items()` (but not `values()`) support set-arithmetic. <br>
+```py
+A = {'x': 10, 'y': 11, 'z': 12}
+B = {'y': 15, 'z': 12}
+
+# Common Keys
+A.keys() & B.keys() # {'z', 'y'}
+# Keys in A, but not in B
+A.keys() - B.keys() # {'x'}
+# Common (key,value) pairs
+A.items() & B.items() # {('z', 12)}
+
+# Create a new dict with some keys removed
+C = {key:A[key] for key in A.keys() - {x}}
+C # {'z': 12, 'y': 11}
+```
+
+__Dict: Custom Operations__ <br>
+To process & assign dictionary entries, use `zip()` to access `key, value`.
+```py
+prices = {
+    'ACME': 45.23,
+    'AAPL': 612.78,
+    'IBM': 205.55,
+    'HPQ': 37.20,
+    'FB': 10.75
+}
+minPrice = min(zip(prices.values(), prices.keys()))
+maxPrice = max(zip(prices.values(), prices.keys()))
+ascPrices = sorted(zip(prices.values(), prices.keys()))
+descPrices = sorted(zip(prices.values(), prices.keys()), reverse=True)
+
+minPrice; maxPrice; ascPrices;descPrices;
+'''
+(10.75,'FB')
+(612.78,'AAPL')
+[(10.75, 'FB'), (37.2, 'HPQ'), (45.23, 'ACME'), (205.55, 'IBM'), (612.78, 'AAPL')]
+[(612.78, 'AAPL'), (205.55, 'IBM'), (45.23, 'ACME'), (37.2, 'HPQ'), (10.75, 'FB')]
+'''
+```
+
+__Remove Duplicates__ <br>
+Unordered: `set()` <br>
+Ordered: `remove_duplicates()` <br>
+
+```py
+def remove_duplicates(items, key=None):
+    seen = set()
+    for item in items:
+        value = item if key is None else key(item)
+        if value not in seen:
+            yield item
+            seen.add(value)
+
+A = [{'x':1, 'y':2}, {'x':1, 'y':3}, {'x':1, 'y':2}, {'x':2, 'y':4}]
+# Remove duplicates of type (x,y)
+list(remove_duplicates(A, key=lambda f: (f['x'], f['y'])))
+# Remove duplicates of type 'x'
+list(remove_duplicates(A, key=lambda f: f['x']))
+# [{'x': 1, 'y': 2}, {'x': 1, 'y': 3}, {'x': 2, 'y': 4}]
+# [{'x': 1, 'y': 2}, {'x': 2, 'y': 4}]
+```
 
 ## Algorithms
 Review: [DSA](dsa/DSA.md)

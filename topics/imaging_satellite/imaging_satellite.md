@@ -151,11 +151,12 @@ Surface -> Terrain -> Height <br>
 __Google Maps__ <br>
 
 ```
-Map:              https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}
-Satellite:        http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}
-Satellite-Hybrid: https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}
-Terrain:          https://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}
-Roads:            https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}
+Roads:      https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}
+            https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}
+Satellite:  https://mt1.google.com/vt/lyrs=s@189&x={x}&y={y}&z={z}
+Satellite+: https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}
+Terrain:    https://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}
+Roads:      https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}
 ```
 
 # References

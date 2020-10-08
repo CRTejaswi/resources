@@ -19,6 +19,7 @@
 
 - [myScripts](scripts.md)
 - [General](#general)
+- [IPython](#ipython)
 - [IO Access](#io-access)
 - [File Access](#file-access)
 - [Data Structures](#data-structures)
@@ -72,6 +73,49 @@ You can access User/System environment variables using:
 ```python
 import os; API_KEY = os.environ.get('Youtube_ApiKey');
 ```
+
+## IPython
+IPython is a REPL interpreter with extensive functionality. <br>
+
+| Code | Description | Example |
+| :-- | :-- |  :-- |
+| item? | Print item's documentation | import os; os? os.*dir*? |
+| item?? | Print item's source-code | os?? |
+| _iN, _N | Copy input/output of line #N (error if it doesn't exist) | _i12, _12 |
+| Ctrl+R | Search command history (PSReadline) | . |
+| expression;  | Suppress caching output for expression  | 1+3; |
+| %lsmagic  | List all inbuilt (magic) methods | . |
+
+Alike Pythonic inbuilt methods (double-underscore methods), IPython provides it's own set, expressed using `%` (line-specific) or `%%` (cell-specific). <br>
+```ipython
+%timeit -m 100 -r 3 sum(range(10000))
+# 171 fs  4.26 fs per loop (mean  std. dev. of 3 runs, 100 loops each)
+
+%%timeit -n 100 -r 3
+total = 0
+for x in range(10000):
+     total +=x
+
+# 421 fs  15.8 fs per loop (mean  std. dev. of 3 runs, 100 loops each)
+```
+
+To set default text-editor, <br>
+
+1. Run `ipython profile create` to create `ipython_config.py, ipython_kernel_config.py` in `C:\Users\Chaitanya Tejaswi\.ipython\profile_default`.
+2. In `ipython_config.py`, uncomment `# c.IPythonWidget.editor = ''` => `c.IPythonWidget.editor = nano`.
+
+Running `%edit` now opens up in GNU Nano. <br>
+Access `ipython_config.py` using:
+```
+nano "C:\Users\Chaitanya Tejaswi\.ipython\profile_default\ipython_config.py"
+```
+
+You can run multi-language code using methods such as `%%javascript, %%bash`. <br>
+The option `%%powershell` doesn't exist by default, but you can use [an extension](). <br>
+
+1. Install package using: `pip install powershellmagic`.
+2. In `ipython_config.py`, uncomment/edit `c.InteractiveShellApp.extensions = ['powershell']`. <br>
+This option loads `powershell` extension on startup, so you don't have to import it using `%load_ext` each time. <br>
 
 ## CLI/GUI
 
@@ -311,8 +355,7 @@ A.keys() - B.keys() # {'x'}
 A.items() & B.items() # {('z', 12)}
 
 # Create a new dict with some keys removed
-C = {key:A[key] for key in A.keys() - {x}}
-C # {'z': 12, 'y': 11}
+C = {key:A[key] for key in A.keys() - {x}} # {'z': 12, 'y': 11}
 ```
 
 __Dict: Custom Operations__ <br>

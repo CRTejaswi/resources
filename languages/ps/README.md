@@ -169,7 +169,7 @@ eg. Display a countdown timer using a progressbar.
 
 - Work with file/folder <br>
     Save filepath in $PROFILE variable. <br>
-    Open file/folder using editor/cd. 
+    Open file/folder using editor/cd.
     ```
     $ImagingSatellite="B:\CRTejaswi\Codes\resources\topics\imaging_satellite\imaging_satellite.md"
     nano $ImagingSatellite
@@ -1986,12 +1986,27 @@ Run `nano -BC .\backup test.txt`. B/C => backup/path-to-backup-directory.
 
 ### GitHub CLI
 
-__Repo__ <br>
+__Configuration__ <br>
 
-- View repo (README)
+- Login
 ```
-gh repo view
-gh repo view crtejaswi/quiz
+gh auth login
+gh auth login --with-token < $Token_GitHub
+gh auth logout
+gh auth status
+```
+Here $Token_Github is an environment variable that refers to path of the actual token file.
+
+- Setup usage access limit
+```
+gh auth refresh                                     # Sets min access scope
+gh auth refresh --scopes write:org,read:public_key  # Sets additional scopes
+```
+
+- Setup default editor
+```
+gh config set editor nano # GNUNano
+gh config set editor subl # SublimeText
 ```
 
 __Gist__ <br>
@@ -2015,6 +2030,46 @@ gh gist view $Gists[1] -f gistfile2.txt
 ```
 gh gist edit 90dd9b9ed4402a8ea82ec8048935ec59 -f gistfile2.txt
 gh gist edit $Gists[1] -f gistfile2.txt
+```
+
+__Repo__ <br>
+
+- View repo (README)
+```
+gh repo view
+gh repo view crtejaswi/quiz
+```
+
+__Release__ <br>
+
+- List all releases of a repo
+```
+gh release --repo opencv/opencv list
+```
+
+- List all releases of a repo with full info
+```
+gh release --repo opencv/opencv view
+```
+
+- Download a release for a repo
+```
+gh release --repo opencv/opencv download 4.5.0
+gh release --repo opencv/opencv download --pattern '*docs.zip'
+
+# Ensure that the complete file has been downloaded
+(ls .\opencv-4.5.0-docs.zip).Length/1MB
+```
+
+__Alias__ <br>
+
+You can set aliases for routine commands using:
+```
+gh alias set <alias> <expansion>
+# USAGE: gh <alias>
+
+gh alias set pv 'pr view'
+gh pv -w 123
 ```
 
 ## Parameters

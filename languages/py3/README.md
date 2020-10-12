@@ -111,10 +111,10 @@ nano "C:\Users\Chaitanya Tejaswi\.ipython\profile_default\ipython_config.py"
 ```
 
 You can run multi-language code using methods such as `%%javascript, %%bash`. <br>
-The option `%%powershell` doesn't exist by default, but you can use [an extension](). <br>
+The option `%%powershell` doesn't exist by default, but you can use [an extension](https://pypi.org/project/powershellmagic/). <br>
 
 1. Install package using: `pip install powershellmagic`.
-2. In `ipython_config.py`, uncomment/edit `c.InteractiveShellApp.extensions = ['powershell']`. <br>
+2. In `ipython_config.py`, uncomment/edit `c.InteractiveShellApp.extensions = ['powershellmagic']`. <br>
 This option loads `powershell` extension on startup, so you don't have to import it using `%load_ext` each time. <br>
 
 ## CLI/GUI

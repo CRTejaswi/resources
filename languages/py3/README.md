@@ -33,6 +33,7 @@
 - [Processing: File](#file-processing)
 - [Processing: Image](#image-processing)
 - [Custom Containters](#custom-containers)
+- [Data Analysis](../../topics/dataanalysis/dataanalysis.md)
 - [Unsorted](#Unsorted)
 
 ## General
@@ -76,6 +77,16 @@ import os; API_KEY = os.environ.get('Youtube_ApiKey');
 
 ## IPython
 IPython is a REPL interpreter with extensive functionality. <br>
+
+[__Keyboard Shortcuts__](https://jakevdp.github.io/PythonDataScienceHandbook/01.02-shell-keyboard-shortcuts.html) <br>
+
+| Shortcut | Description |
+| :-- | :-- |
+| `Ctrl+L` or `cls` | Clear Screen |
+| `exit` | Exit IPython session |
+| `Ctrl+A/E` or `Home/End` | Move cursor to start/end of line |
+| `Ctrl+U/K` | Cut startOfLineToCursor/CursorToEndOfLine |
+| `Ctrl+R` | Search command history |
 
 | Code | Description | Example |
 | :-- | :-- |  :-- |

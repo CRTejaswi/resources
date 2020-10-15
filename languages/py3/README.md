@@ -88,7 +88,9 @@ IPython is a REPL interpreter with extensive functionality. <br>
 | `Ctrl+U/K` | Cut startOfLineToCursor/CursorToEndOfLine |
 | `Ctrl+R` | Search command history |
 
-| Code | Description | Example |
+[__Useful Shortcuts/Instructions__](https://www.youtube.com/watch?v=3i6db5zX3Rw)
+
+| Instruction | Description | Example |
 | :-- | :-- |  :-- |
 | item? | Print item's documentation | import os; os? os.*dir*? |
 | item?? | Print item's source-code | os?? |
@@ -127,6 +129,79 @@ The option `%%powershell` doesn't exist by default, but you can use [an extensio
 1. Install package using: `pip install powershellmagic`.
 2. In `ipython_config.py`, uncomment/edit `c.InteractiveShellApp.extensions = ['powershellmagic']`. <br>
 This option loads `powershell` extension on startup, so you don't have to import it using `%load_ext` each time. <br>
+
+__%history__ <br>
+
+```py
+# Access lines of current session
+%history 10
+%history 2-5 11-15 18-20
+
+# Access previous sessions
+%history ~1/   # Complete last session
+%history ~10/  # Complete last 10th session
+%history ~1/2-5 ~1/11-15 ~1/18-20 # Lines from last session
+
+# List all sessions stored in history
+?
+
+# Save session history to file
+%history -f history.txt     <- Save current session history to file
+%history -g -f history.txt  <- Save all session histories to file
+```
+Session histories are saved in `history.sqlite` file that can be accessed using:
+```
+sqlite ~/.ipython/profile_default/history.sqlite
+# query db for entries
+# See: https://stackoverflow.com/questions/19606275/ipython-how-to-wipe-ipythons-history-selectively-securely/39047405
+```
+
+__%edit__ <br>
+
+```py
+# Open temporary file to input code from
+%edit    # Creates new file each time
+%edit p  # Use this to access same file each time (when building up code)
+
+# Acceptable arguments
+'''
+%edit <args>
+    filename:      test.py
+    input history: 1-5  ~1/1-5
+    variable:
+    Python Object: get_metadata <- opens up file containing function definition
+                                   for editing.
+    macro:         ?
+'''
+```
+
+[__%run__](https://ipython.org/ipython-doc/dev/interactive/magics.html#magic-run) <br>
+Run a Py3 script and load it's definitions into current namespace. <br>
+
+__%alias, %rehashx__ <br>
+
+`%rehashx` loads all binaries from $PATH into alias table, allowing you to use them in the session. <br>
+```
+%rehashx
+
+# Convert pdf to text
+pdftotext test.pdf
+
+# Execute code in python repl and come back.
+python
+# ... (Ctrl+Z)
+```
+It's best to use this for binaries only, and not executing PS cmdlets, since simple aliases like `del` can become ambiguous. <br>
+Leave that to `%powershell` (from `powershellmagic`). <br>
+
+__%xmode__ <br>
+Defines verbosity of reported exceptions.
+
+```
+%xmode minimal : Specific info only
+%xmode context : (default)
+%xmode verbose : Full traceback info
+```
 
 ## CLI/GUI
 

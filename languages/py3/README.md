@@ -94,12 +94,12 @@ IPython is a REPL interpreter with extensive functionality. <br>
 | :-- | :-- |  :-- |
 | item? | Print item's documentation | import os; os? os.*dir*? |
 | item?? | Print item's source-code | os?? |
-| _iN, _N | Copy input/output of line #N (error if it doesn't exist) | _i12, _12 |
+| `_iN, _N` | Copy input/output of line #N (error if it doesn't exist) | `_i12, _12` |
 | Ctrl+R | Search command history (PSReadline) | . |
 | expression;  | Suppress caching output for expression  | 1+3; |
 | %lsmagic  | List all inbuilt (magic) methods | . |
 
-Alike Pythonic inbuilt methods (double-underscore methods), IPython provides it's own set, expressed using `%` (line-specific) or `%%` (cell-specific). <br>
+Alike Pythonic inbuilt methods (double-underscore methods), IPython provides it's own set, expressed using `%` or `%%` (line/cell). <br>
 ```ipython
 %timeit -m 100 -r 3 sum(range(10000))
 # 171 fs  4.26 fs per loop (mean  std. dev. of 3 runs, 100 loops each)
@@ -112,27 +112,9 @@ for x in range(10000):
 # 421 fs  15.8 fs per loop (mean  std. dev. of 3 runs, 100 loops each)
 ```
 
-To set default text-editor, <br>
-
-1. Run `ipython profile create` to create `ipython_config.py, ipython_kernel_config.py` in `C:\Users\Chaitanya Tejaswi\.ipython\profile_default`.
-2. In `ipython_config.py`, uncomment `# c.IPythonWidget.editor = ''` => `c.IPythonWidget.editor = nano`.
-
-Running `%edit` now opens up in GNU Nano. <br>
-Access `ipython_config.py` using:
-```
-nano "C:\Users\Chaitanya Tejaswi\.ipython\profile_default\ipython_config.py"
-```
-
-You can run multi-language code using methods such as `%%javascript, %%bash`. <br>
-The option `%%powershell` doesn't exist by default, but you can use [an extension](https://pypi.org/project/powershellmagic/). <br>
-
-1. Install package using: `pip install powershellmagic`.
-2. In `ipython_config.py`, uncomment/edit `c.InteractiveShellApp.extensions = ['powershellmagic']`. <br>
-This option loads `powershell` extension on startup, so you don't have to import it using `%load_ext` each time. <br>
-
 __%history__ <br>
 
-```py
+```ipython
 # Access lines of current session
 %history 10
 %history 2-5 11-15 18-20
@@ -143,7 +125,8 @@ __%history__ <br>
 %history ~1/2-5 ~1/11-15 ~1/18-20 # Lines from last session
 
 # List all sessions stored in history
-?
+%history -g -f history.txt
+(cat .\history.txt | where {$_ -match '(\d+)/(\d+)'} | forEach {$Matches[1]} | Get-Unique).count
 
 # Save session history to file
 %history -f history.txt     <- Save current session history to file
@@ -175,6 +158,25 @@ __%edit__ <br>
 '''
 ```
 
+To set default text-editor, <br>
+
+1. Run `ipython profile create` to create `ipython_config.py, ipython_kernel_config.py` in `C:\Users\Chaitanya Tejaswi\.ipython\profile_default`.
+2. In `ipython_config.py`, uncomment `# c.IPythonWidget.editor = ''` => `c.IPythonWidget.editor = nano`.
+
+Running `%edit` now opens up in GNU Nano. <br>
+Access `ipython_config.py` using:
+```
+nano "C:\Users\Chaitanya Tejaswi\.ipython\profile_default\ipython_config.py"
+```
+
+You can run multi-language code using methods such as `%%javascript, %%bash`. <br>
+The option `%%powershell` doesn't exist by default, but you can use [an extension](https://pypi.org/project/powershellmagic/). <br>
+
+1. Install package using: `pip install powershellmagic`.
+2. In `ipython_config.py`, uncomment/edit `c.InteractiveShellApp.extensions = ['powershellmagic']`. <br>
+This option loads `powershell` extension on startup, so you don't have to import it using `%load_ext` each time. <br>
+
+
 [__%run__](https://ipython.org/ipython-doc/dev/interactive/magics.html#magic-run) <br>
 Run a Py3 script and load it's definitions into current namespace. <br>
 
@@ -202,6 +204,56 @@ Defines verbosity of reported exceptions.
 %xmode context : (default)
 %xmode verbose : Full traceback info
 ```
+
+__IPython: Custom in-built (magic/dunder) functions__ <br>
+Use `@register_line_magic()`, `@register_cell_magic()` decorators to create custom magic functions. <br>
+All arguments to a magic function are passed as string. <br>
+
+```py
+from IPython.core.magic import register_line_magic, register_cell_magic
+
+
+@register_line_magic("reverse")
+def reverseLine(line):
+    '''
+    Reverses a string
+    '''
+    return line[::-1]
+
+@register_cell_magic("")
+...
+```
+```
+>> %reverse hello world
+'dlrow olleh'
+```
+This is the same thing published as an "extension". Load it using `%load_ext reverser`. <br>
+```py
+# ~/.ipython/extensions/reverser.py
+from IPython.core.magic import register_line_magic, register_cell_magic
+
+def load_ipython_extension(ipython):
+    @register_line_magic("reverse")
+    def reverseLine(line):
+        '''
+        Reverses a string
+        '''
+        return line[::-1]
+
+    @register_cell_magic("")
+    ...
+...
+
+```
+To use these across sessions, you can either create an "extension" or add "startup-files" (save `.py/.ipy` files in `~./ipython/profile_default/startup` directory). <br>
+Extensions can be easily shared over `PyPI`; Startup-files are more suited for quick, personal use. <br>
+When using startup-files, if the written methods are memory-intensive, it significantly impacts IPython startup-time. <br>
+A solution is to create "profiles" dedicated to each use-case (eg. debug, demo, computation, image-processing, ...) <br>
+Create a new profile using `ipython profile create debug`. To access this, start IPython using `ipython --profile=debug`. <br>
+
+__IPython: Configuration__ <br>
+IPython can be configured using a `config.py` file located at `~/.ipython/profile_default/ipython_config.py`. <br>
+For first time use, it has to be created using `ipython profile create`. <br>
 
 ## CLI/GUI
 

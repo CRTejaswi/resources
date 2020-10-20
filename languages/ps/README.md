@@ -258,6 +258,17 @@ __Bulk__ <br>
     (ls) -match '^\d+\.mp4' | del
     ```
     Add `-fflags +igndts` to ffmpeg options in case of `Non-monotonous DTS in output stream` error. <br>
+
+    Convert images to pdf, then merge them:
+    ```
+    (ls) -match '^\d+\.jpg' | forEach {magick $_.FullName ($_.FullName).Replace('jpg','pdf')}
+    # Use any one
+    pdftk ((ls) -match '^\d+\.pdf' | sort {($_.Name) -replace '\D+' -as [int]}) cat output merged.pdf
+    pdftk ((ls) -match '^\d+\.pdf' | sort @{expression = {[int]$_.name.split('.')[0]}}) cat output merged.pdf
+    pdftk ((ls) -match '^\d+\.pdf' | sort @{expression = {[int]$_.basename}}) cat output merged.pdf
+
+    del ((ls) -match '^\d+\.(pdf|jpg)')
+    ```
 - Rename files <br>
     The `$_.extension` is helpful when dealing with similar files but different encodings (eg. BMP, JPG, GIF, PNG, SVG).
     ```powershell
@@ -336,6 +347,16 @@ $coordinates.Start()
 $location = $coordinates.position.location
 firefox "google.com/maps?q=$($location.latitude),$($location.longitude)"
 ```
+
+__Notifications__ <br>
+Use [BurntToast]() to create toast-notifications. Use it with `Register-ScheduledJob` cmdlet to create non-volatile jobs. <br>
+```powershell
+Register-ScheduledJob -Name HourlyReminder
+    -ScriptBlock {New-BurntToastNotification -Sound Call -Text "The time is $(Get-Date -Format 'hh:mm')"}
+    -Trigger (New-JobTrigger -Once -At '6:00 AM' -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration ([TimeSpan]::MaxValue))
+    -ScheduledJobOption (New-ScheduledJobOption -WakeToRun -RunElevated)
+```
+
 
 ## System Help
 
@@ -1991,11 +2012,11 @@ __Configuration__ <br>
 - Login
 ```
 gh auth login
-gh auth login --with-token < $Token_GitHub
+gh auth login --with-token $Token_GitHub
 gh auth logout
 gh auth status
 ```
-Here $Token_Github is an environment variable that refers to path of the actual token file.
+Here $Token_Github is an environment variable storing the token string.
 
 - Setup usage access limit
 ```

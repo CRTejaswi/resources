@@ -1982,6 +1982,23 @@ __Installation__ <br>
 - Extract all `*.nanorc` files to `C:/Users/USERNAME/nanorc/`, and `.nanorc` to `C:/Users/USERNAME/`.
 - After opening `nano .nanorc`, uncomment necessary lines & insert `include "C:/Users/USERNAME/nanorc/*.nanorc"` for syntax-highlighting.
 
+__nanorc configuration__ <br>
+
+| Option | Description |
+| :-- | :-- |
+|  |  |
+| `set linenumbers` | display line-numbers |
+| `set mouse` | enable mouse drag/click support |
+| `set nohelp` | don't display help lines at bottom of screen |
+| `set regexp` | enable regex search by default |
+| `set rebinddelete` | enable backspace/delete keys to work correctly |
+| `set rebindkeypad` | enable numeric keypad |
+| `set smooth` | enable smooth scrolling |
+| `set tabsize 4` | set tab-size to 4 spaces |
+| `set tabstospaces` | convert tabs to spaces when saving file |
+| `set tempfile` | auto-save file on exit |
+| `set noconvert` | set noconvert, don't convert from dos/mac to unix format |
+
 __Shortcuts__ <br>
 
 <center>

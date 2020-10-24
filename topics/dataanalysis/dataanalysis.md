@@ -32,7 +32,7 @@ _array = np.array(data)
 _array.ndim; _array.shape; _array.dtype;
 
 # Array: Initialization
-np.zeros(10); np.ones(10); np.full(10);
+np.zeros(10); np.ones(10); np.full(10,1);
 
 # NumPy equivalent of Python's range()
 np.arange(start, stop, step)
@@ -62,6 +62,37 @@ _array = np.zeros(10,dtype='uint8') # Array of 8-bit values
 _array[5:] = 1			    # Same array
 _array[5:].copy()		    # New array
 ```
+
+- Array Indexing [[1]](https://www.pythonlikeyoumeanit.com/Module3_IntroducingNumpy/AccessingDataAlongMultipleDimensions.html), [[2]](https://numpy.org/devdocs/user/basics.indexing.html) <br>
+At times, it's necessary to access certain values from a matrix. How does this fit in with an ndarray? <br>
+We can use indexing to address this. <br>
+
+```py
+# 0-D array
+array0D = np.array(8)
+
+# 1-D array, shape-(3,)
+array1D = np.array([2.3, 0.1, -9.1])
+
+# 2-D array, shape-(3, 2)
+array2D = np.array([[93, 95],
+          [84, 100],
+          [99, 87]])
+
+# 3-D array, shape-(2, 2, 2)
+array3D = np.array([[[0, 1],
+           [2, 3]],
+          [[4, 5],
+           [6, 7]]])
+
+array1D[:]         = 1          # Sets array1D[0-2] = 1
+array2D[:][0]      = 1          # Replaces first element in 2D array with a scalar value of 1
+array2D[:][-1]     = -1         # Replaces last element in 2D array with a scalar value of 1
+array2D[:][1:]     = np.ones(2) # Replaces elements (2nd onward) in 2D array with unit-valued entries
+array3D[:][:][-1]  = [1,1]      # Replaces last value of every element with [1,1]
+```
+
+
 
 
 # References

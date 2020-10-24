@@ -227,6 +227,9 @@ def reverseLine(line):
 >> %reverse hello world
 'dlrow olleh'
 ```
+To use these across sessions, you can either create an "extension" or add "startup-files" (save `.py/.ipy` files in `~./ipython/profile_default/startup` directory). <br>
+Extensions can be easily shared over `PyPI`; Startup-files are more suited for quick, personal use. <br>
+
 This is the same thing published as an "extension". Load it using `%load_ext reverser`. <br>
 ```py
 # ~/.ipython/extensions/reverser.py
@@ -245,8 +248,6 @@ def load_ipython_extension(ipython):
 ...
 
 ```
-To use these across sessions, you can either create an "extension" or add "startup-files" (save `.py/.ipy` files in `~./ipython/profile_default/startup` directory). <br>
-Extensions can be easily shared over `PyPI`; Startup-files are more suited for quick, personal use. <br>
 When using startup-files, if the written methods are memory-intensive, it significantly impacts IPython startup-time. <br>
 A solution is to create "profiles" dedicated to each use-case (eg. debug, demo, computation, image-processing, ...) <br>
 Create a new profile using `ipython profile create debug`. To access this, start IPython using `ipython --profile=debug`. <br>

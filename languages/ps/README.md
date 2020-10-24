@@ -349,7 +349,7 @@ firefox "google.com/maps?q=$($location.latitude),$($location.longitude)"
 ```
 
 __Notifications__ <br>
-Use [BurntToast]() to create toast-notifications. Use it with `Register-ScheduledJob` cmdlet to create non-volatile jobs. <br>
+Use [BurntToast](https://github.com/Windos/BurntToast) to create toast-notifications. Use it with `Register-ScheduledJob` cmdlet to create non-volatile jobs. <br>
 ```powershell
 Register-ScheduledJob -Name HourlyReminder
     -ScriptBlock {New-BurntToastNotification -Sound Call -Text "The time is $(Get-Date -Format 'hh:mm')"}
@@ -1974,7 +1974,15 @@ Refer: [`System.IO.Compression.ZipFile`](https://docs.microsoft.com/en-us/dotnet
 
 ## Text Editors
 
-__GNU Nano__ <br>
+### GNU Nano
+
+__Installation__ <br>
+
+- Download latest binary from [here](https://files.lhmouse.com/nano-win/)
+- Extract all `*.nanorc` files to `C:/Users/USERNAME/nanorc/`, and `.nanorc` to `C:/Users/USERNAME/`.
+- After opening `nano .nanorc`, uncomment necessary lines & insert `include "C:/Users/USERNAME/nanorc/*.nanorc"` for syntax-highlighting.
+
+__Shortcuts__ <br>
 
 <center>
 

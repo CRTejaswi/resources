@@ -1,7 +1,6 @@
     Copyright(c) 2019-
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
-
 # PowerShell
 > Personal notes.
 
@@ -46,6 +45,7 @@
 - [PDFs](#pdf)
 - [Compressed Files](#compressed-files)
 - [Text Editors](#text-editors)
+- [Clipboard](#clipboard)
 - [Git](#git)
 - [Modules](#modules)
 - [Parameters](#parameters)
@@ -252,6 +252,11 @@ __Bulk__ <br>
     Get-Content test.txt,test.md,test.html,test.py | Set-Content OUTPUT.md
     cat test.txt,test.md,test.html,test.py | sc OUTPUT.md
     ```
+    Image files - vertical/horizontal tiling of images.
+    ```powershell
+    magick *.webp -append merged.png
+    magick *.webp +append merged.png
+    ```
     AV files.
     ```powershell
     $count = ((ls) -match '^\d+\.mp4$').count; $page = @(); $n=1; while ($n -ne $count+1) {$page += "file $n.mp4"; $n++}; $page | out-file -encoding ascii MERGE.txt; ffmpeg -f concat -safe 0 -i MERGE.txt -c copy OUTPUT.mp4
@@ -356,7 +361,6 @@ Register-ScheduledJob -Name HourlyReminder
     -Trigger (New-JobTrigger -Once -At '6:00 AM' -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration ([TimeSpan]::MaxValue))
     -ScheduledJobOption (New-ScheduledJobOption -WakeToRun -RunElevated)
 ```
-
 
 ## System Help
 
@@ -1976,13 +1980,17 @@ Refer: [`System.IO.Compression.ZipFile`](https://docs.microsoft.com/en-us/dotnet
 
 ### GNU Nano
 
+See: [.nanorc](https://github.com/CRTejaswi/dotfiles/blob/master/.nanorc)
+
 __Installation__ <br>
 
-- Download latest binary from [here](https://files.lhmouse.com/nano-win/)
+- Download latest binary from [here](https://files.lhmouse.com/nano-win/).
 - Extract all `*.nanorc` files to `C:/Users/USERNAME/nanorc/`, and `.nanorc` to `C:/Users/USERNAME/`.
 - After opening `nano .nanorc`, uncomment necessary lines & insert `include "C:/Users/USERNAME/nanorc/*.nanorc"` for syntax-highlighting.
 
-__nanorc configuration__ <br>
+[__nanorc Configuration__](https://www.nano-editor.org/dist/latest/nanorc.5.html) <br>
+
+Custom Behaviour
 
 | Option | Description |
 | :-- | :-- |
@@ -1993,18 +2001,39 @@ __nanorc configuration__ <br>
 | `set regexp` | enable regex search by default |
 | `set rebinddelete` | enable backspace/delete keys to work correctly |
 | `set rebindkeypad` | enable numeric keypad |
+| `set zap` | delete entire selection using backspace/delete |
 | `set smooth` | enable smooth scrolling |
 | `set tabsize 4` | set tab-size to 4 spaces |
 | `set tabstospaces` | convert tabs to spaces when saving file |
 | `set tempfile` | auto-save file on exit |
-| `set noconvert` | set noconvert, don't convert from dos/mac to unix format |
+| `set noconvert` | don't convert from dos/mac to unix format |
 
-__Shortcuts__ <br>
+Custom Key-Bindings
+```
+# Help, Find/Replace, Comment/Uncomment
+bind F1 help all
+bind M-F whereis all
+bind M-W findnext all
+bind M-Q findprevious all
+bind M-R replace all
+bind ^/ comment all
+# Copy/Cut/Paste
+bind M-C copy main
+bind M-X cut main
+bind M-V paste main
+bind M-Z undo main
+bind M-Y redo main
+#bind ^H chopwordleft main
+#bind ^H chopwordright main
+```
+
+__Key-Bindings__ <br>
 
 <center>
 
-| Shortcut | Description |
+| Key-Binding | Description |
 | :-- | :-- |
+| `ESC+ESC+<0-255>` | Prints ASCII character corresponding to 0-255 |
 | Alt+3 | Comment/Uncomment |
 | Alt+Shift+3 | Display line numbers |
 | Ctrl+K/U | Cut/Paste |
@@ -2026,7 +2055,6 @@ Open multiple files using `nano test.ps1 test.py test.txt`; go back-and-forth us
 Use `Ctrl+R` to insert-from-file. Enter filename, then press enter.
 - save backup files <br>
 Run `nano -BC .\backup test.txt`. B/C => backup/path-to-backup-directory.
-
 
 ## Git
 
@@ -2338,11 +2366,30 @@ https://www.sconstantinou.com/powershell-script-blocks/
 https://www.youtube.com/watch?v=WP_Olf8GH_g
 https://www.youtube.com/watch?v=uoH6mnzwSZc
 
-# Recipies
+## Clipboard
+See: [Clipboard](https://en.wikipedia.org/wiki/Clipboard_(computing), Get/Set Clipboard, [xclip](https://opensource.com/article/19/7/xclip) <br>
 
-Also See: [myScripts](scripts.md)
+Operations (`gcb`/`scb`)
 
-## Clipboard Operations (`gcb`/`scb`)
+- Copy filepaths
+```
+scb; scb (ls B:\CRTejaswi\Codes).FullName -Append
+```
+- Copy documentation
+```
+scb; scb (man Set-Clipboard -Append) -Append
+```
+- Copy contents of a file
+```
+scb; scb (cat $Notes)
+```
+
+- [ ] Cmdlets to copy clipboard to file <br>
+[1](https://learn-powershell.net/2014/07/24/building-a-clipboard-history-viewer-using-powershell/) <br>
+```
+Start-ClipboardCopy -FilePath $Clipboard
+Stop-ClipboardCopy
+```
 
 - [x] Print/Create PDF from copied text
     ```

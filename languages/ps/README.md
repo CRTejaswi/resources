@@ -46,6 +46,7 @@
 - [Compressed Files](#compressed-files)
 - [Text Editors](#text-editors)
 - [Clipboard](#clipboard)
+- [Linux](#linux)
 - [Git](#git)
 - [Modules](#modules)
 - [Parameters](#parameters)
@@ -2367,7 +2368,7 @@ https://www.youtube.com/watch?v=WP_Olf8GH_g
 https://www.youtube.com/watch?v=uoH6mnzwSZc
 
 ## Clipboard
-See: [Clipboard](https://en.wikipedia.org/wiki/Clipboard_(computing), Get/Set Clipboard, [xclip](https://opensource.com/article/19/7/xclip) <br>
+See: [Clipboard](https://en.wikipedia.org/wiki/Clipboard_(computing)), Get/Set Clipboard, [xclip](https://opensource.com/article/19/7/xclip) <br>
 
 Operations (`gcb`/`scb`)
 
@@ -2384,8 +2385,7 @@ scb; scb (man Set-Clipboard -Append) -Append
 scb; scb (cat $Notes)
 ```
 
-- [ ] Cmdlets to copy clipboard to file <br>
-[1](https://learn-powershell.net/2014/07/24/building-a-clipboard-history-viewer-using-powershell/) <br>
+- [ ] Cmdlets to copy clipboard to file [[1]](https://learn-powershell.net/2014/07/24/building-a-clipboard-history-viewer-using-powershell/) <br>
 ```
 Start-ClipboardCopy -FilePath $Clipboard
 Stop-ClipboardCopy
@@ -2448,6 +2448,36 @@ Stop-ClipboardCopy
     ```
     Use `subl $mylinks` to update links you want to visit now. <br>
     Read more about PS User-Profiles using: `man about_profiles -ShowWindow`
+
+
+## Linux
+See: [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) <br>
+
+__Setup__ <br>
+
+```powershell
+# Enable WSL
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+# Enable VM
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+# Download/Install WSL2 Kernel Package (x86-64)
+iwr https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi -OutFile wsl.msi
+wsl.msi
+# Set WSL2 as default
+wsl --set-default-version 2
+# Install Linux Distribution (Debian)
+firefox https://www.microsoft.com/en-in/p/debian/9msvkqc78pk6
+# Check WSL Version
+wsl -l -v
+```
+
+
+
+
+
+
+
+
 
 
 - [x] [Eject USB drive](https://serverfault.com/a/580298)

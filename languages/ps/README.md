@@ -2147,6 +2147,30 @@ gh alias set pv 'pr view'
 gh pv -w 123
 ```
 
+### GitHub Account
+
+__Authentication using SSH Keys__ <br>
+See: [[1]](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account), [[2]](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github). <br>
+
+Ensure that [OpenSSH is enabled on Windows](resources/openssh.png), then:
+```powershell
+cd ~; ssh-keygen
+Get-Service ssh-agent | Set-Service -StartupType Manual
+ssh-agent -s
+ssh-add ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa | scb
+```
+Paste this SSH key to your Github account. <br>
+Check SSH key status using `ssh -T git@github.com`, then move to project repo and: <br>
+```
+# Check connection protocol (HTTPS/SSH)
+git remote -v
+# HTTPS -> SSH
+git remote set-url origin git@<GIT-PROVIDER>:<USERNAME>/<REPO>.git
+# Check connection protocol (HTTPS/SSH)
+git remote -v
+```
+
 ## Parameters
 
 [__Common Parameters__](https://ss64.com/ps/common.html) <br>
@@ -2451,7 +2475,7 @@ Stop-ClipboardCopy
 
 
 ## Linux
-See: [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) <br>
+See: [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10), [Tutorial](https://devblogs.microsoft.com/commandline/access-linux-filesystems-in-windows-and-wsl-2/), [Blog](https://devblogs.microsoft.com/commandline/) <br>
 
 __Setup__ <br>
 

@@ -122,6 +122,27 @@ iwr $pdftk -OutFile 'pdftk-server.exe'
 iwr $anydesk -OutFile 'anydesk.exe'
 ```
 
+- [x] QRCode Generator
+
+```powershell
+<#
+.SYNOPSIS
+Generates QRCode (.png) from text.
+.EXAMPLE
+PS> Get-QRCode -Name "Hello World!"
+PS> Get-QRCode "http://crtejaswi.github.io"
+#>
+function Get-QRCode{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [string]$Name
+    )
+    $QRCode  = "https://zxing.org/w/chart?cht=qr&chs=256x256&chld=L&choe=UTF-8&chl=$Name"
+    Invoke-WebRequest $QRCode -OutFile QRCode.png
+}
+```
+
 - [x] Code-File Inventory [\*](https://ironscripter.us/building-a-powershell-command-inventory/) <br>
     Count no. of lines of code in files of a given directory. <br>
 

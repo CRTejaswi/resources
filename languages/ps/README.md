@@ -297,6 +297,14 @@ __Multimedia__ <br>
     ```powershell
     (ls *.mp3).fullName | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
     ```
+- Play music daily, at a specified time (7:30PM)
+    ```powershell
+    Register-ScheduledJob
+      -Name myDailyJobs
+      -ScriptBlock {vlc $Music}
+      -Trigger (New-JobTrigger -Daily -At '19:30')
+      -ScheduledJobOption (New-ScheduledJobOption -WakeToRun -RunElevated)
+    ```
 - Text to Speech <br>
     See: [SpeechSynthesizer](https://docs.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesizer)
     ```powershell
@@ -388,6 +396,7 @@ Register-ScheduledJob -Name HourlyReminder
     get-verb
     get-verb | measure
     ```
+- Write help for custom-cmdlets: [[1]](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help), [[2]](https://docs.microsoft.com/en-us/archive/msdn-magazine/2007/december/cmdlets-extend-windows-powershell-with-custom-commands) <br>
 
 ## Variables
 
@@ -1346,6 +1355,17 @@ File/Folder are collectively called __Item__.
         select Name,@{name='LastWriteTime';expression={Get-Date -Format 'dd-MM-yy hh:mm:ss tt' $_.LastWriteTime}}
     ```
 
+__File Metadata__ <br>
+
+See: [Properties based on File-Type](https://docs.microsoft.com/en-us/windows/win32/properties/props)
+
+```powershell
+$shell = new-object -com shell.application
+$folder = $shell.namespace((pwd).Path)
+$file = $folder.Items().Item('01.mp4')
+$folder | gm; $file | gm;
+```
+
 ## Formatting
 
 - Format-Table, Format-List, Format-Wide, Format-Custom
@@ -2148,7 +2168,6 @@ gh pv -w 123
 ```
 
 ### GitHub Account
-
 __Authentication using SSH Keys__ <br>
 See: [[1]](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account), [[2]](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github). <br>
 
@@ -2167,6 +2186,7 @@ Check SSH key status using `ssh -T git@github.com`, then move to project repo an
 git remote -v
 # HTTPS -> SSH
 git remote set-url origin git@<GIT-PROVIDER>:<USERNAME>/<REPO>.git
+#git remote set-url origin git@github.com:CRTejaswi/resources.git
 # Check connection protocol (HTTPS/SSH)
 git remote -v
 ```
@@ -2760,3 +2780,122 @@ https://github.com/Apress/powershell-and-python-together
     https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/managing-lenovo-bios-settings-part-2
     https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/managing-lenovo-bios-settings-part-3
     https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/managing-lenovo-bios-settings-part-4
+
+
+
+- Copy file-path
+```
+scb (ls .\test.txt).FullName
+scb (ls $Directory -File).FullName
+scb (ls (ls $NotesPS).Directory -File).FullName
+```
+
+- Copy file-content
+```
+scb (cat .\test.txt)
+```
+
+- Open files from the same directory as a file whose path is known
+```
+nano "$((ls $NotesPS).Directory)/scripts.md"
+```
+
+- Edit multiple files
+```
+nano test.txt test.py test.ps1
+subl test.txt test.py test.ps1
+```
+
+- Rename files <br>
+The `$_.extension` is helpful when dealing with similar files but different encodings (eg. BMP, JPG, GIF, PNG, SVG). <br>
+```
+$i=1; ls | forEach {ren $_.name "$i$($_.extension)"; $i++}
+```
+
+- Stop process
+```
+gps | where {$_.Name -match 'vlc'} | kill
+```
+
+- Play music as system-tray app
+```
+vlc --qt-start-minimized --play-and-exit $Music
+```
+
+- Change directory to that of a file whose path is known
+```
+pushd (ls $NotesPS).Directory
+popd
+```
+
+- Save/Open Bookmarks
+```
+- Structure/Save bookmarks to folder.
+  eg. Lookup Youtube for videos on "Reddit API".
+- Copy bookmarks folder, save to file, delete folder.
+- Open files in browser
+  firefox (cat $myLinks -Last 10)
+```
+
+- Custom Web-Search cmdlets
+
+```
+Search-Web
+
+$Name = $Name.ToLower().Replace(' ','+')
+$Option = 0
+
+$Google        = "https://www.google.com/search?q=$Name&tbm=$Option" # Option: isch, vid, bks, shop, fin
+$Youtube       = "https://www.youtube.com/results?search_query=$Name"
+$Twitter       = "https://twitter.com/search?q=$Name"
+$Wikipedia     = "https://en.wikipedia.org/wiki/Special:Search?search=$Name"
+$StackOverflow = "https://stackoverflow.com/search?q=$Name"
+$Reddit        = "https://www.reddit.com/search/?q=$Name"
+
+Search-Specs
+
+$Phone  = "https://www.gsmarena.com/res.php3?sSearch=$Name"
+$Laptop = "https://laptopmedia.com/specs/?q=$Name"
+``` 
+
+
+- FFMpeg: remove audio
+```
+ffmpeg -i 720p.mp4 -vcodec copy -an 720p-nosound.mp4
+```
+
+- FFMpeg: resize video
+```
+ffmpeg -y -i .\INPUT.mp4 -vf scale=-2:720,setsar=1:1 -c:v libx264 -c:a copy 720p.mp4
+ffmpeg -y -i .\INPUT.mp4 -vf scale=-2:480,setsar=1:1 -c:v libx264 -c:a copy 480p.mp4
+```
+
+- FFMpeg: merge audio/video tracks <br>
+Here, the chosen audio was 1:00 min, while the video was 1:30 min. So, the audio was looped twice and the output was clipped according to the video's duration (shortest duration). <br>
+Ideally, you should use `-stream_loop -1` (infinite loop) for audio & clip for video duration (so you don't need to know durations of individual audio/video), but this option is buggy right now. <br>
+If the `-stream_loop -1` works, it'll be helpful for bulk merges. <br>
+```
+# Clip AV to one which is the shortest
+ffmpeg -i 720p-nosound.mp4 -i INPUT.mp3 -shortest -c copy 720p.mp4
+# Loop audio twice, and clip at the shortest
+ffmpeg -i .\720p-nosound.mp4 -stream_loop 2 -i INPUT.mp3 -shortest -c copy 720p.mp4
+```
+
+# Create Youtube-ready video
+```
+- Remove audio from video
+- Download Youtube audio
+- Merge AV
+
+ffmpeg -i 720p.mp4 -vcodec copy -an 720p-nosound.mp4
+youtube-dl --no-cache-dir --extract-audio --audio-format mp3 -o "INPUT.%(ext)s" <URL>
+ffmpeg -i 480p-nosound.mp4 -i INPUT.mp3 -shortest -c copy 480p.mp4
+```
+
+- Concatenate/Copy strings to clipboard
+```
+scb (-join('$README = ',(ls README.md).FullName))
+# $README = B:\CRTejaswi\Codes\MarkDown\Daily\README.md
+scb (-join('$ContestCoding = ',(pwd).Path))
+# $ContestCoding = B:\CRTejaswi\Codes\contest-coding
+```

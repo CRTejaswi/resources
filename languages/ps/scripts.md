@@ -131,6 +131,7 @@ Generates QRCode (.png) from text.
 .EXAMPLE
 PS> Get-QRCode -Name "Hello World!"
 PS> Get-QRCode "http://crtejaswi.github.io"
+PS> Get-QRCode "$(cat .\test.txt -Last 10)"
 #>
 function Get-QRCode{
     [cmdletBinding()]

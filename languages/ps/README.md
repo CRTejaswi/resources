@@ -396,7 +396,10 @@ Register-ScheduledJob -Name HourlyReminder
     get-verb
     get-verb | measure
     ```
-- Write help for custom-cmdlets: [[1]](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help), [[2]](https://docs.microsoft.com/en-us/archive/msdn-magazine/2007/december/cmdlets-extend-windows-powershell-with-custom-commands) <br>
+- Write help for custom-cmdlets:
+    You can write help in two ways: using comment-strings (<##>) within script files, or using XML files (`<PSSnapInAssemblyName>.dll-Help.xml`). <br>
+    - Comment Strings: [[1]](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help), [[2]](https://docs.microsoft.com/en-us/archive/msdn-magazine/2007/december/cmdlets-extend-windows-powershell-with-custom-commands)
+    - XML files: [[1]](https://docs.microsoft.com/en-us/powershell/scripting/developer/help/how-to-create-the-cmdlet-help-file)
 
 ## Variables
 

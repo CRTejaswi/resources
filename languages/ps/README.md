@@ -46,7 +46,6 @@
 - [Compressed Files](#compressed-files)
 - [Text Editors](#text-editors)
 - [Clipboard](#clipboard)
-- [Linux](#linux)
 - [Git](#git)
 - [Modules](#modules)
 - [Parameters](#parameters)
@@ -54,6 +53,7 @@
 - [Recipies](#recipies)
 - [MS Office](#ms-office)
 - [Android SDK](#android-sdk)
+- [Linux](#linux)
 - [ ] [PowerShell/Python](#powershell-python)
 - [ ] [PowerShell/JavaScript](#powershell-js)
 - [Unsorted](#unsorted)
@@ -396,8 +396,8 @@ Register-ScheduledJob -Name HourlyReminder
     get-verb
     get-verb | measure
     ```
-- Write help for custom-cmdlets:
-    You can write help in two ways: using comment-strings (<##>) within script files, or using XML files (`<PSSnapInAssemblyName>.dll-Help.xml`). <br>
+- Write help for custom-cmdlets: <br>
+    You can write help in two ways: using comment-strings (`<##>`) within script files, or using XML files (`<PSSnapInAssemblyName>.dll-Help.xml`). <br>
     - Comment Strings: [[1]](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help), [[2]](https://docs.microsoft.com/en-us/archive/msdn-magazine/2007/december/cmdlets-extend-windows-powershell-with-custom-commands)
     - XML files: [[1]](https://docs.microsoft.com/en-us/powershell/scripting/developer/help/how-to-create-the-cmdlet-help-file)
 
@@ -2518,8 +2518,20 @@ firefox https://www.microsoft.com/en-in/p/debian/9msvkqc78pk6
 wsl -l -v
 ```
 
+__Configuring Linux OSes__ <br>
+```
+sudo apt-get clean
+sudo apt-get install -f
+sudo dpkg --configure -a
+sudo apt-get update && sudo apt-get dist-upgrade
+```
 
-
+__Installing Linux Binaries__ <br>
+Ensure that you have configured your OS. Then, refer the installation steps for your binary. <br>
+eg. For [telegram-cli](https://github.com/vysheng/tg), ensure OS setup, then:
+```
+sudo apt-get install libreadline-dev libconfig-dev libssl-dev lua5.2 liblua5.2-dev libevent-dev libjansson-dev libpython-dev make
+```
 
 
 

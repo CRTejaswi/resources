@@ -1,4 +1,4 @@
-﻿    Copyright(c) 2020-
+    Copyright(c) 2020-
     Author: Chaitanya Tejaswi (github.com/CRTejaswi)    License: GPL v3.0+
 
 # Databases
@@ -9,6 +9,7 @@
 - [Setup](#setup)
 - [Templates](#templates)
 - [Challenges](#challenges)
+- [SQLite](#sqlite)
 
 ## Setup
 
@@ -31,7 +32,23 @@ __MongoDB__ <br>
 - [ ] Implement `outCsv` method.
 - [ ] Modify methods to automate CRUDing using a CSV file.
 
-
 ## Challenges
 
 Refer: [[1]](https://www.hackerrank.com/domains/sql) [[2]](https://www.w3resource.com/sql-exercises/)
+
+
+## SQLite
+
+| Task | Command |
+| :-- | :-- |
+| Open file | `sqlite3 file.db` |
+|  | `.open file.db` |
+| Exit | `.exit` |
+| List all commands | `.help` |
+| List all databases | `.database` |
+| List tables from current database | `.table [PATTERN]` |
+| Show structure of all tables | `.fullschema` |
+| Show structure of a table | `.schema TABLENAME` |
+| Save query-results (one/more) to file | `.once FILENAME` |
+|  | `.output FILENAME` |
+| Execute SQL queries from file | `.read FILENAME` |

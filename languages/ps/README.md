@@ -54,6 +54,7 @@
 - [MS Office](#ms-office)
 - [Android SDK](#android-sdk)
 - [Linux](#linux)
+- [C#/.NET](#net)
 - [ ] [PowerShell/Python](#powershell-python)
 - [ ] [PowerShell/JavaScript](#powershell-js)
 - [Unsorted](#unsorted)
@@ -2533,9 +2534,13 @@ eg. For [telegram-cli](https://github.com/vysheng/tg), ensure OS setup, then:
 sudo apt-get install libreadline-dev libconfig-dev libssl-dev lua5.2 liblua5.2-dev libevent-dev libjansson-dev libpython-dev make
 ```
 
+Install [Snap](https://snapcraft.io/docs/installing-snap-on-ubuntu) to install telegram as indicated [here](https://www.omgubuntu.co.uk/2016/10/use-telegram-cli-in-terminal-ubuntu).
 
 
 
+## NET
+
+See: [Microsoft Reference](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/introduction), [Microsoft Videos](https://channel9.msdn.com/Events/TechDays/Belgium-2013/58), [C# In A Nutshell](http://www.albahari.com/nutshell/). <br>
 
 
 
@@ -2871,7 +2876,7 @@ Search-Specs
 
 $Phone  = "https://www.gsmarena.com/res.php3?sSearch=$Name"
 $Laptop = "https://laptopmedia.com/specs/?q=$Name"
-``` 
+```
 
 
 - FFMpeg: remove audio

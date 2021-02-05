@@ -14,6 +14,7 @@
 - [YouTube](#youtube)
 - [Structured Data (CSV, JSON, XML)](#structured-data-csv-json-xml)
 - [Web Scraping](#web-scraping)
+- [Raju Mama](#raju-mama)
 
 ## Basics
 
@@ -678,18 +679,14 @@ cat .\podcasts.json | ConvertFrom-Json
 function Get-myPodcast{
     [cmdletBinding()]
     param(
-        [Parameter (Position=0,Mandatory=$True)]
-        [ValidSet({($response = irm https://crtejaswi.github.io/api/podcasts.json).title})]
-        [string]$Name
+        [string]$Url='https://crtejaswi.github.io/api/podcasts.json',
+        [string]$Name,
+        [switch]$List
     )
-
-#    $response = irm https://crtejaswi.github.io/api/podcasts.json
-#    $titles = $response.title
-    if ($Name -in $titles){
-        "$Name"
-    }
-}
-
+    $entries = Invoke-RestMethod $Url
+    switch ($PSBoundParameters.keys){
+        'List' {$entries}
+    })
 $response = iwr https://omny.fm/shows/conan-o-brien-needs-a-friend/playlists/podcast.rss
 $episodes = (($response.allElements | where {$_.tagName -match 'enclosure'}).url) -replace "\?utm_source.+$",""
 $episodes = [System.Collections.Generic.Stack[String]]($episodes)
@@ -709,6 +706,27 @@ firefox ($response | where {$_.artist -match '^Bill'}).link
 - [ ] Since links are captured randomly, is stack/queue any good for this use-case? If episode-number was also captured, array would be easier to use (eg, `$episodes[10]`).
 - [ ] Custom-Object to capture all entries & store in hashtable with keys = `$response.title`. Give this as `ValidateSet` to list all available podcasts for user to query using `Get-myPodcast`.
 
+- [`blogs.json`](https://crtejaswi.github.io/api/blogs.json) <sup>[BROKEN]</sup><br>
+
+```powershell
+Import-Csv .\blogs.csv -Delimiter ';' | ConvertTo-Json | Out-File -Encoding ascii .\blogs.json
+cat .\blogs.json | ConvertFrom-Json
+
+function Get-Blog{
+    [cmdletBinding()]
+    param(
+        [string]$Url='https://crtejaswi.github.io/api/blogs.json',
+        [string]$Name,
+        [switch]$List
+    )
+    $entries = Invoke-RestMethod $Url
+    switch ($PSBoundParameters.keys){
+        'List' {$entries}
+        # Allow tab completion of usernames to open up their blogs in firefox
+        # firefox ($entries | where {$_.person -match $REGEX}).Link
+    })
+}
+```
 
 ## Youtube
 
@@ -1022,4 +1040,60 @@ function Merge-Audio{
     $page | Out-File -Encoding ascii MERGE.txt
     ffmpeg -f concat -safe 0 -i MERGE.txt -c copy "audios/$Id.mp3"
 }
+```
+
+## Raju Mama
+
+- Create ebooks for online judgements
+```powershell
+# test.ps1
+function Get-Ebook{
+    [cmdletBinding()]
+    param(
+        [string]$Id
+    )
+    $BaseUrl = 'https://indiankanoon.org/doc/'
+    $response = iwr "$BaseUrl/$Id"
+    ($response.AllElements | where {$_.class -match 'judgments'}).innerText | Out-File -encoding ascii "$Id.txt"
+}
+
+function Out-Ebook{
+    [cmdletBinding()]
+    param(
+        [Parameter (Position=0,Mandatory=$True)]
+        [string]$Id,
+        [Parameter (Position=1,Mandatory=$True)]
+	[string]$Name
+    )
+    pandoc "$Id.txt" --metadata title="$Name" --epub-cover-image="cover.png" +RTS -Ksize -RTS -o "$Name.epub"
+    kindlegen "$Name.epub" 
+}
+
+# $data = @{'8064'='TMA Pai Foundation vs State of Karnataka';'1390531'='PA Inamdar vs State of Maharashtra';'1939993'='Minerva Mills vs Union of India';'141126788'='SR Bommai vs UOI';'1524908'='L Chandra Kumar vs UOI';'753224'='Supreme Court Advocate-on-Record vs UOI';'1382698'='Samsher Singh vs State of Punjab';'1149369'='Bangalore Water Supply & Sewerage Board vs A Rajappa';'1766147'='Maneka Gandhi vs UOI';'1353689'='AR Antulay vs RS Nayak';'123456797'='Rupa Ashok Hurra vs Ashok Hurra';'1363234'='Indra Sawhney vs UOI';'1031794'='Vishakha vs State of Rajasthan';'471272'='Pradeep Kumar Biswas vs Indian Institute of Chemical Biology';'1641452'='SBP & Co vs Patel Engg Ltd';'322504'='IR Coelho vs State of Tamil Naidu';'1219385'='Ashok Kumar Thakur vs UOI';'1519371'='CBSE vs Aditya Bandyopadhyay';'989335'='Swamy Shraddananda vs State of Karnataka';'920448'='Nandini Sundar vs State of Chattisgarh';'338008'='Selvi vs State of Karnataka';'146361519'='Amarinder Singh vs Punjab Vidhan Sabha';'1061334'='State of West Bengal vs Committee for Protection of Democratic Rights';'1686885'='Kihota Hollohan vs Zachillhu';'310431'='Centre for PIL vs UOI';'37692759'='Special Reference No1 of 2012';'1198027'='Mafatlal Industries Ltd vs Union of India';'115852355'='Vodafone International Holdings vs Union of India';'1121297'='Zahira Habibulla Sheikh vs State of Gujarat';'195460'='Malay Kumar Ganguly vs Dr. Sukumar Mukherjee';'102852'='M Nagaraj vs UOI';'235821'='AR Shanbhaug vs UOI';'174283964'='Sangeet vs State of Haryana';'154958944'='Society for UPS of Rajasthan vs UOI';'1294854'='SP Gupta vs UOI';'619152'='Kharak Singh vs State of UP';'501198'='DK Basu vs State of West Bengal';'1934103'='Vellore Citizens Welfare Forum vs UOI';'1072165'="Naga People's Movement's of Human Rights vs UOI";'1466814'='State of Maharashtra vs Sangharaj'}
+$data.Keys | forEach {Get-Ebook $_}
+$data.Keys | forEach {Out-Ebook $_ $data[$_]}
+```
+The data can be created like this:
+```
+$data = @(`
+    '338008'='Selvi vs State of Karnataka';`
+    '146361519'='Amarinder Singh vs Punjab Vidhan Sabha';`
+    '1061334'='State of West Bengal vs Committee for Protection of Democratic Rights';`
+    '1686885'='Kihota Hollohan vs Zachillhu';`
+    '310431'='Centre for PIL vs UOI';`
+    '37692759'='Special Reference No1 of 2012';`
+    '1198027'='Mafatlal Industries Ltd vs Union of India';`
+    '115852355'='Vodafone International Holdings vs Union of India';`
+    '1121297'='Zahira Habibulla Sheikh vs State of Gujarat';`
+    '195460'='Malay Kumar Ganguly vs Dr. Sukumar Mukherjee';`
+    '102852'='M Nagaraj vs UOI';`
+    '235821'='AR Shanbhaug vs UOI';`
+    '174283964'='Sangeet vs State of Haryana';`
+    '154958944'='Society for UPS of Rajasthan vs UOI';`
+    '1294854'='SP Gupta vs UOI';`
+    '619152'='Kharak Singh vs State of UP';`
+    '501198'='DK Basu vs State of West Bengal';`
+    '1934103'='Vellore Citizens Welfare Forum vs UOI';`
+    '1072165'="Naga People's Movement's of Human Rights vs UOI";`
+    '1466814'='State of Maharashtra vs Sangharaj';`
 ```

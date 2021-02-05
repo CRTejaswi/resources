@@ -197,6 +197,8 @@ substitute, s, :ns :m,ns :%s
 - Text from Files
 
 
+__Date & Time__ <br>
+
 - Display datetime
 Use `rulerformat` & `strftime` to display the datetime on status-bar.
 ```
@@ -204,6 +206,11 @@ set ruler
 set rulerformat=%30(%{strftime('\[%a\ %d\-%m\-%Y\ %I:%M%p\]')}\ %p%%%)
 # [Tue 05-01-2021 12:59AM] 100%
 ```
+- Write timestamp
+```
+:r! date
+:r! date "\%d-\%m-\%Y \%H:\%M"
+``` 
 
 
 - Merge lines
@@ -301,5 +308,6 @@ Going a step further, you can run this on multiple files at once using `:argdo s
 
 __Sorting & Searching__ <br>
 
-s
+
+__Recipies__ <br>
 

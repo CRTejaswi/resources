@@ -1097,3 +1097,18 @@ $data = @(`
     '1072165'="Naga People's Movement's of Human Rights vs UOI";`
     '1466814'='State of Maharashtra vs Sangharaj';`
 ```
+Zip these files using any one:
+```
+# Using 7Zip
+7z a -tzip judgements.zip .\ebooks\mobi\*mobi
+
+
+# Using PS (.NET API)
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$zip = [System.IO.Compression.ZipFile]::Open('test.zip',2)
+
+ls ebooks/mobi/*.mobi | forEach {
+        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $_.Name, 0)
+}
+$zip.Dispose()
+```

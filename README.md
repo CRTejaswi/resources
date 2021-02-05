@@ -7,6 +7,7 @@
 ## Language(s)
 > Contains language specific notes/recipies.
 
+- [Vim](languages/vim/README.md)
 - [PowerShell](languages/ps/README.md)
 - [Python3](languages/py3/README.md)
 - [CCpp](languages/ccpp/README.md)

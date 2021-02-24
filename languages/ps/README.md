@@ -20,6 +20,8 @@
 | Warren Frame [[PS recipies]](https://github.com/RamblingCookieMonster/PowerShell) | Guy who wrote [PSSQLite](https://github.com/RamblingCookieMonster/PSSQLite) - a module to access SQLite databases in PS. |
 | [Prateek Singh](https://github.com/PrateekKumarSingh/PowerShell-Interview) | Indian guy who uses PS for fun. |
 
+Articles: [OLD](https://social.technet.microsoft.com/Search/en-US?query=powershell&refinement=90&beta=0&ac=4), [NEW](https://devblogs.microsoft.com/scripting/?s=powershell), [NEW](https://devblogs.microsoft.com/scripting/tag/weekend-scripter/page/2/) <br>
+
 # Index
 
 - [General](#general)
@@ -296,6 +298,7 @@ __Multimedia__ <br>
     ```
 - Create & Play a playlist
     ```powershell
+    (ls *.mp4) | Sort-Object {(.Name) -replace '\D+' -as [int]} | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
     (ls *.mp3).fullName | forEach { vlc --one-instance --playlist-enqueue --rate 2.0 $_ }
     ```
 - Play music daily, at a specified time (7:30PM)
@@ -1593,11 +1596,21 @@ __Quantifiers__
     ```
 
 ## Remote Access
+
+Refer: [Get-WmiObject (gwmi)](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-wmiobject), [Get-CimInstance (gcim)](https://docs.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance) <br>
+
 - Windows Remote Management (WinRM)
 - Windows Management Instrumentation (WMI) [OLD] & the Common Information Model (CIM) [NEW] <br>
     `Get-WmiObject`,`Invoke-WmiMethod`,`GetCimInstance`,`Invoke-CimMethod` <br>
     WMI commands work over RPCs. CIM commands work over WS-MAN (WinRM). <br>
     CIM instructions need WinRM to be enabled on every PC. So, prefer the old WMI instructions. <br>
+- Classes
+```
+win32_logicaldisk:
+win32_process:
+win32_service:
+win32_bios:
+```
 
 - [x] Display all HDD partitions with total/free memory.
     ```
@@ -2919,3 +2932,21 @@ scb (-join('$README = ',(ls README.md).FullName))
 scb (-join('$ContestCoding = ',(pwd).Path))
 # $ContestCoding = B:\CRTejaswi\Codes\contest-coding
 ```
+
+- Rename selected files
+```powershell
+ls | where {$_.BaseName -match $REGEX} | forEach {ren $_ "$($_.Basename.replace($CHAR,''))$($_.Extension)"}
+```
+
+- Clear History
+
+```powershell
+vim (Get-PSReadlineOption).HistorySavePath
+```
+
+- List all current environment variables
+The `env:` drive contains this.
+```
+ls env:
+```
+

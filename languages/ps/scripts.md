@@ -1075,30 +1075,16 @@ $data.Keys | forEach {Out-Ebook $_ $data[$_]}
 ```
 The data can be created like this:
 ```
-$data = @(`
-    '338008'='Selvi vs State of Karnataka';`
-    '146361519'='Amarinder Singh vs Punjab Vidhan Sabha';`
-    '1061334'='State of West Bengal vs Committee for Protection of Democratic Rights';`
+$data = @{`
     '1686885'='Kihota Hollohan vs Zachillhu';`
     '310431'='Centre for PIL vs UOI';`
     '37692759'='Special Reference No1 of 2012';`
     '1198027'='Mafatlal Industries Ltd vs Union of India';`
     '115852355'='Vodafone International Holdings vs Union of India';`
-    '1121297'='Zahira Habibulla Sheikh vs State of Gujarat';`
-    '195460'='Malay Kumar Ganguly vs Dr. Sukumar Mukherjee';`
-    '102852'='M Nagaraj vs UOI';`
-    '235821'='AR Shanbhaug vs UOI';`
-    '174283964'='Sangeet vs State of Haryana';`
-    '154958944'='Society for UPS of Rajasthan vs UOI';`
-    '1294854'='SP Gupta vs UOI';`
-    '619152'='Kharak Singh vs State of UP';`
-    '501198'='DK Basu vs State of West Bengal';`
-    '1934103'='Vellore Citizens Welfare Forum vs UOI';`
-    '1072165'="Naga People's Movement's of Human Rights vs UOI";`
-    '1466814'='State of Maharashtra vs Sangharaj';`
+}
 ```
 Zip these files using any one:
-```
+```powershell
 # Using 7Zip
 7z a -tzip judgements.zip .\ebooks\mobi\*mobi
 

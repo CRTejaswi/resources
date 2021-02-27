@@ -25,6 +25,7 @@ Articles: [OLD](https://social.technet.microsoft.com/Search/en-US?query=powershe
 # Index
 
 - [General](#general)
+- [Windows](#windows)
 - [myScripts](scripts.md)
 - [System Help](#system-help)
 - [Exception Handling](#exception-handling)
@@ -374,6 +375,12 @@ Register-ScheduledJob -Name HourlyReminder
     -Trigger (New-JobTrigger -Once -At '6:00 AM' -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration ([TimeSpan]::MaxValue))
     -ScheduledJobOption (New-ScheduledJobOption -WakeToRun -RunElevated)
 ```
+
+## Windows
+
+- [Windows: Keyboard Shortcuts](https://support.microsoft.com/en-us/windows/keyboard-shortcuts-in-windows-dcc61a57-8ff0-cffe-9796-cb9706c75eec)
+- [Windows: MVPs](https://insider.windows.com/en-us/mvps)
+
 
 ## System Help
 

@@ -116,8 +116,8 @@ module mux_4x1 (in, select, out);
     output out;
     wire [3:0] w;
 
-    mux_2x1 M0 (in[1:0], select[0], w[0])
-    mux_2x1 M1 (in[], select[0], w[1)
+    mux_2x1 M0 (in[1:0], select[0], w[0]);
+    mux_2x1 M1 (in[], select[0], w[1);
     mux_2x1 M2 (w, select[1], out);
 endmodule
 module mux_16x1 (in, select, out);
@@ -152,8 +152,8 @@ module mux_4x1 (in, select, out);
     output out;
     wire [3:0] w;
 
-    mux_2x1 M0 (in[1:0], select[0], w[0])
-    mux_2x1 M1 (in[], select[0], w[1)
+    mux_2x1 M0 (in[1:0], select[0], w[0]);
+    mux_2x1 M1 (in[], select[0], w[1);
     mux_2x1 M2 (w, select[1], out);
 endmodule
 module mux_16x1 (in, select, out);

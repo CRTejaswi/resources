@@ -19,7 +19,7 @@ Here's an example - Full Adder.
 
 ```verilog
 // Behavioral - Boolean Logic
-S = A^B^Cin;
+S = A ^ B ^ Cin;
 Cy = (A&B) | (B&Cin) | (Cin&A);
 
 // Behavioral - Lookup Table
@@ -37,8 +37,8 @@ endtable
 wire w1,w2,w3;
 
 xor g1(w1,A,B);
-wnd g2(w2,A,B);
-wnd g3(w3,w1,Cin);
+and g2(w2,A,B);
+and g3(w3,w1,Cin);
 or  g4(Cy,w2,w3);
 xor g5(S,w1,Cin); 
 ```
@@ -47,8 +47,8 @@ From a hardware implementation standpoint, it's ideal to write only structural i
 __16x1 MUX__
 
 - Behavioral representation of 16x1 MUX.
-- Structural representation using 4x1 MUX which themselves are represented behaviorally.
-- Structural representation using 2x1 MUX which themselves are represented behaviorally.
+- Structural representation using behavioral 4x1 MUX.
+- Structural representation using behavioral 2x1 MUX.
 - Structural representation of 2x1 MUX.
 
 ```verilog
@@ -98,7 +98,7 @@ module mux_16x1 (in, select, out);
     mux_4x1 M1 (in[7:4], select[1:0], w[1]);
     mux_4x1 M2 (in[11:8], select[1:0], w[2]);
     mux_4x1 M3 (in[15:12], select[1:0], w[3]);
-    mux_4x1 M4 (t, select[3:2], out);
+    mux_4x1 M4 (w, select[3:2], out);
 endmodule
 ```
 ```verilog
@@ -117,8 +117,8 @@ module mux_4x1 (in, select, out);
     wire [3:0] w;
 
     mux_2x1 M0 (in[1:0], select[0], w[0])
-    mux_2x1 M1(in[], select[0], w[1)
-    mux_2x1 M2(w, select[1], out);
+    mux_2x1 M1 (in[], select[0], w[1)
+    mux_2x1 M2 (w, select[1], out);
 endmodule
 module mux_16x1 (in, select, out);
     input [15:0] in;
@@ -130,7 +130,7 @@ module mux_16x1 (in, select, out);
     mux_4x1 M1 (in[7:4], select[1:0], w[1]);
     mux_4x1 M2 (in[11:8], select[1:0], w[2]);
     mux_4x1 M3 (in[15:12], select[1:0], w[3]);
-    mux_4x1 M4 (t, select[3:2], out);
+    mux_4x1 M4 (w, select[3:2], out);
 endmodule
 ```
 ```verilog
@@ -153,8 +153,8 @@ module mux_4x1 (in, select, out);
     wire [3:0] w;
 
     mux_2x1 M0 (in[1:0], select[0], w[0])
-    mux_2x1 M1(in[], select[0], w[1)
-    mux_2x1 M2(w, select[1], out);
+    mux_2x1 M1 (in[], select[0], w[1)
+    mux_2x1 M2 (w, select[1], out);
 endmodule
 module mux_16x1 (in, select, out);
     input [15:0] in;
@@ -166,7 +166,7 @@ module mux_16x1 (in, select, out);
     mux_4x1 M1 (in[7:4], select[1:0], w[1]);
     mux_4x1 M2 (in[11:8], select[1:0], w[2]);
     mux_4x1 M3 (in[15:12], select[1:0], w[3]);
-    mux_4x1 M4 (t, select[3:2], out);
+    mux_4x1 M4 (w, select[3:2], out);
 endmodule
 ```
 
